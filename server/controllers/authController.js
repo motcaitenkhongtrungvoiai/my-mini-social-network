@@ -15,7 +15,6 @@ const authController = {
         email: req.body.email,
         password: hashed,
         //bug 2 :: đóng gói sai dữ liệu :<
-       
       });
       const user = await newUser.save();
       res.status(200).json(user);
@@ -24,20 +23,23 @@ const authController = {
       res.status(500).json({ message: err.message });
     }
   },
-  LoginUser:async (req,res) => {
- try{
-  const user = await User.findOne({username:req.body.username});
-  if(!user) return res.status(404).json({message:"không tìm thấy tài khoản"});
-  const isMatch = await bcrypt.compare(req.body.password,user.password);
-  if(!isMatch) return res.status(400).json({message:"sai tài khoản hoặc mật khẩu"});
-  if(user && isMatch){
-    const {password,...others} = user._doc;
-    res.status(200).json(others);
-  }
- }
- catch(err){
-  console.log(err); 
-  res.status(500).json({ message: "lỗi đăng nhập sever" });
-  }}
+  LoginUser: async (req, res) => {
+    try {
+      const user = await User.findOne({ username: req.body.username });
+      if (!user)
+        return res.status(404).json({ message: "không tìm thấy tài khoản" });
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      if (!isMatch)
+        return res.status(400).json({ message: "sai tài khoản hoặc mật khẩu" });
+      if (user && isMatch) {
+        const { password, ...others } = user._doc;
+        res.status(200).json(others);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "lỗi đăng nhập sever" });
+    }
+  },
+  
 };
 module.exports = authController;
