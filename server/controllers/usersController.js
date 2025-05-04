@@ -1,9 +1,8 @@
-const { get } = require("mongoose");
+const mongoose = require("mongoose");
 const user = require("../model/user");
 
 const userController = {
-
-    /*
+  /*
     -- tạm thời không cấp quyền tạo người dùng mới cho admin chỉ dùng tài khoản bên đã đăng ký để test vì chưa có phương thức xác minh 
     verfine email :v
     -- sau này sẽ thêm vào
@@ -80,20 +79,29 @@ const userController = {
     // bug số 5 : fans id không có trong database vân có thể follow idol :v
     // bug số 6 : thế quái nào mà nó lại có null trong test case nhỉ ??????? (chưa tìm ra ly do) Lú quá :v
     try {
-      let idol = req.params.id;     
-      let fans = await user.findById(req.body.userId);
+      let idol = req.params.id;
+      let fans = await user.findById(req.body.userId); //đây là id của người dùng hiện tại đang đăng nhập
+
+      if (
+        !idol ||
+        !fans ||
+        !mongoose.Types.ObjectId.isValid(fans) ||
+        !mongoose.Types.ObjectId.isValid(idol)
+      ) {
+        return res.status(500).json({ message: "server has something weird" });
+      }
+
       let userData = await user.findByIdAndUpdate(
         idol,
-        
+
         { $addToSet: { followers: fans } },
         { new: true }
       );
-      if (!userData||!fans) {
+      if (!userData) {
         return res.status(404).json({ message: "User not found" });
       }
       res.status(200).json(userData);
-    }
-     catch (err) {
+    } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
     }
