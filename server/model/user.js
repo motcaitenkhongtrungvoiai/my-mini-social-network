@@ -12,11 +12,11 @@ const userSchema = new mongoose.Schema(
     coverphoto: { type: String, default: "../access/default.png" },
     profileDesc: { type: String, default: "Hello, I'm new here" ,maxlength: 500},
     website: { type: String},//đường dẫn đến trang cá nhân khác của người dùng chăng?
-    //xác thực người dùng hai lần có thể thêm vai trò mới . nhưng admin vẫn phải là admin
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    //xác thực người dùng hai lần có thể thêm vai trò mới . nhưng admin vẫn phải là admin :))
+    //ai Láo thì bock tài khoản cho nó thành criminal :v
+    role: { type: String, enum: ["user", "admin","criminal"], default: "user" },
     admin: { type: Boolean, default: false },
-  
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     createdAt: { type: Date, default: Date.now },
   },
