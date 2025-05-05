@@ -2,6 +2,7 @@ const User = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const middlewareController = require("./middlewareController");
 
 dotenv.config();
 
@@ -36,13 +37,8 @@ const authController = {
       if (!isMatch)
         return res.status(400).json({ message: "sai tài khoản hoặc mật khẩu" });
       if (user && isMatch) {
-       //tao token cho nguoi dung dang nhap
-        const accessToken = jwt.sign(
-          { 
-            id: user._id, isAdmin: user.isAdmin },
-          process.env.KEY_token,
-          { expiresIn: "20d" }
-        );
+      
+        const accessToken = middlewareController.createToken(user);
 
         const { password, ...others } = user._doc;
         res.status(200).json({...others, accessToken});
