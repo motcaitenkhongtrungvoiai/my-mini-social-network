@@ -3,6 +3,7 @@ const user = require("../model/user");
 
 const userController = {
   /*
+CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
     -- tạm thời không cấp quyền tạo người dùng mới cho admin chỉ dùng tài khoản bên đã đăng ký để test vì chưa có phương thức xác minh 
     verfine email :v
     -- sau này sẽ thêm vào
@@ -79,28 +80,48 @@ const userController = {
     // bug số 5 : fans id không có trong database vân có thể follow idol :v
     // bug số 6 : thế quái nào mà nó lại có null trong test case nhỉ ??????? (chưa tìm ra ly do) Lú quá :v
     try {
-      let idol = req.params.id;
-      let fans = await user.findById(req.body.userId); //đây là id của người dùng hiện tại đang đăng nhập
+      const idolId = req.body.idolId;
+      const fansId = req.body._id;
 
       if (
-        !idol ||
-        !fans ||
-        !mongoose.Types.ObjectId.isValid(fans) ||
-        !mongoose.Types.ObjectId.isValid(idol)
+        !idolId ||
+        !fansId ||
+        !mongoose.Types.ObjectId.isValid(idolId) ||
+        !mongoose.Types.ObjectId.isValid(fansId)
       ) {
-        return res.status(500).json({ message: "server has something weird" });
+        return res.status(400).json({ message: "Invalid user ID(s)" });
       }
 
-      let userData = await user.findByIdAndUpdate(
-        idol,
+      // Không cho tự follow chính mình
+      if (idolId === fansId) {
+        return res.status(400).json({ message: "You cannot follow yourself" });
+      }
 
-        { $addToSet: { followers: fans } },
+      const fans = await user.findById(fansId);
+      if (!fans) {
+        return res.status(404).json({ message: "Fan not found" });
+      }
+
+      const idolhasfans = await user.findByIdAndUpdate(
+        idolId,
+        { $addToSet: { followers: fansId } },
         { new: true }
       );
-      if (!userData) {
-        return res.status(404).json({ message: "User not found" });
+
+      if (!idolhasfans) {
+        return res.status(404).json({ message: "add follower crash" });
       }
-      res.status(200).json(userData);
+      // Cập nhật danh sách người theo dõi của fan
+      const fanshasidol = await user.findByIdAndUpdate(
+        fansId,
+       {$addToSet: { following: idolId } },
+        { new: true }
+      );
+       if (!fanshasidol) {
+        return res.status(404).json({ message: "add following crash" });
+      }
+      res.status(200).json({message:"follow success"});
+    
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
@@ -110,11 +131,11 @@ const userController = {
   //bỏ theo dõi
   unfollowUser: async (req, res) => {
     try {
-      let id = req.params.id;
-      //lấy id của người mình muốn unfollow sau đó lấy ID token của mình để nhét vào cho họ
+      const idolId = req.body.idolId;
+      const fansId = req.body._id;
       let userData = await user.findByIdAndUpdate(
-        id,
-        { $pull: { followers: req.body.userId } },
+        idolId,
+        { $pull: { followers: fansId } },
         { new: true }
       );
       if (!userData) {
@@ -129,12 +150,19 @@ const userController = {
   // hiển thị danh sách người theo dõi
   getFollowers: async (req, res) => {
     try {
-      let id = req.params.id;
-      let userData = await user.findById(id).populate("followers");
-      if (!userData) {
+      const idolId = req.body._id; 
+      const userWithFollowers = await user.findById(idolId).populate({
+        path: "followers",
+        select: "username avatar _id", 
+      });
+
+      if (!userWithFollowers) {
         return res.status(404).json({ message: "User not found" });
       }
-      res.status(200).json(userData.followers);
+
+      res.status(200).json({
+        followers: userWithFollowers.followers, 
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
@@ -143,12 +171,19 @@ const userController = {
   // hiển thị dang sach mình đang theo dõi
   getFollowing: async (req, res) => {
     try {
-      let id = req.params.id;
-      let userData = await user.findById(id).populate("following");
-      if (!userData) {
+      const fanId = req.body._id; 
+      const userWithFollowers = await user.findById(fanId).populate({
+        path: "followeing",
+        select: "username avatar _id", 
+      });
+
+      if (!userWithFollowers) {
         return res.status(404).json({ message: "User not found" });
       }
-      res.status(200).json(userData.following);
+
+      res.status(200).json({
+        followers: userWithFollowers.followers, 
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });

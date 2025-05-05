@@ -1,5 +1,9 @@
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const authController = {
   registerUser: async (req, res) => {
@@ -32,14 +36,21 @@ const authController = {
       if (!isMatch)
         return res.status(400).json({ message: "sai tài khoản hoặc mật khẩu" });
       if (user && isMatch) {
+       //tao token cho nguoi dung dang nhap
+        const accessToken = jwt.sign(
+          { 
+            id: user._id, isAdmin: user.isAdmin },
+          process.env.KEY_token,
+          { expiresIn: "20d" }
+        );
+
         const { password, ...others } = user._doc;
-        res.status(200).json(others);
+        res.status(200).json({...others, accessToken});
       }
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "lỗi đăng nhập sever" });
     }
   },
-  
 };
 module.exports = authController;

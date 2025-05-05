@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema(
     //ai Láo thì bock tài khoản cho nó thành criminal :v
     role: { type: String, enum: ["user", "admin","criminal"], default: "user" },
     admin: { type: Boolean, default: false },
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
