@@ -7,7 +7,7 @@ dotenv.config();
 const middlewareController = {
 
    createToken: (user) => {
-        return jwt.sign({ _id: user._id, isAdmin: user.admin, role: user.role }, process.env.KEY_token, { expiresIn: "20d" });
+        return jwt.sign({ _id: user._id, isAdmin: user.admin, role: user.role }, process.env.KEY_token, { expiresIn: process.env.TOKEN_EXPIRES_IN });
     },
 
     verifyToken:(req, res, next) => {
@@ -36,7 +36,9 @@ const middlewareController = {
             }
         });
     },
-
+    
+    
+ 
 
 }
 
