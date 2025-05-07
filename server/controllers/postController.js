@@ -64,7 +64,7 @@ const postController = {
     likePost:async(req,res)=>{
        try {
         const postId = req.body._id;
-        const userId = req.body.use;
+        const userId = req.body.user;
        }
        catch (err) {
             console.log(err);

@@ -6,6 +6,7 @@ const middlewareController = require("./middlewareController");
 
 dotenv.config();
 
+
 const authController = {
   registerUser: async (req, res) => {
     try {
@@ -39,9 +40,11 @@ const authController = {
       if (user && isMatch) {
       
         const accessToken = middlewareController.createToken(user);
+        const refreshToken = middlewareController.createRefreshToken(user);
+        refreshTokens.push(refreshToken);
 
         const { password, ...others } = user._doc;
-        res.status(200).json({...others, accessToken});
+        res.status(200).json({...others, accessToken, refreshToken});
       }
     } catch (err) {
       console.log(err);
