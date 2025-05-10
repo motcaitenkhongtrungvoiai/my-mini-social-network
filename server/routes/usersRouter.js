@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const userController = require('../controllers/usersController');
-const middlewareController = require("../controllers/middlewareController");
+const middlewareController = require("../middleware/middlewareController");
 
 router.get('/:id', userController.getUser);
 router.put('/:id', userController.updateUser);  

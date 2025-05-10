@@ -6,14 +6,19 @@ const postController = {
   
     createPost:async(req,res)=>{
         try {
-           const newPost = new post(req.body);
-           const savedPost = await newPost.save();
-           res.status(200).json(savedPost);
-        }
-        catch (err) {
+            const imagePath = req.file ? `/access/${req.file.filename}` : null;
+            const newPost = new post({
+              user: req.body.user,
+              content: req.body.content,
+              image: imagePath
+            });
+        
+            const savedPost = await newPost.save();
+            res.status(200).json(savedPost);
+          } catch (err) {
             console.log(err);
             res.status(500).json({ message: err.message });
-        }
+          }
     },
 
     updatePost:async(req,res)=>{
@@ -32,7 +37,7 @@ const postController = {
    
     deletePost:async(req,res)=>{
         try {
-            const postId = req.body._id;
+            const postId = req.params._id;
             const deletedPost = await post.findByIdAndDelete(postId);
             if (!deletedPost) {
                 throw new Error('Post not found');
@@ -51,7 +56,7 @@ const postController = {
             res.status(500).json({ message: err.message });
         }
     },
-    myPosts:async(req,res)=>{
+    profilePosts:async(req,res)=>{
         try {
             const userId = req.params._id;
             const posts = await post.find({ user: userId });
@@ -63,8 +68,16 @@ const postController = {
     },
     likePost:async(req,res)=>{
        try {
-        const postId = req.body._id;
-        const userId = req.body.user;
+        const postId = req.params._id;
+        const userId = req.body._id;
+        if (!postId || !userId) {
+           throw new Error('Post ID and User ID are missing');
+        }
+        const postUpdateLike = await post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true });
+        if (!postUpdateLike) {
+            throw new Error('Post not found');
+        }
+        
        }
        catch (err) {
             console.log(err);

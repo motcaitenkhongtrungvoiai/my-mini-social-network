@@ -2,7 +2,7 @@ const User = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const middlewareController = require("./middlewareController");
+const middlewareController = require("../middleware/middlewareController");
 
 dotenv.config();
 

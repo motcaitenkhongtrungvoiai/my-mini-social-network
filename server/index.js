@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 // import routes
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/usersRouter");
@@ -21,9 +22,11 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
+
 //routers
 app.use("/v1/auth",authRouter);
 app.use("/v1/users",userRouter);
+app.use('/access', express.static(path.join(__dirname, 'access')));
 
 app.listen(3000,() =>{
     console.log("sever is runing")
