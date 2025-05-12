@@ -9,3 +9,5 @@ router.delete('/del/:_id',postController.deletePost);
 router.post('/post',postController.getPosts);
 router.get('/profile/:_id',postController.profilePosts);
 router.put('/likePost/:_id',postController.likePost);
+
+module.exports=router;
