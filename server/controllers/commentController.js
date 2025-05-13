@@ -1,7 +1,6 @@
 const { appendFileSync } = require("fs");
 const comment = require("../model/comment");
 const mongoose = require("mongoose");
-const comment = require("../model/comment");
 
 const commentController = {
   createComment: async (req, res) => {
