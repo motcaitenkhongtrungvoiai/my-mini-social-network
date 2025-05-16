@@ -24,3 +24,8 @@ form.addEventListener("submit", async (e) => {
     console.error("Fetch error:", err);
   }
 });
+ 
+const auth = JSON.parse(localStorage.getItem("auth"));
+if (auth) {
+  console.log("Người dùng đã đăng nhập, userID là:", auth);
+}

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
    
-    username: { type: String, required: true, unique: true, minlength: 5 },
+    username: { type: String, minlength: 5 },
     email: { type: String, required: true, unique: true, trip: true, match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,'Please provide a valid email'] },
     password: { type: String, required: true, minlength: 5 },
     avatar: { type: String, default: "../access/default.png" },

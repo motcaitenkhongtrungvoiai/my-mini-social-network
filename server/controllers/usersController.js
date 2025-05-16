@@ -1,7 +1,15 @@
 const mongoose = require("mongoose");
 const user = require("../model/user");
+const path = require("path");
+const dotenv = require("dotenv");
+const fs = require("fs");
+
+
+ 
+dotenv.config();
 
 const userController = {
+  
   /*
 CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
     -- tạm thời không cấp quyền tạo người dùng mới cho admin chỉ dùng tài khoản bên đã đăng ký để test vì chưa có phương thức xác minh 
@@ -34,31 +42,64 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
 
   getUser: async (req, res) => {
     try {
-      let id = req.params.id;
+      let id = req.body._id || req.body.userId;
       let userData = await user.findById(id);
       if (!userData) {
         return res.status(404).json({ message: "User not found" });
       }
-      res.status(200).json(userData);
+      const { password, admin, role, ...other } = userData._doc;
+      other.avatar = userData.avatar.startsWith("/access/")
+        ? process.env.HOST_URL + userData.avatar
+        : process.env.HOST_URL + "/access/default.png";
+
+      other.coverphoto = userData.coverphoto.startsWith("/access/")
+        ? process.env.HOST_URL + userData.coverphoto
+        : process.env.HOST_URL + "/access/default.png";
+      res.status(200).json(other);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
     }
   },
 
-  updateUser: async (req, res) => {
-    try {
-      let id = req.params.id;
-      let userData = await user.findByIdAndUpdate(id, req.body, { new: true });
-      if (!userData) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      res.status(200).json(userData);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+  deleteOldImage : (imagePath) => {
+  if (!imagePath) return;
+  const filename = path.basename(imagePath);
+  if (filename === "default.png") return; 
+
+  const fullPath = path.join(__dirname, "../public/images", filename);
+  if (fs.existsSync(fullPath)) {
+    fs.unlinkSync(fullPath);
+  }
+},
+ 
+updateUser: async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userData = await user.findById(id);
+    if (!userData) return res.status(404).json({ message: "User not found" });
+
+    const updateData = { ...req.body };
+
+    // Avatar
+    if (req.files?.avatar?.[0]) {
+     userController.deleteOldImage(userData.avatar); // xóa avatar cũ
+      updateData.avatar = "/access/" + req.files.avatar[0].filename;
     }
-  },
+
+    // Coverphoto
+    if (req.files?.coverphoto?.[0]) {
+     userController.deleteOldImage(userData.coverphoto); // xóa cover cũ
+      updateData.coverphoto = "/access/" + req.files.coverphoto[0].filename;
+    }
+
+    const updatedUser = await user.findByIdAndUpdate(id, updateData, { new: true });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+},
 
   deleteUser: async (req, res) => {
     try {
@@ -114,14 +155,13 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
       // Cập nhật danh sách người theo dõi của fan
       const fanshasidol = await user.findByIdAndUpdate(
         fansId,
-       {$addToSet: { following: idolId } },
+        { $addToSet: { following: idolId } },
         { new: true }
       );
-       if (!fanshasidol) {
+      if (!fanshasidol) {
         return res.status(404).json({ message: "add following crash" });
       }
-      res.status(200).json({message:"follow success"});
-    
+      res.status(200).json({ message: "follow success" });
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
@@ -150,10 +190,10 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
   // hiển thị danh sách người theo dõi
   getFollowers: async (req, res) => {
     try {
-      const idolId = req.body._id; 
+      const idolId = req.body._id;
       const userWithFollowers = await user.findById(idolId).populate({
         path: "followers",
-        select: "username avatar _id", 
+        select: "username avatar _id",
       });
 
       if (!userWithFollowers) {
@@ -161,7 +201,7 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
       }
 
       res.status(200).json({
-        followers: userWithFollowers.followers, 
+        followers: userWithFollowers.followers,
       });
     } catch (err) {
       console.log(err);
@@ -171,10 +211,10 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
   // hiển thị dang sach mình đang theo dõi
   getFollowing: async (req, res) => {
     try {
-      const fanId = req.body._id; 
+      const fanId = req.body._id;
       const userWithFollowers = await user.findById(fanId).populate({
         path: "followeing",
-        select: "username avatar _id", 
+        select: "username avatar _id",
       });
 
       if (!userWithFollowers) {
@@ -182,7 +222,7 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
       }
 
       res.status(200).json({
-        followers: userWithFollowers.followers, 
+        followers: userWithFollowers.followers,
       });
     } catch (err) {
       console.log(err);

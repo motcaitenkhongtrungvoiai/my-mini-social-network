@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ower profile</title>
+    <style>
+        img{max-height: 200px;}
+    </style>
 </head>
+
 <body>
-    <div class="content">
-    <div class="avatar"></div>
-    <div class="cover photo"></div>
-    <div class="profileDesc"> <!-- thong tin ca nhan --> </div>
-    <div class="webside"></div>
-    <div class="follower"></div>
-    <div class="following"></div>
+
+    <div class="profile"> 
+        <img class="avatar"/>
+        <img class="coverphoto"/>
+        <div class="username"></div>
+        <div class="email"></div>
+        <div class="desc"></div>
+        <a class="webside"></a>
     </div>
+    <div class="updateProfile">
+        <form method="post" enctype="multipart/form-data">
+            <input type="text" name="desc">
+            <input type="file" name="avatar" id="avatar">
+            <input type="file" name="coverImage" id="coverImage">
+        </form>
+    </div>
+    
+    <div class="postFromUser"></div>
+
+    <script src="../src/profile.js"></script>
 </body>
+
 </html>

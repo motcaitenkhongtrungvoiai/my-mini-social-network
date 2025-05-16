@@ -11,7 +11,7 @@ if (!fs.existsSync(uploadDir)) {
 
 const storage = multer.diskStorage({
     destination:(req,file,cb)=>{
-        cd(null, uploadDir);
+        cb(null, uploadDir);
     },
     filename:(req,file,cb)=>{
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -36,4 +36,6 @@ const upload = multer({
     fileFilter: fileFilter,
 
 });
+
+ 
 module.exports= upload;
