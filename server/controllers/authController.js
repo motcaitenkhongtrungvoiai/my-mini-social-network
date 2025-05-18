@@ -6,7 +6,6 @@ const middlewareController = require("../middleware/middlewareController");
 
 dotenv.config();
 
-
 let refreshTokens = [];
 
 const authController = {
@@ -14,11 +13,12 @@ const authController = {
     try {
       const { username, email, password } = req.body;
 
-     
       console.log("Dữ liệu từ client:", req.body);
 
       if (!username || !email || !password) {
-        return res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin." });
+        return res
+          .status(400)
+          .json({ message: "Vui lòng nhập đầy đủ thông tin." });
       }
 
       const existingUser = await User.findOne({ username });
@@ -46,10 +46,13 @@ const authController = {
 
   loginUser: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const email = req.body.username || req.body.email;
+      const password = req.body.password;
 
       if (!email || !password) {
-        return res.status(400).json({ message: "Vui lòng nhập username và password." });
+        return res
+          .status(400)
+          .json({ message: "Vui lòng nhập username và password." });
       }
 
       const user = await User.findOne({ email });
@@ -59,15 +62,15 @@ const authController = {
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: "Sai tài khoản hoặc mật khẩu." });
+        return res
+          .status(401)
+          .json({ message: "Sai tài khoản hoặc mật khẩu." });
       }
-
 
       const accessToken = middlewareController.createToken(user);
       const refreshToken = middlewareController.createRefreshToken(user);
-      refreshTokens.push(refreshToken); 
+      refreshTokens.push(refreshToken);
 
-     
       const { password: pw, ...userData } = user._doc;
 
       res.status(200).json({

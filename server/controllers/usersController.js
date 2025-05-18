@@ -64,18 +64,25 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
 
   deleteOldImage : (imagePath) => {
   if (!imagePath) return;
-  const filename = path.basename(imagePath);
-  if (filename === "default.png") return; 
 
-  const fullPath = path.join(__dirname, "../public/images", filename);
+  const filename = path.basename(imagePath); 
+  const defaultImages = ["default.png", "default-avatar.png", "default-cover.png"];
+
+  if (defaultImages.includes(filename)) return; 
+
+  const fullPath = path.join(__dirname, "../access", filename); 
   if (fs.existsSync(fullPath)) {
     fs.unlinkSync(fullPath);
+    console.log(`Đã xóa ảnh cũ: ${filename}`);
+  } else {
+    console.warn(`Ảnh cần xóa không tồn tại: ${fullPath}`);
   }
 },
  
 updateUser: async (req, res) => {
   try {
     const id = req.params.id;
+    
     const userData = await user.findById(id);
     if (!userData) return res.status(404).json({ message: "User not found" });
 
