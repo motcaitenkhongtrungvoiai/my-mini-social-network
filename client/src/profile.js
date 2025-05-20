@@ -13,22 +13,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// ====== Các hàm riêng ======
-
-// Lấy token từ localStorage
 function getAuth() {
   const authData = localStorage.getItem("auth");
   if (!authData) return null;
   return JSON.parse(authData);
 }
 
-// Chuyển hướng nếu chưa đăng nhập
 function redirectToLogin() {
   console.warn("Chưa đăng nhập hoặc chưa có token.");
   window.location.href = "../public/login.html";
 }
 
-// Gọi API để lấy thông tin người dùng
+
 async function fetchUserProfile(auth) {
   try {
     const res = await fetch("http://localhost:3000/v1/users/profile", {
@@ -103,3 +99,4 @@ function setupFormSubmit(auth, userId) {
     }
   };
 }
+

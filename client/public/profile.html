@@ -6,32 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ower profile</title>
     <style>
-        img{max-height: 200px;}
+        img {
+            max-height: 200px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="profile"> 
-        <img class="avatar"/>
-        <img class="coverphoto"/>
+    <div class="profile">
+        <img class="avatar" />
+        <img class="coverphoto" />
         <div class="username"></div>
         <div class="email"></div>
         <div class="desc"></div>
         <a class="webside"></a>
     </div>
-
+    <a href="createPost.html">tạo bài viết</a>
     <div class="updateProfile">
         <h1>form update fiel </h1>
-        <form method="put" enctype="multipart/form-data" id="updateUser" >
+        <form method="put" enctype="multipart/form-data" id="updateUser">
             <input type="text" name="profileDesc" placeholder="desc">
-            <input type="file" name="avatar" id="avatar" placeholder="avatar" >
+            <input type="file" name="avatar" id="avatar" placeholder="avatar">
             <input type="file" name="coverphoto" id="coverphoto" placeholder="ảnh bìa">
             <input type="text" name="website" placeholder="link mang xa hoi">
-            <input type="submit" id="updateBtn"  placeholder="lưu">
+            <input type="submit" id="updateBtn" placeholder="lưu">
         </form>
     </div>
-    
+
+
+
     <div class="postFromUser"></div>
 
     <script src="../src/profile.js"></script>

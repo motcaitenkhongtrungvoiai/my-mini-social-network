@@ -29,8 +29,8 @@ app.use(express.json());
 // routers
 app.use("/v1/auth",authRouter);
 app.use("/v1/users",userRouter);
-app.use("v1/post",postRouter);
-app.use("v1/comment",commentRouter);
+app.use("/v1/post",postRouter);
+app.use("/v1/comment",commentRouter);
 app.use('/access', express.static(path.join(__dirname, 'access')));
 
 // tạo server
