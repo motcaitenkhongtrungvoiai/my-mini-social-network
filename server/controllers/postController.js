@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const post = require("../model/post");
-const { create } = require("../model/user");
+const user = require("../model/user");
+const comment = require("../model/comment");
 
 const postController = {
   createPost: async (req, res) => {
@@ -72,23 +73,55 @@ const postController = {
         .populate("user", "username avatar")
         .lean();
 
-      const postsWithCounts = posts.map((p) => ({
-        ...p,
-        likeCount: p.likes?.length || 0,
-        commentCount: p.comments?.length || 0,
-      }));
+      const result = posts.map((post) => {
+        const host = process.env.HOST_URL;
 
-      res.status(200).json(postsWithCounts);
+        const avatar =
+          post.user.avatar && post.user.avatar.startsWith("/access/")
+            ? host + post.user.avatar
+            : host + "/access/default.png";
+
+        const image = post.image && post.image.startsWith("/access/") ? host + post.image : null;
+        return {
+          _id: post._id,
+          user: {
+            _id:post.user._id,
+            username: post.user.username,
+            avatar: avatar,
+          },
+          content: post.content,
+          type: post.typePost,
+          image: image,
+          comment: post.comment,
+          likeCount: post.likes?.length || 0,
+          commentCount: post.comments?.length || 0,
+        };
+      });
+
+      res.status(200).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
     }
   },
+
   profilePosts: async (req, res) => {
     try {
       const userId = req.params.id;
       const posts = await post.find({ user: userId });
-      res.status(200).json(posts);
+      const result = posts.map((post) => {
+        return {
+          _id: post._id,
+          user: post.user,
+          content: post.content,
+          type: post.typePost,
+          image: post.image,
+          comment: post.comment,
+          likeCount: post.likes?.length || 0,
+          commentCount: post.comments?.length || 0,
+        };
+      });
+      res.status(200).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.message });
@@ -97,7 +130,7 @@ const postController = {
   likePost: async (req, res) => {
     try {
       const postId = req.params.id;
-      const userId = req.body._id;
+      const userId = req.user.userId;
       if (!postId || !userId) {
         throw new Error("Post ID and User ID are missing");
       }

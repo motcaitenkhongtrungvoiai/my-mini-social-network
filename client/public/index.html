@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sideprom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../asscet/css/index.css">
 </head>
+
 <body>
     <!-- hien thi toan bo cac bai dang -->
+    <div id="menu-container"></div>
+    <script>
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+                // load script 
+                const script = document.createElement("script");
+                script.src = "../src/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+
+    <div id="post-container">
+        <div class="loading"></div>
+    </div>
+
+    <script src="../src/Post_container.js"></script>
 </body>
+
 </html>

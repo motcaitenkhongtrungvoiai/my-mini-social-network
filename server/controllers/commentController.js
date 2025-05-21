@@ -1,19 +1,23 @@
 const { appendFileSync } = require("fs");
 const comment = require("../model/comment");
+const post = require("../model/post");
 const mongoose = require("mongoose");
 
 const commentController = {
   createComment: async (req, res) => {
-    const { postId, userId, content, parentId } = req.body;
-
     try {
+      const { postId, userId, content, parentId } = req.body;
       const comment = new comment({
         postId,
         userId,
         content,
         parentId: parentId || null,
       });
-      await comment.save();
+      const savedComment = await comment.save();
+      // lưu xong thì nhét id lại cho post
+      await post.findByIdAndUpdate(postId, {
+        $push: { comments: savedComment._id },
+      });
     } catch (err) {
       res.status(500).json({ message: err });
     }

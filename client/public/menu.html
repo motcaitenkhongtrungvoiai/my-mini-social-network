@@ -1,0 +1,80 @@
+<nav class="navbar">
+    <div class="logo-container">
+        <div class="logo">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <span class="brand-name">DEV-socical</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Tìm kiếm...">
+    </div>
+
+    <ul class="nav-links">
+        <li class="nav-item">
+            <a href="index.html" class="nav-link active">
+                <i class="fas fa-home"></i>
+                <span>Trang chủ</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fas fa-user"></i>
+                <span>Trang cá nhân</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <button class="nav-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span>Thông báo</span>
+                <div class="notification-badge">3</div>
+            </button>
+        </li>
+        <li class="nav-item dropdown">
+            <button class="nav-btn">
+                <i class="fas fa-cog"></i>
+                <span>Tùy chỉnh</span>
+                <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Tùy chỉnh cá nhân</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<div class="overlay" id="overlay"></div>
+<div class="notification-panel" id="notificationPanel">
+    <div class="panel-header">
+        <div class="panel-title">Thông báo</div>
+        <div class="close-btn" id="closeNotification">&times;</div>
+    </div>
+    <div class="panel-body">
+        <div class="notification-item notification-unread">
+            <div class="notification-text">Bạn có một tin nhắn mới từ Nguyễn Văn A</div>
+            <div class="notification-time">10 phút trước</div>
+        </div>
+        <div class="notification-item notification-unread">
+            <div class="notification-text">Đơn hàng #1234 đã được giao thành công</div>
+            <div class="notification-time">1 giờ trước</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-text">Nhắc nhở: Cuộc họp lúc 15:00 chiều nay</div>
+            <div class="notification-time">Hôm qua</div>
+        </div>
+        <div class="notification-item">
+            <div class="notification-text">Hệ thống đã được cập nhật phiên bản mới</div>
+            <div class="notification-time">2 ngày trước</div>
+        </div>
+    </div>
+
+
+    
+</div>
