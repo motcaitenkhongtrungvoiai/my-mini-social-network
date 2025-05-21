@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../asscet/css/index.css">
 </head>
+
 <body>
-     <div class="updateProfile">
+    <div id="menu-container"></div>
+    <script>
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+                // load script 
+                const script = document.createElement("script");
+                script.src = "../src/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+
+    <div class="updateProfile">
         <h1>form update fiel </h1>
         <form method="put" enctype="multipart/form-data" id="updateUser">
             <input type="text" name="profileDesc" placeholder="desc">
@@ -18,4 +35,5 @@
     </div>
     <script src="../src/editProfile.js"></script>
 </body>
+
 </html>

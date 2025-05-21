@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const postContainer = document.getElementById("post-container");
+  const postContainer = document.querySelector(".post-container");
   
   try {
     const response = await fetch("http://localhost:3000/v1/post/feed", {

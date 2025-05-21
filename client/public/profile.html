@@ -10,7 +10,22 @@
 </head>
 
 <body>
+    
+    <!--găn menu-->
+     <div id="menu-container"></div>
+    <script>
+        fetch("menu.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("menu-container").innerHTML = data;
+                // load script 
+                const script = document.createElement("script");
+                script.src = "../src/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
 
+<!--show thông tin-->
     <div class="profile">
         <div class="header-profile"> <img class="avatar" /><img class="coverphoto" /></div>
         <div class="profile-desc">
@@ -25,7 +40,9 @@
         </div>
     </div>
     <div class="create-post"><a href="createPost.html">tạo bài viết</a></div>
-    <div class="postFromUser"></div>
+    <div class="postFromUser">
+
+    </div>
 
     <script src="../src/profile.js"></script>
 </body>
