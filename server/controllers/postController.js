@@ -92,6 +92,7 @@ const postController = {
           content: post.content,
           type: post.typePost,
           image: image,
+          likedPostIds:post.likes,
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
@@ -130,7 +131,7 @@ const postController = {
  likePost: async (req, res) => {
   try {
     const postId = req.params.idPost;
-    const userId = req.user.userId;
+    const userId = req.body.userId;
 
     if (!postId || !userId) {
       return res.status(400).json({ message: "Post ID and User ID are required" });
