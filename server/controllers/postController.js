@@ -37,7 +37,7 @@ const postController = {
 
   updatePost: async (req, res) => {
     try {
-      const postId = req.params.id;
+      const postId = req.params.idPost;
       const updatedPost = await post.findByIdAndUpdate(
         postId,
         { content: req.body.content },
@@ -55,7 +55,7 @@ const postController = {
 
   deletePost: async (req, res) => {
     try {
-      const postId = req.params.id;
+      const postId = req.params.idPost;
       const deletedPost = await post.findByIdAndDelete(postId);
       if (!deletedPost) {
         throw new Error("Post not found");
@@ -127,26 +127,43 @@ const postController = {
       res.status(500).json({ message: err.message });
     }
   },
-  likePost: async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const userId = req.user.userId;
-      if (!postId || !userId) {
-        throw new Error("Post ID and User ID are missing");
-      }
-      const postUpdateLike = await post.findByIdAndUpdate(
+ likePost: async (req, res) => {
+  try {
+    const postId = req.params.idPost;
+    const userId = req.user.userId;
+
+    if (!postId || !userId) {
+      return res.status(400).json({ message: "Post ID and User ID are required" });
+    }
+
+    const postData = await post.findById(postId);
+    if (!postData) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    let updatedPost;
+
+    if (postData.likes.includes(userId)) {
+      updatedPost = await post.findByIdAndUpdate(
         postId,
-        { $addToSet: { likes: userId } },
+        { $pull: { likes: userId } },  // Xoá like
         { new: true }
       );
-      if (!postUpdateLike) {
-        res.status(200).json(postUpdateLike);
-      }
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+    } else {
+      updatedPost = await post.findByIdAndUpdate(
+        postId,
+        { $addToSet: { likes: userId } }, // Thêm like
+        { new: true }
+      );
     }
-  },
+
+    return res.status(200).json(updatedPost);
+  } catch (err) {
+    console.error("Lỗi like/unlike:", err);
+    return res.status(500).json({ message: err.message });
+  }
+}
+
 };
 
 module.exports = postController;

@@ -1,3 +1,5 @@
+import { commentUi } from "../access/js/commentUIcontroller.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const postContainer = document.querySelector(".post-containerAll");
 
@@ -30,7 +32,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       }</a>
             </div>
             <div class="more-options">
-              <button class="action-btn report-btn" data-userid="${post.user._id}" data-postid="${post._id}">
+              <button class="action-btn report-btn" data-userid="${
+                post.user._id
+              }" data-postid="${post._id}">
                <i class="fas fa-ellipsis-h"></i>
               </button>
             </div>
@@ -62,14 +66,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       postContainer.appendChild(postElement);
     });
 
-    attachEventHandlers(); // Thêm event sau khi tạo xong DOM
+    attachEventHandlers();
   } catch (err) {
     console.error("Fetch error:", err);
     postContainer.innerHTML = "<p>Không thể tải bài viết.</p>";
   }
 });
-
-
 
 function attachEventHandlers() {
   document.querySelectorAll(".like-btn").forEach((btn) => {
@@ -88,7 +90,7 @@ function attachEventHandlers() {
 
   document.querySelectorAll(".report-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      e.stopPropagation(); 
+      e.stopPropagation();
       const userId = btn.dataset.userid;
       const postId = btn.dataset.postid;
       callReportMenu(userId, postId, btn);
@@ -98,9 +100,8 @@ function attachEventHandlers() {
 
 function checkPostOwner(postUserID) {
   const auth = JSON.parse(localStorage.getItem("auth"));
-  console.log(auth.userId+" và "+postUserID);
-  console.error(auth.userId === postUserID) ;
-  
+  console.log(auth.userId + " và " + postUserID);
+  console.error(auth.userId === postUserID);
 }
 
 function callReportMenu(postUserID, postId) {
@@ -119,10 +120,10 @@ function callReportMenu(postUserID, postId) {
       ${
         isOwner
           ? `
-        <div class="option-item edit-option" onclick="editPost('${postId}')">
+        <div class="option-item edit-option" onclick="editPost('${postId}','${postUserID}')">
           <i class="fas fa-edit"></i><span>Chỉnh sửa bài viết</span>
         </div>
-        <div class="option-item delete-option" onclick="deletePost('${postId}')">
+        <div class="option-item delete-option" onclick="deletePost('${postId}','${postUserID}')">
           <i class="fas fa-trash-alt"></i><span>Xóa bài viết</span>
         </div>
       `
@@ -153,18 +154,40 @@ function likePost(postId) {
 
 function showComments(postId) {
   console.log(`Hiển thị bình luận cho bài viết ${postId}`);
+  //call func ở UIcommnet.js
+  commentUi.testfunc(postId);
 }
 
 function editPost(postId) {
   console.log(`Chỉnh sửa bài viết ${postId}`);
 }
 
-function deletePost(postId) {
+function deletePost(postId, postUserID) {
   if (confirm("Bạn có chắc chắn muốn xóa bài viết này?")) {
-    console.log(`Đã xóa bài viết ${postId}`);
+    delPost(postId, postUserID);
   }
 }
 
 function reportPost(postId) {
   console.log(`Báo cáo bài viết ${postId}`);
+}
+
+//hàm sử lý data cho các nút bấm 
+async function delPost(postId, postUserID) {
+  try {
+    const auth = JSON.parse(localStorage.getItem("auth"));
+    const delPost = await fetch(`http://localhost:3000/v1/post/${postId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${auth.accessToken}`,
+      },
+      body: JSON.stringify({
+        userId: postUserID,
+      }),
+    });
+    if (delPost) document.getElementById(postId).style.display = "none";
+  } catch (err) {
+    console.error("xóa bị lỗi: " + err);
+  }
 }
