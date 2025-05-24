@@ -42,7 +42,7 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
 
   getUser: async (req, res) => {
     try {
-      let id = req.body._id || req.body.userId;
+      let id = req.params.userId;
       let userData = await user.findById(id);
       if (!userData) {
         return res.status(404).json({ message: "User not found" });

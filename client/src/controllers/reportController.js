@@ -3,6 +3,7 @@ import { updatedPostUi } from "../modules/updatePostUi.js";
 function checkPostOwner(postUserID) {
   const auth = JSON.parse(localStorage.getItem("auth"));
   return auth?.userId === postUserID;
+  
 }
 
 export function attachReportEvents() {

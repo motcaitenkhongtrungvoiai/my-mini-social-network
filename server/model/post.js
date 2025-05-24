@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
   {
+    
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -12,7 +13,6 @@ const PostSchema = new mongoose.Schema(
       maxlength: 5000,
     },
     image: {
-      // có thể đổi sang array nếu muốn thêm multi Image
       type: String,
     },
     link: [

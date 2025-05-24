@@ -24,14 +24,14 @@ const commentController = {
   },
 
   getComment: async (req, res) => {
-    const { postId } = req.params;
+    const postId  = req.params.postId;
     try {
       const comments = await comment
         .find({ postId })
         .sort({ createdAt: 1 })
         .populate("userId", "username avatar");
       const map = {};
-      comment.forEach((c) => (map[c._id] = { ...c.toObject(), replies: [] }));
+      comments.forEach((c) => (map[c._id] = { ...c.toObject(), replies: [] }));
       const roots = [];
       comment.forEach((c) => {
         if (c.parentId) {

@@ -90,6 +90,7 @@ const postController = {
             avatar: avatar,
           },
           content: post.content,
+          link:post.link,
           type: post.typePost,
           image: image,
           likedPostIds:post.likes,

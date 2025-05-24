@@ -3,10 +3,8 @@ const userController = require("../controllers/usersController");
 const middlewareController = require("../middleware/middlewareController");
 const upload = require("../middleware/uploadImage");
 
-router.post(
-  "/profile",
-  middlewareController.verifyTokenAndAuthorization,
-  userController.getUser
+router.get(
+  "/profile/:userId", userController.getUser
 );
 router.delete("/:id", userController.deleteUser);
 router.post("/alluser", userController.getAllUsers);

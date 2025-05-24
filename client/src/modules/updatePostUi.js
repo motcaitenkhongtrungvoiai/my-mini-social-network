@@ -8,11 +8,8 @@ export const updatedPostUi = {
     overlay.id = "popupOverlay";
     overlay.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;";
     overlay.onclick = updatedPostUi.closeEditPopup;
-
     const popup = document.createElement("div");
     popup.id = "editPopup";
-    popup.style.cssText = "display:none;position:fixed;top:20%;left:50%;transform:translateX(-50%);background:white;padding:20px;border:1px solid #ccc;border-radius:8px;z-index:1000;";
-
     popup.innerHTML = `
       <h3>Chỉnh sửa bài viết</h3>
       <textarea id="editContent" rows="5" style="width: 100%"></textarea><br><br>

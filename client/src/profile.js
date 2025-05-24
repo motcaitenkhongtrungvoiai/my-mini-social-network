@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryUserId = urlParams.get("data");
   const auth = getAuth();
-  if (!auth) return redirectToLogin();
+
+  if (!auth && !queryUserId) return redirectToLogin();
 
   try {
-    const user = await fetchUserProfile(auth);
+    const user = await fetchUserProfile(queryUserId || auth.userId);
     if (!user) return;
 
     renderUserInfo(user);
@@ -15,25 +18,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 function getAuth() {
   const authData = localStorage.getItem("auth");
   if (!authData) return null;
-  return JSON.parse(authData);
+  try {
+    return JSON.parse(authData);
+  } catch (err) {
+    console.warn("Auth bị lỗi định dạng JSON:", err.message);
+    return null;
+  }
 }
 
+// Redirect về trang login
 function redirectToLogin() {
-  console.warn("Chưa đăng nhập hoặc chưa có token.");
+  console.warn("Chưa đăng nhập và không có userId để xem profile.");
   window.location.href = "../public/login.html";
 }
 
-
-async function fetchUserProfile(auth) {
+// Gọi API để lấy thông tin người dùng
+async function fetchUserProfile(userId) {
   try {
-    const res = await fetch("http://localhost:3000/v1/users/profile", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        token: `Bearer ${auth.accessToken}`,
-      },
-      body: JSON.stringify({ userId: auth.userId }),
-    });
+    if (!userId) return null;
+
+    const res = await fetch(
+      `http://localhost:3000/v1/users/profile/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!res.ok) throw new Error(`Server trả về lỗi: ${res.status}`);
     return await res.json();
@@ -43,7 +55,7 @@ async function fetchUserProfile(auth) {
   }
 }
 
-// Hiển thị thông tin người dùng lên trang
+// Hiển thị thông tin người dùng
 function renderUserInfo(user) {
   const avatarEl = document.querySelector(".avatar");
   const coverEl = document.querySelector(".coverphoto");
@@ -51,19 +63,18 @@ function renderUserInfo(user) {
   const email = document.querySelector(".email");
   const desc = document.querySelector(".desc");
   const webside = document.querySelector(".webside");
+  const create = document.querySelector(".create-post");
 
-  if (user.avatar) avatarEl.src = `${user.avatar}`;
-  if (user.coverphoto) coverEl.src = `${user.coverphoto}`;
-  username.textContent = user.username || "";
-  email.textContent = user.email || "";
-  desc.textContent = user.profileDesc || "";
+  if (user.avatar) avatarEl.src = user.avatar;
+  if (user.coverphoto) coverEl.src = user.coverphoto;
+  if (username) username.textContent = user.username || "";
+  if (email) email.textContent = user.email || "";
+  if (desc) desc.textContent = user.profileDesc || "";
 
-  if (user.webside) {
-    webside.href = user.webside;
-    webside.textContent = user.webside;
+  if (user.website) {
+    webside.href = user.website;
+    webside.textContent =  user.website;
   }
+  const auth=getAuth();
+  if (auth.userId!=user._id){create.style.display="none";}
 }
-
-// Gắn sự kiện xử lý cập nhật user
-
-

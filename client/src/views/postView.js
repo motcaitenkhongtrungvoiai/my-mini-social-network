@@ -9,12 +9,12 @@ function createPostElement(post) {
   const auth = JSON.parse(localStorage.getItem("auth"));
   const div = document.createElement("div");
   div.className = "post";
-  div.innerHTML = `
+  div.innerHTML = `<img href="${post.link}">
     <div class="post-container" id="${post._id}">
       <div class="post-header">
         <img src="${post.user.avatar}" class="avatar">
         <div class="user-info">
-          <a href="/profile/${post.user._id}" class="username">${post.user.username}</a>
+        <a href="../public/profile.html?data=${post.user._id}" class="username">${post.user.username}</a>
         </div>
         <div class="more-options">
           <button class="action-btn report-btn" data-userid="${post.user._id}" data-postid="${post._id}" data-postcontent="${post.content}">
@@ -22,7 +22,10 @@ function createPostElement(post) {
           </button>
         </div>
       </div>
-      <div class="post-content">${post.content}</div>
+      <div class="post-content">${post.content}<br>${post.link? `<a href="${post.link}">${post.link}</a> `:""}
+      </div>
+                
+            
       ${post.image ? `<img src="${post.image}" class="post-image">` : ""}
       <div class="post-stats">
         <span><i class="fas fa-thumbs-up"></i> ${post.likeCount}</span>
