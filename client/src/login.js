@@ -23,7 +23,8 @@ form.addEventListener("submit", async (e) => {
     console.log("Server response:", result);
     saveUsertoLocal(result);
     // di chuyên đến trang cá nhân
-    window.location.replace("../public/profile.html")
+  if(res.status===200) {window.location.replace("../public/profile.html")}
+   
   } catch (err) {
     console.error("Fetch error:", err);
   }

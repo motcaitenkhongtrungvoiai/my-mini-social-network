@@ -11,15 +11,11 @@ router.post("/alluser", userController.getAllUsers);
 
 //bug số 3: thiếu dấu "/" trước id :v => bảo sao router không chạy :v
 router.post(
-  "/follow",
+  "/follow/:idolId",
   middlewareController.verifyTokenAndAuthorization,
-  userController.followUser
+  userController.toggleFollowUser
 );
-router.post(
-  "/unfollow",
-  middlewareController.verifyTokenAndAuthorization,
-  userController.unfollowUser
-);
+
 router.post(
   "/followers",
   middlewareController.verifyTokenAndAuthorization,
