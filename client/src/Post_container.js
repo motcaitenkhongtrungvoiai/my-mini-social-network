@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", async () => {
               ? `<img src="${post.image}" alt="Post image" class="post-image">`
               : ""
           }
-          <div class="post-stats" data-likeCount=" ${post.likeCount}" data-commentCount="${post.commentCount}">
+          <div class="post-stats"   data-commentCount="${post.commentCount}">
             <span><i class="fas fa-thumbs-up"></i> ${post.likeCount}</span>
             <span style="margin-left: 15px;"><i class="fas fa-comment"></i> ${post.commentCount} bình luận</span>
           </div>
           <div class="post-actions">
-            <button class="action-btn like-btn" data-postid="${postId}" data-isliked="${post.likedPostIds.includes(auth.userId)}">
+            <button class="action-btn like-btn" data-postid="${postId}" data-isliked="${post.likedPostIds.includes(auth.userId)}" data-likecount="${post.likeCount}">
               <i class="far fa-thumbs-up"></i><span>Thích</span>
             </button>
             <button class="action-btn comment-btn" data-postid="${postId}">
@@ -71,8 +71,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function attachEventHandlers() {
   document.querySelectorAll(".like-btn").forEach((btn) => {
-    likePostUi.updateLikeUi(btn,btn.dataset.isliked=="true")
-    btn.addEventListener("click", () => likePost(btn.dataset.postid));
+    const isLiked = btn.dataset.isliked === "true";
+    
+    // Cập nhật giao diện khi tải trang
+    likePostUi.updateLikeUi(btn, isLiked);
+
+    btn.addEventListener("click", () => {
+      const postId = btn.dataset.postid;
+      const wasLiked = btn.dataset.isliked === "true";
+      const newLiked = !wasLiked;
+
+      likePostUi.updateLikeUi(btn, newLiked);
+      const currentLikeCount = btn.closest(".post-container").querySelector(".post-stats span")?.textContent?.match(/\d+/)?.[0];
+      likePostUi.updateLikeCount(currentLikeCount, btn, newLiked);
+
+      likePost(postId, newLiked);
+    });
   });
 
   document.querySelectorAll(".comment-btn").forEach((btn) => {
@@ -156,7 +170,7 @@ function callReportMenu(postUserID, postId, oldContent ,triggerBtn) {
 function likePost(postId) {
   console.log(`Đã like bài viết ${postId}`);
   const button = document.querySelector(`.like-btn[data-postid="${postId}"]`);
-  if (button) likePostUi.handleLike(postId, button);
+  if (button) likePostUi.handleLike(postId,button);
 }
 
 function showComments(postId) {

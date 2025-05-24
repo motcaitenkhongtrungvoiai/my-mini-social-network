@@ -99,6 +99,7 @@ body {
 .more-options {
   position: relative;
 }
+
 /* Giao diện popup báo cáo */
 .popUpReport {
   position: fixed;
