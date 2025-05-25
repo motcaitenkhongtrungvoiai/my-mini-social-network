@@ -734,49 +734,67 @@ body {
     background: #0d5bba;
 }
 /*creat post form*/
- .formCreatePost {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .formCreatePost h1 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .formCreatePost textarea {
+.formCreatePost {
+  max-width: 600px;
+  margin: auto;
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.formCreatePost h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+  align-items: center;
+}
+
+.formCreatePost textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.formCreatePost input[type="file"] {
+  margin-top: 10px;
+}
+
+.formCreatePost button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  margin-top: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.formCreatePost button:hover {
+  background-color: #165ec9;
+}
+
+#previewImage {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#previewImage img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+.formCreatePost .head_form{
+   display: flex; 
+    justify-content: space-between; 
+    align-items: center;
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    resize: vertical;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-  }
-  
-  .formCreatePost input[type="file"] {
-    margin-bottom: 15px;
-  }
-  
-  .formCreatePost button {
-    background-color: #1877f2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s;
-  }
-  
-  .formCreatePost button:hover {
-    background-color: #166fe5;
-  }
+    margin-bottom: 2em;
+}

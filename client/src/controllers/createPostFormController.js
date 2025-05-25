@@ -1,4 +1,3 @@
-
 export function initcreatePostForm() {
   const auth = JSON.parse(localStorage.getItem("auth"));
   if (!auth) return window.location.replace("../public/login.html");
@@ -7,9 +6,9 @@ export function initcreatePostForm() {
   const token = auth.accessToken;
 
   const form = document.getElementById("postForm");
+  const btn = document.querySelector("button");
   if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
+  btn.addEventListener("click", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
 

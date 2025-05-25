@@ -7,7 +7,7 @@ import { attachReportEvents } from "./reportController.js";
 export async function initProfile() {
   const queryUserId = getUrldata();
   const auth = getAuth();
-
+ 
   if (!auth && !queryUserId) return redirectToLogin();
 
   try {
@@ -15,16 +15,15 @@ export async function initProfile() {
     if (!user) return;
 
     renderUserInfo(user);
-    loadProfilePost();
+    loadProfilePost(queryUserId || auth.userId);
   } catch (err) {
     console.error("Lỗi khi tải trang:", err.message);
   }
 }
 
 // load profile post
-async function loadProfilePost() {
+async function loadProfilePost(userId) {
   const container = document.querySelector(".postFromUser");
-  const userId = getUrldata();
   try {
     const res = await fetch(`http://localhost:3000/v1/post/profile/${userId}`);
     if (!res.ok) throw new Error("Không thể tải bài viết");
