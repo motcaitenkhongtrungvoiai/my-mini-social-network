@@ -9,7 +9,7 @@ router.post("/:id", middlewareController.verifyTokenAndAuthorization, upload.fie
 router.put("/:idPost", middlewareController.verifyTokenAndAuthorization, postController.updatePost); // update
 router.delete("/:idPost", middlewareController.verifyTokenAndAuthorization, postController.deletePost); // Delete
 router.get("/feed", postController.getPosts); //Get all
-router.get("/profile/:id", middlewareController.verifyTokenAndAuthorization, postController.profilePosts);
+router.get("/profile/:userId", postController.profilePosts);
 router.put("/like/:idPost", middlewareController.verifyTokenAndAuthorization, postController.likePost);
 
 module.exports = router;

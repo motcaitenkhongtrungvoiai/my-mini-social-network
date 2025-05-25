@@ -733,3 +733,50 @@ body {
 .create-post a:hover {
     background: #0d5bba;
 }
+/*creat post form*/
+ .formCreatePost {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formCreatePost h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .formCreatePost textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  .formCreatePost input[type="file"] {
+    margin-bottom: 15px;
+  }
+  
+  .formCreatePost button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .formCreatePost button:hover {
+    background-color: #166fe5;
+  }

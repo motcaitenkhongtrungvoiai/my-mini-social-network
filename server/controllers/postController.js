@@ -108,21 +108,40 @@ const postController = {
   },
 
   profilePosts: async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const posts = await post.find({ user: userId });
+   try {
+    const userId = req.params.userId;
+      const posts = await post
+        .find({user:userId})
+        .populate("user", "username avatar")
+        .lean();
+
       const result = posts.map((post) => {
+        const host = process.env.HOST_URL;
+
+        const avatar =
+          post.user.avatar && post.user.avatar.startsWith("/access/")
+            ? host + post.user.avatar
+            : host + "/access/default.png";
+
+        const image = post.image && post.image.startsWith("/access/") ? host + post.image : null;
         return {
           _id: post._id,
-          user: post.user,
+          user: {
+            _id:post.user._id,
+            username: post.user.username,
+            avatar: avatar,
+          },
           content: post.content,
+          link:post.link,
           type: post.typePost,
-          image: post.image,
+          image: image,
+          likedPostIds:post.likes,
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
         };
       });
+
       res.status(200).json(result);
     } catch (err) {
       console.log(err);

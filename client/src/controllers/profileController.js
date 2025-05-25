@@ -1,4 +1,8 @@
 import { initFollow } from "./followUser.js";
+import { renderPostList } from "../views/postView.js";
+import { attachLikeEvents } from "./likeController.js";
+import { attachCommentEvents } from "./commentController.js";
+import { attachReportEvents } from "./reportController.js";
 
 export async function initProfile() {
   const queryUserId = getUrldata();
@@ -11,13 +15,36 @@ export async function initProfile() {
     if (!user) return;
 
     renderUserInfo(user);
+    loadProfilePost();
   } catch (err) {
     console.error("Lỗi khi tải trang:", err.message);
   }
 }
-function getUrldata(){
-     const urlParams = new URLSearchParams(window.location.search);
-     return urlParams.get("data");
+
+// load profile post
+async function loadProfilePost() {
+  const container = document.querySelector(".postFromUser");
+  const userId = getUrldata();
+  try {
+    const res = await fetch(`http://localhost:3000/v1/post/profile/${userId}`);
+    if (!res.ok) throw new Error("Không thể tải bài viết");
+    const posts = await res.json();
+
+    if (posts.length === 0) container.innerHTML = "Không có bài viết nào.";
+    else renderPostList(posts, container);
+
+    attachLikeEvents();
+    attachCommentEvents();
+    attachReportEvents();
+  } catch (err) {
+    container.innerHTML = "<p>Lỗi tải bài viết.</p>";
+    console.error(err);
+  }
+}
+
+function getUrldata() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("data");
 }
 function getAuth() {
   const authData = localStorage.getItem("auth");
@@ -78,15 +105,15 @@ function renderUserInfo(user) {
   if (desc) desc.textContent = user.profileDesc || "";
   follower.textContent = user.followerCount ? user.followerCount : "0";
   followeing.textContent = user.followingCount ? user.followingCount : "0";
-  
+
   const auth = getAuth();
-  
+
   if (user.followers.includes(auth.userId)) {
     followbtn.textContent = "unfollow?";
     followbtn.style.color = "";
   }
-  followbtn.addEventListener("click",()=>{
-    initFollow(getUrldata())
+  followbtn.addEventListener("click", () => {
+    initFollow(getUrldata());
   });
   if (user.website) {
     webside.href = user.website;
