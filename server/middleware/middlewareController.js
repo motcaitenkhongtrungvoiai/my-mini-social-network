@@ -37,7 +37,7 @@ const middlewareController = {
         return res.status(403).json({ message: "Token không hợp lệ hoặc đã hết hạn!" });
       }
 
-      req.user = decodedUser; // Lưu thông tin user vào request để dùng ở các bước sau
+      req.user = decodedUser; 
       next();
     });
   },

@@ -1,4 +1,5 @@
-
+import { getData } from "./modules/getData.js";
+import { }
 const notificationBtn = document.getElementById('notificationBtn');
 const notificationPanel = document.getElementById('notificationPanel');
 const closeNotification = document.getElementById('closeNotification');
@@ -19,20 +20,7 @@ overlay.addEventListener('click', () => {
     notificationPanel.classList.remove('active');
     overlay.classList.remove('active');
 });
-function getUrldata() {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get("data");
-}
-function getAuth() {
-  const authData = localStorage.getItem("auth");
-  if (!authData) window.location.replace("login.html");
-  try {
-    return JSON.parse(authData);
-  } catch (err) {
-    console.warn("Auth bị lỗi định dạng JSON:", err.message);
-    return null;
-  }
-}
+
 const profilebtn=document.getElementById("profilemove")
-const auth=getAuth();
+const auth=getData.getAuth();
 profilebtn.href=`../public/profile.html?data=${auth.userId}`;

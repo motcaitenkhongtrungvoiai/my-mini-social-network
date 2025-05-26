@@ -17,9 +17,9 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById("menu-container").innerHTML = data;
-                // load script 
                 const script = document.createElement("script");
                 script.src = "../src/menu.js";
+                script.type="module";
                 document.body.appendChild(script);
             });
     </script>
