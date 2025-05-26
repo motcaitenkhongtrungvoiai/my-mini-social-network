@@ -32,7 +32,7 @@ function createPostElement(post) {
         <span style="margin-left:15px;"><i class="fas fa-comment"></i> ${post.commentCount} bình luận</span>
       </div>
       <div class="post-actions">
-        <button class="action-btn like-btn" data-postid="${post._id}" data-isliked="${post.likedPostIds.includes(auth.userId)}">
+        <button class="action-btn like-btn" data-postid="${post._id}" data-isliked="${post.likedPostIds.includes(auth.userId)}" data-postower="${post.user._id}">
           <i class="far fa-thumbs-up"></i><span>Thích</span>
         </button>
         <button class="action-btn comment-btn" data-postid="${post._id}">

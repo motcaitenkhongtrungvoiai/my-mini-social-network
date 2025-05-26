@@ -1,25 +1,27 @@
 let socket = null;
 let isRegistered = false;
 let onNotificationCallback = null;
-import { getData } from "./getData.js";
+
 const SERVER_URL = "ws://localhost:3000";
 
+// Gán callback để xử lý khi có thông báo mới
 export function onNotification(callback) {
   onNotificationCallback = callback;
 }
 
-function initSocket(token) {
+// Khởi tạo kết nối WebSocket với token xác thực
+export function initSocket(token) {
   if (socket && socket.readyState === WebSocket.OPEN && isRegistered) {
     return;
   }
-  auth = getData.getAuth();
+
   socket = new WebSocket(SERVER_URL);
 
   socket.onopen = () => {
     socket.send(
       JSON.stringify({
         type: "register",
-        token: `Bearer ${auth.accessToken}`,
+        token: `Bearer ${token}`,
       })
     );
     isRegistered = true;
@@ -32,7 +34,7 @@ function initSocket(token) {
         onNotificationCallback(data.notification);
       }
     } catch (err) {
-      console.error(" WS parse error:", err);
+      console.error("WS parse error:", err);
     }
   };
 
@@ -40,6 +42,7 @@ function initSocket(token) {
   socket.onclose = () => (isRegistered = false);
 }
 
+// Gửi thông báo qua WebSocket
 export function sendNotification({
   token,
   recipientId,
@@ -48,7 +51,8 @@ export function sendNotification({
   postId = null,
   commentId = null,
 }) {
-  initSocket(token);
+  initSocket(token); // đảm bảo socket mở trước
+
   const payload = {
     type: "notify",
     recipient: recipientId,
@@ -58,6 +62,7 @@ export function sendNotification({
     comment: commentId,
   };
 
+  // Gửi nếu socket đã sẵn sàng, nếu chưa thì đợi và gửi sau
   if (socket && socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(payload));
   } else {
