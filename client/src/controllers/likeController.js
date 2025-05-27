@@ -10,24 +10,12 @@ export function attachLikeEvents() {
       const postId = btn.dataset.postid;
       const wasLiked = btn.dataset.isliked === "true";
       const newLiked = !wasLiked;
-      const likeCount = btn
-        .closest(".post-container")
-        .querySelector(".post-stats span")
-        ?.textContent?.match(/\d+/)?.[0];
-
-      const postOwner = btn.dataset.postower;
+      const likeCount = btn.closest(".post-container").querySelector(".post-stats span")?.textContent?.match(/\d+/)?.[0];
+       const postOwner = btn.dataset.postower;
       likePostUi.updateLikeUi(btn, newLiked);
       likePostUi.updateLikeCount(likeCount, btn, newLiked);
-      
       const auth = getData.getAuth();
-      console.log({
-        token: auth.accessToken,
-        recipientId: postOwner,
-        senderId: auth.userId,
-        notifType: "like",
-        postId: postId,
-      });
-
+            
       try {
         likePostUi.handleLike(postId, btn);
 

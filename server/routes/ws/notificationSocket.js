@@ -16,7 +16,7 @@ const notificationSocket = (wss) => {
 
           try {
             const user = await verifyTokenSocket(token);
-            userId = user.id;
+            userId = user._id;
             userSockets.set(userId, ws);
             console.log(` [WS] User ${userId} kết nối với sever`);
           } catch (err) {

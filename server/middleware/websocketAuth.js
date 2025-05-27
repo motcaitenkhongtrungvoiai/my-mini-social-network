@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const SECRET = process.env.KEY_token || "default_secret";
+const SECRET = process.env.KEY_token;
 
 const verifyTokenSocket = (token) => {
   return new Promise((resolve, reject) => {
