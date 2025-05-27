@@ -9,13 +9,13 @@ const CommentSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
     },
     content: { type: String, required: true },
     parentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "comment",
       default: null,
     },
     beReport: { type: Boolean, default: false },

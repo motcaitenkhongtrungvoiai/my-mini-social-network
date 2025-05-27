@@ -3,25 +3,207 @@
 <head>
   <meta charset="UTF-8" />
   <title>Bình luận bài viết</title>
-  <style>
-    .comment {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-    }
-    .replies {
-      margin-left: 30px;
-    }
-    .username {
-      font-weight: bold;
-    }
-    .actions {
-      margin-top: 5px;
-    }
-  </style>
+  <style>/* Main container styling */
+.all_comment_container {
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #333;
+}
+
+.all_comment_container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+/* Comment form styling */
+#main-comment-content {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 12px;
+    transition: border 0.2s ease;
+}
+
+#main-comment-content:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
+}
+
+#create_comment {
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#create_comment:hover {
+    background-color: #3b9ae1;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #eaecef;
+    margin: 24px 0;
+}
+
+/* Comments container */
+#comments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Comment styling */
+.comment {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaecef;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #e9ecef;
+}
+
+.username {
+    font-weight: 600;
+    color: #212529;
+    font-size: 14px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-reply, .btn-edit, .btn-delete {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-reply {
+    background-color: #f1f3f5;
+    color: #495057;
+}
+
+.btn-reply:hover {
+    background-color: #e9ecef;
+}
+
+.btn-edit {
+    background-color: #fff3bf;
+    color: #5f3f00;
+}
+
+.btn-edit:hover {
+    background-color: #ffec99;
+}
+
+.btn-delete {
+    background-color: #ffe3e3;
+    color: #c92a2a;
+}
+
+.btn-delete:hover {
+    background-color: #ffc9c9;
+}
+
+.comment-content {
+    padding: 8px 0;
+    line-height: 1.5;
+    color: #495057;
+    font-size: 14px;
+}
+
+/* Replies styling */
+.replies {
+    margin-left: 24px;
+    padding-left: 16px;
+    border-left: 2px solid #f1f3f5;
+    margin-top: 16px;
+}
+
+.replies .comment {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+/* Reply form styling */
+.reply-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 60px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    transition: border 0.2s ease;
+}
+
+.reply-input:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 2px rgba(77, 171, 247, 0.2);
+}
+
+.replies button {
+    background-color: #e9ecef;
+    color: #495057;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.replies button:hover {
+    background-color: #dee2e6;
+}</style>
 </head>
 <body>
+  <div class="all_comment_container">
   <h2>Bình luận</h2>
 
   <!-- Form tạo comment cha -->
@@ -33,7 +215,8 @@
 
   <!-- Hiển thị danh sách bình luận -->
   <div id="comments-container"></div>
+  </div>
 
-  <script type="module" src="../src/comment.js"></script>
+  <script type="module" src="../src/comment.js"></script></div>
 </body>
 </html>

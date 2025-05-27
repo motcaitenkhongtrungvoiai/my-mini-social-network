@@ -22,35 +22,62 @@ function renderComment(comment) {
   const div = document.createElement("div");
   div.className = "comment";
 
+  // Header: chứa avatar, username và các nút hành động
+  const header = document.createElement("div");
+  header.className = "comment-header";
+
+  // User info
+  const userInfo = document.createElement("div");
+  userInfo.className = "user-info";
+
+  const avatar = document.createElement("img");
+  avatar.className = "avatar";
+  avatar.src = comment.userId.avatar;
+  avatar.alt = "avatar";
+
   const username = document.createElement("div");
   username.className = "username";
   username.textContent = comment.userId.username;
 
-  const content = document.createElement("div");
-  content.textContent = comment.content;
+  userInfo.appendChild(avatar);
+  userInfo.appendChild(username);
 
+  // Actions
   const actions = document.createElement("div");
-  actions.className = "actions";
+  actions.className = "comment-actions";
 
   const btnReply = document.createElement("button");
   btnReply.textContent = "Trả lời";
+  btnReply.className = "btn-reply";
   btnReply.onclick = () => showReplyInput(comment._id, div);
 
-  const btnEdit = document.createElement("button");
-  btnEdit.textContent = "Sửa";
-  btnEdit.onclick = () => editComment(comment);
-
-  const btnDelete = document.createElement("button");
-  btnDelete.textContent = "Xóa";
-  btnDelete.onclick = () => deleteComment(comment._id);
-
   actions.appendChild(btnReply);
-  actions.appendChild(btnEdit);
-  actions.appendChild(btnDelete);
 
-  div.appendChild(username);
+  if (auth.userId === comment.userId._id) {
+    const btnEdit = document.createElement("button");
+    btnEdit.textContent = "Sửa";
+    btnEdit.className = "btn-edit";
+    btnEdit.onclick = () => editComment(comment);
+
+    const btnDelete = document.createElement("button");
+    btnDelete.textContent = "Xóa";
+    btnDelete.className = "btn-delete";
+    btnDelete.onclick = () => deleteComment(comment._id);
+
+    actions.appendChild(btnEdit);
+    actions.appendChild(btnDelete);
+  }
+
+  header.appendChild(userInfo);
+  header.appendChild(actions);
+
+  // Nội dung bình luận
+  const content = document.createElement("div");
+  content.className = "comment-content";
+  content.textContent = comment.content;
+
+  div.appendChild(header);
   div.appendChild(content);
-  div.appendChild(actions);
 
   // Replies (comment con)
   if (comment.replies?.length) {
@@ -64,6 +91,7 @@ function renderComment(comment) {
 
   return div;
 }
+
 
 function showReplyInput(parentId, parentDiv) {
   if (parentDiv.querySelector(".reply-input")) return;
@@ -115,8 +143,10 @@ async function deleteComment(commentId) {
     await fetch(`${API_URL}/${commentId}`, {
       method: "DELETE",
       headers: {
+        "Content-Type": "application/json",
         token: `Bearer ${token}`,
       },
+      body: JSON.stringify({ userId: auth.userId }),
     });
     fetchComments();
   } catch {
@@ -135,7 +165,7 @@ function editComment(comment) {
       "Content-Type": "application/json",
       token: `Bearer ${token}`,
     },
-    body: JSON.stringify({ content: newContent }),
+    body: JSON.stringify({ content: newContent, userId: auth.userId }),
   })
     .then(() => fetchComments())
     .catch(() => alert("Không thể sửa bình luận"));

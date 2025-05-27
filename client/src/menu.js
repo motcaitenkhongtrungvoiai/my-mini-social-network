@@ -26,7 +26,9 @@ const profilebtn=document.getElementById("profilemove")
 const auth=getData.getAuth();
 profilebtn.href=`../public/profile.html?data=${auth.userId}`;
 
-console.log("kết nối với js menu");
+const menu =document.querySelector("#menuOntop")
+
+
 try{initSocket(auth.accessToken);
 onNotification((notification) => {
     
