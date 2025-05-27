@@ -6,10 +6,11 @@ export function initcreatePostForm() {
   const token = auth.accessToken;
 
   const form = document.getElementById("postForm");
-  const btn = document.querySelector("button");
+  const btn = document.querySelector("#createPost_submit");
   if (!form) return;
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
+    console.log ("post send")
     const formData = new FormData(form);
 
     try {

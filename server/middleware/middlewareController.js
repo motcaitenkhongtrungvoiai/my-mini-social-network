@@ -43,7 +43,7 @@ const middlewareController = {
   },
 
   // Kiểm tra người dùng chính chủ hoặc là admin
-  verifyTokenAndAuthorization: (req, res, next) => {
+  verifyTokenAndtoken: (req, res, next) => {
     middlewareController.verifyToken(req, res, () => {
       const requestUserId = req.params.id ?? req.body._id ?? req.body.userId ?? "defaultId";
       if (

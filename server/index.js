@@ -42,5 +42,5 @@ app.use('/access', express.static(path.join(__dirname, 'access')));
 
 // tạo server
 server.listen(3000,() =>{
-    console.log("sever is runing")
+    console.log("sever is runing+"+ server);
 })

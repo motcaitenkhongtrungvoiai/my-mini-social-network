@@ -12,24 +12,24 @@ router.post("/alluser", userController.getAllUsers);
 //bug số 3: thiếu dấu "/" trước id :v => bảo sao router không chạy :v
 router.post(
   "/follow/:idolId",
-  middlewareController.verifyTokenAndAuthorization,
+  middlewareController.verifyTokenAndtoken,
   userController.toggleFollowUser
 );
 
 router.post(
   "/followers",
-  middlewareController.verifyTokenAndAuthorization,
+  middlewareController.verifyTokenAndtoken,
   userController.getFollowers
 );
 router.post(
   "/following",
-  middlewareController.verifyTokenAndAuthorization,
+  middlewareController.verifyTokenAndtoken,
   userController.getFollowing
 );
 
 router.put(
   "/:id",
-  middlewareController.verifyTokenAndAuthorization,
+  middlewareController.verifyTokenAndtoken,
   upload.fields([
     { name: "avatar", maxCount: 1 },
     { name: "coverphoto", maxCount: 1 },

@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const commentController = {
   createComment: async (req, res) => {
     try {
-      const { postId, userId, content, parentId } = req.body;
+      const postId= req.params.postId;
+      const { userId, content, parentId } = req.body;
       const comment = new comment({
         postId,
         userId,
@@ -47,7 +48,7 @@ const commentController = {
   },
 
   deleteComment: async (req, res) => {
-    const { commentId } = req.params;
+    const { commentId } = req.params.commentId;
     try {
       const mainComment = await comment.findById(commentId);
       if (!mainComment)
@@ -68,8 +69,8 @@ const commentController = {
   },
 
   updateComment: async (req, res) => {
-    const { commentId } = req.params;
-    const { content } = req.body;
+    const { commentId } = req.params.commentId;
+    const { content } = req.body.content;
     try {
       const updated = await comment.findByIdAndUpdate(
         commentId,

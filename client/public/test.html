@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bình luận bài viết</title>
+  <style>
+    .comment {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+    }
+    .replies {
+      margin-left: 30px;
+    }
+    .username {
+      font-weight: bold;
+    }
+    .actions {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bình luận</h2>
+
+  <!-- Form tạo comment cha -->
+  <textarea id="main-comment-content" rows="3" cols="50" placeholder="Viết bình luận..."></textarea>
+  <br>
+  <button id="create_comment">Gửi bình luận</button>
+
+  <hr>
+
+  <!-- Hiển thị danh sách bình luận -->
+  <div id="comments-container"></div>
+
+  <script type="module" src="../src/comment.js"></script>
+</body>
+</html>
