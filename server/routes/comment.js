@@ -4,8 +4,8 @@ const comment= require(`../controllers/commentController`);
 const middlewareController = require('../middleware/middlewareController');
 
 router.post("/create",middlewareController.verifyTokenAndAuthorization,comment.createComment);
-router.get("/comme/:postId",comment.getComment);
-router.put("/comment/:commentId",middlewareController.verifyTokenAndAuthorization,comment.updateComment);
-router.delete("/comment/:commentId",middlewareController.verifyTokenAndAuthorization,comment.deleteComment);
+router.get("/:postId",comment.getComment);
+router.put("/:commentId",middlewareController.verifyTokenAndAuthorization,comment.updateComment);
+router.delete("/:commentId",middlewareController.verifyTokenAndAuthorization,comment.deleteComment);
 
 module.exports=router;

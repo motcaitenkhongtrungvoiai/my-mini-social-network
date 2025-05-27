@@ -24,7 +24,7 @@ const commentController = {
   },
 
   getComment: async (req, res) => {
-    const postId  = req.params.postId;
+    const postId = req.params.postId;
     try {
       const comments = await comment
         .find({ postId })
@@ -46,8 +46,42 @@ const commentController = {
     }
   },
 
-  deleteComment: async (req, res) => {},
+  deleteComment: async (req, res) => {
+    const { commentId } = req.params;
+    try {
+      const mainComment = await comment.findById(commentId);
+      if (!mainComment)
+        return res.status(404).json({ message: "Comment not found" });
 
-  updateComment: async (req, res) => {},
+      await comment.deleteMany({
+        $or: [{ _id: commentId }, { parentId: commentId }],
+      });
+
+      await post.findByIdAndUpdate(mainComment.postId, {
+        $pull: { comments: commentId },
+      });
+
+      res.json({ message: "Comment deleted successfully" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+
+  updateComment: async (req, res) => {
+    const { commentId } = req.params;
+    const { content } = req.body;
+    try {
+      const updated = await comment.findByIdAndUpdate(
+        commentId,
+        { content },
+        { new: true }
+      );
+      if (!updated)
+        return res.status(404).json({ message: "Comment not found" });
+      res.json(updated);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
 };
 module.exports = commentController;
