@@ -7,7 +7,6 @@ const postController = {
   createPost: async (req, res) => {
     try {
       const userId = req.params.id;
-
       const imageFiles = req.files?.postDoc;
       const imagePath =
         imageFiles && imageFiles.length > 0
@@ -25,6 +24,7 @@ const postController = {
         content: req.body.content,
         typePost: typePost,
         image: imagePath,
+        codesnippets:req.body.code,
       });
 
       const savedPost = await newPost.save();
@@ -93,7 +93,7 @@ const postController = {
             username: post.user.username,
             avatar: avatar,
           },
-          codeSnippets: post.codeSnippets,
+          code: post.codesnippets,
           content: post.content,
           link: post.link,
           type: post.typePost,
@@ -140,6 +140,7 @@ const postController = {
             username: post.user.username,
             avatar: avatar,
           },
+          code: post.codesnippets,
           content: post.content,
           link: post.link,
           type: post.typePost,

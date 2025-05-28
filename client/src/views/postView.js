@@ -3,6 +3,11 @@ export function renderPostList(posts, container) {
   posts.forEach((post) => {
     container.appendChild(createPostElement(post));
   });
+   if (window.hljs) {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+    });
+  }
 }
 
 function createPostElement(post) {
@@ -23,7 +28,7 @@ function createPostElement(post) {
         </div>
       </div>
       <div class="post-content">${post.content}<br>
-    
+      ${post.code?`<pre><code>${post.code}</pre></code>`:""}
       <br>${post.link? `<a href="${post.link}">${post.link}</a> `:""}
       </div>
                 

@@ -5,6 +5,9 @@ const notificationBtn = document.getElementById("notificationBtn");
 const notificationPanel = document.getElementById("notificationPanel");
 const closeNotification = document.getElementById("closeNotification");
 const overlay = document.getElementById("overlay");
+const Searchbox=document.querySelector(".search-bar")
+
+
 
 notificationBtn.addEventListener("click", (e) => {
   e.stopPropagation();

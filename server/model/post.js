@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       maxlength: 5000,
     },
-    codeSnippets: {
+    codesnippets: {
       type: String,
       maxlength: 2000,
     },
