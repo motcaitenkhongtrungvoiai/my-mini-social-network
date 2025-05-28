@@ -15,7 +15,7 @@
         fetch("menu.html")
             .then(response => response.text())
             .then(data => {
-                document.getElementById("menu-container").innerHTML = data;
+                 document.querySelector(".menu-container").innerHTML = data;
                 // load script 
                 const script = document.createElement("script");
                 script.src = "../src/menu.js";
@@ -25,15 +25,32 @@
     </script>
 
     <div class="updateProfile">
-        <h1>form update fiel </h1>
-        <form method="put" enctype="multipart/form-data" id="updateUser">
-            <input type="text" name="profileDesc" placeholder="desc">
-            <input type="file" name="avatar" id="avatar" placeholder="avatar">
-            <input type="file" name="coverphoto" id="coverphoto" placeholder="ảnh bìa">
-            <input type="text" name="website" placeholder="link mang xa hoi">
-            <input type="submit" id="updateBtn" placeholder="lưu">
-        </form>
-    </div>
+    <h1>Cập nhật thông tin cá nhân</h1>
+    <form method="POST" enctype="multipart/form-data" id="updateUser">
+        <!-- Thêm action chứa URL xử lý form -->
+        <div class="form-group">
+            <label for="profileDesc">Mô tả cá nhân</label>
+            <textarea name="profileDesc" id="profileDesc" placeholder="Giới thiệu về bạn..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="avatar">Ảnh đại diện</label>
+            <input type="file" name="avatar" id="avatar" accept="image/*">
+        </div>
+        
+        <div class="form-group">
+            <label for="coverphoto">Ảnh bìa</label>
+            <input type="file" name="coverphoto" id="coverphoto" accept="image/*">
+        </div>
+        
+        <div class="form-group">
+            <label for="website">Website/Mạng xã hội</label>
+            <input type="url" name="website" id="website" placeholder="https://example.com">
+        </div>
+        
+        <button type="submit" id="updateBtn">Lưu thay đổi</button>
+    </form>
+</div>
     <script src="../src/editProfile.js"></script>
 </body>
 
