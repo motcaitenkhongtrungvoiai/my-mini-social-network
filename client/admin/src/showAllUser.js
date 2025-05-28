@@ -2,6 +2,8 @@ import { getData } from "./module/getData.js";
 
 const API_URL = "http://localhost:3000/v1/users";
 
+const numberUser = document.getElementById("numberUser");
+
 window.addEventListener("DOMContentLoaded", () => {
   loadUsers();
 });
@@ -22,6 +24,7 @@ async function loadUsers() {
   }
 
   const data = await res.json();
+  numberUser.textContent="user we has: "+data.totalUsers;
   const tbody = document.querySelector("#usersTable tbody");
   tbody.innerHTML = "";
 
@@ -81,6 +84,7 @@ async function changeRole(userId) {
   });
 
   if (res.ok) {
+    alert("everthing is update");
     document.getElementById(`role-${userId}`).innerText = newRole;
     document.getElementById(`select-${userId}`).value = newRole;
     document

@@ -196,6 +196,8 @@ body {
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+.menu-container{position: sticky;
+  top: 0;}
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -207,8 +209,7 @@ body {
   );
   padding: 12px 30px;
   color: white;
-  position: sticky;
-  top: 0;
+  
   z-index: 1000;
   box-shadow: var(--shadow);
 }

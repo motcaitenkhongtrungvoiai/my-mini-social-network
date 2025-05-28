@@ -7,8 +7,8 @@ import { attachReportEvents } from "./reportController.js";
 export async function initProfile() {
   const queryUserId = getUrldata();
   const auth = getAuth();
-  if(!auth) window.location.replace("auth.html")
- 
+  if (!auth) window.location.replace("auth.html");
+
   if (!auth && !queryUserId) return redirectToLogin();
 
   try {
@@ -98,6 +98,7 @@ function renderUserInfo(user) {
   const follower = document.querySelector(".follower span");
   const followeing = document.querySelector(".following span");
   const followbtn = document.querySelector(".follow");
+  const roleUser = document.querySelector("#roleUser");
   if (user.avatar) avatarEl.src = user.avatar;
   if (user.coverphoto) coverEl.src = user.coverphoto;
   if (username) username.textContent = user.username || "";
@@ -105,7 +106,9 @@ function renderUserInfo(user) {
   if (desc) desc.textContent = user.profileDesc || "";
   follower.textContent = user.followerCount ? user.followerCount : "0";
   followeing.textContent = user.followingCount ? user.followingCount : "0";
-
+  if (user.role === "criminal") {
+    roleUser.textContent = "<!!tài khoản này đang bị khóa vô thời hạn>";
+  }
   const auth = getAuth();
 
   if (user.followers.includes(auth.userId)) {

@@ -99,7 +99,7 @@ changeUserRole: async (req, res) => {
         return res.status(404).json({ message: "User not found" });
       }
 
-      const { password, admin, role, ...other } = userData._doc;
+      const { password, admin, ...other } = userData._doc;
       other.followerCount = userData.followers?.length || 0;
       other.followingCount = userData.following?.length || 0;
       other.avatar = userData.avatar.startsWith("/access/")
