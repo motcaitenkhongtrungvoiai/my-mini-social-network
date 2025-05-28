@@ -1,6 +1,6 @@
 export function initcreatePostForm() {
   const auth = JSON.parse(localStorage.getItem("auth"));
-  if (!auth) return window.location.replace("../public/login.html");
+  if (!auth) return window.location.replace("../public/auth.html");
 
   const userId = auth.userId;
   const token = auth.accessToken;

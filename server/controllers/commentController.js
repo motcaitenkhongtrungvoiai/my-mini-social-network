@@ -69,40 +69,42 @@ const commentController = {
     }
   },
 
-  deleteComment: async (req, res) => {
-    const commentId = req.params.commentId;
-    try {
-      const mainComment = await comment.findById(commentId);
-      if (!mainComment)
-        return res.status(404).json({ message: "Comment not found" });
+deleteComment: async (req, res) => {
+  const commentId = req.params.commentId;
+  try {
+    const mainComment = await comment.findById(commentId);
+    if (!mainComment)
+      return res.status(404).json({ message: "Comment not found" });
 
-      const findAllChildComments = async (parentId) => {
-        const children = await comment.find({ parentId });
-        let ids = [];
-        for (let child of children) {
-          ids.push(child._id);
-          const childIds = await findAllChildComments(child._id);
-          ids = ids.concat(childIds);
-        }
-        return ids;
-      };
+    const findAllChildComments = async (parentId) => {
+      const children = await comment.find({ parentId });
+      let ids = [];
+      for (let child of children) {
+        ids.push(child._id);
+        const childIds = await findAllChildComments(child._id);
+        ids = ids.concat(childIds);
+      }
+      return ids;
+    };
 
-      const allChildrenIds = await findAllChildComments(commentId);
+    const allChildrenIds = await findAllChildComments(commentId);
+    const allToDelete = [commentId, ...allChildrenIds];
 
-      await comment.deleteMany({
-        _id: { $in: [commentId, ...allChildrenIds] },
-      });
+    // Xoá tất cả comment
+    await comment.deleteMany({ _id: { $in: allToDelete } });
 
-      await post.findByIdAndUpdate(mainComment.postId, {
-        $pull: { comments: commentId },
-      });
+    // Cập nhật lại post.comments
+    await post.findByIdAndUpdate(mainComment.postId, {
+      $pull: { comments: { $in: allToDelete } },
+    });
 
-      res.json({ message: "Comment deleted successfully" });
-    } catch (err) {
-      console.error("Lỗi deleteComment:", err);
-      res.status(500).json({ message: err.message });
-    }
-  },
+    res.json({ message: "Comment deleted successfully" });
+  } catch (err) {
+    console.error("Lỗi deleteComment:", err);
+    res.status(500).json({ message: err.message });
+  }
+},
+
 
   // Cập nhật nội dung bình luận
   updateComment: async (req, res) => {

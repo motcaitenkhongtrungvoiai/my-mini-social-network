@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập / Đăng ký</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container {
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateX(100%);
+            position: absolute;
+            width: 100%;
+            top: 0;
+        }
+
+        .form-container.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4361ee;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background: #4361ee;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #7a88c6;
+        }
+
+        .switch-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .switch-buttons button {
+            background: none;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            color: #4361ee;
+            border-bottom: 2px solid transparent;
+            transition: border 0.3s;
+        }
+
+        .switch-buttons button.active {
+            border-bottom: 2px solid #4361ee;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="switch-buttons">
+            <button id="btnLogin"  class="active">Đăng nhập</button>
+            <button id="btnRegister" >Đăng ký</button>
+        </div>
+
+        <!-- Form đăng nhập -->
+        <form method="post" id="loginForm" class="form-container active">
+            <h2>Đăng nhập</h2>
+            <input type="text" name="username" placeholder="Email">
+            <input type="password" name="password" placeholder="Mật khẩu">
+            <input type="submit" value="Đăng nhập">
+        </form>
+
+        <!-- Form đăng ký -->
+        <form method="post" id="registerForm" class="form-container">
+            <h2>Đăng ký</h2>
+            <input type="text" name="username" placeholder="Tên người dùng">
+            <input type="email" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Mật khẩu">
+            <input type="submit" value="Đăng ký">
+        </form>
+    </div>
+
+    <script type="module" src="../src/auth.js">
+        
+    </script>
+
+</body>
+</html>

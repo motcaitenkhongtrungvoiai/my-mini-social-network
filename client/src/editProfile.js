@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = JSON.parse(localStorage.getItem("auth"));
-  if (!auth) window.location.replace("../public/login.html");
+  if (!auth) window.location.replace("../public/auth.html");
    setupFormSubmit(auth,auth.userId);
 });
 function setupFormSubmit(auth, userId) {

@@ -7,6 +7,7 @@ import { attachReportEvents } from "./reportController.js";
 export async function initProfile() {
   const queryUserId = getUrldata();
   const auth = getAuth();
+  if(!auth) window.location.replace("auth.html")
  
   if (!auth && !queryUserId) return redirectToLogin();
 
@@ -59,7 +60,7 @@ function getAuth() {
 // Redirect về trang login
 function redirectToLogin() {
   console.warn("Chưa đăng nhập và không có userId để xem profile.");
-  window.location.href = "../public/login.html";
+  window.location.href = "../public/auth.html";
 }
 
 // Call API để lấy profile
