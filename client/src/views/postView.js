@@ -22,7 +22,9 @@ function createPostElement(post) {
           </button>
         </div>
       </div>
-      <div class="post-content">${post.content}<br>${post.link? `<a href="${post.link}">${post.link}</a> `:""}
+      <div class="post-content">${post.content}<br>
+    
+      <br>${post.link? `<a href="${post.link}">${post.link}</a> `:""}
       </div>
                 
             

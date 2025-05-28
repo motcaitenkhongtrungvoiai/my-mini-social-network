@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
   {
-    
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -12,6 +11,10 @@ const PostSchema = new mongoose.Schema(
       type: String,
       maxlength: 5000,
     },
+    codeSnippets: {
+      type: String,
+      maxlength: 2000,
+    },
     image: {
       type: String,
     },
@@ -20,6 +23,7 @@ const PostSchema = new mongoose.Schema(
         type: String,
       },
     ],
+
     typePost: {
       type: String,
       enum: ["textPost", "photoPost"],
@@ -50,7 +54,9 @@ PostSchema.pre("save", function (next) {
     this.link = foundLinks || [];
     this.content = this.content.replace(/\n/g, "<br>");
   }
+
   next();
 });
+
 
 module.exports = mongoose.model("Post", PostSchema);

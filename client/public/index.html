@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sideprom</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <link rel="stylesheet" href="../access/css/index.css">
+
 </head>
 
 <body>
@@ -19,7 +21,7 @@
                 document.getElementById("menu-container").innerHTML = data;
                 const script = document.createElement("script");
                 script.src = "../src/menu.js";
-                script.type="module";
+                script.type = "module";
                 document.body.appendChild(script);
             });
     </script>
@@ -30,6 +32,7 @@
     <div class="overlay" id="overlay"></div>
     <div class="popUpReport"></div>
     <script type="module" src="../src/Post_container.js"></script>
+  
 </body>
 
 </html>

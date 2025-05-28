@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ower profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <link rel="stylesheet" href="../access/css/index.css">
 </head>
 
 <body>
-    
+
     <!--găn menu-->
-     <div id="menu-container"></div>
+    <div id="menu-container"></div>
     <script>
         fetch("menu.html")
             .then(response => response.text())
@@ -21,27 +22,27 @@
                 // load script 
                 const script = document.createElement("script");
                 script.src = "../src/menu.js";
-                 script.type="module";
+                script.type = "module";
                 document.body.appendChild(script);
             });
     </script>
 
-<!--show thông tin-->
+    <!--show thông tin-->
     <div class="profile">
         <div class="header-profile"> <img class="avatar" /><img class="coverphoto" /></div>
         <div class="profile-desc">
-            <div class="username"></div> 
-             <div class="follow">follow</div>
+            <div class="username"></div>
+            <div class="follow">follow</div>
             <div class="email"></div>
             <div class="desc"></div>
-            <a class="webside"></a>        
+            <a class="webside"></a>
         </div>
-       
+
         <div class="content-footer">
             <div class="follower"> <span></span>follower</div>
             <div class="following"> <span></span>following</div>
         </div>
-      
+
     </div>
     <div class="create-post"><a href="createPost.html">tạo bài viết</a></div>
     <!-- call post form user -->
@@ -49,6 +50,7 @@
     </div>
 
     <script type="module" src="../src/profile.js"></script>
+    
 </body>
 
 </html>

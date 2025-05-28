@@ -71,6 +71,7 @@ const postController = {
       const posts = await post
         .find()
         .populate("user", "username avatar")
+        .sort({ createdAt: -1 })
         .lean();
 
       const result = posts.map((post) => {
@@ -81,19 +82,23 @@ const postController = {
             ? host + post.user.avatar
             : host + "/access/default.png";
 
-        const image = post.image && post.image.startsWith("/access/") ? host + post.image : null;
+        const image =
+          post.image && post.image.startsWith("/access/")
+            ? host + post.image
+            : null;
         return {
           _id: post._id,
           user: {
-            _id:post.user._id,
+            _id: post.user._id,
             username: post.user.username,
             avatar: avatar,
           },
+          codeSnippets: post.codeSnippets,
           content: post.content,
-          link:post.link,
+          link: post.link,
           type: post.typePost,
           image: image,
-          likedPostIds:post.likes,
+          likedPostIds: post.likes,
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
@@ -108,11 +113,12 @@ const postController = {
   },
 
   profilePosts: async (req, res) => {
-   try {
-    const userId = req.params.userId;
+    try {
+      const userId = req.params.userId;
       const posts = await post
-        .find({user:userId})
+        .find({ user: userId })
         .populate("user", "username avatar")
+        .sort({ createdAt: -1 })
         .lean();
 
       const result = posts.map((post) => {
@@ -123,19 +129,22 @@ const postController = {
             ? host + post.user.avatar
             : host + "/access/default.png";
 
-        const image = post.image && post.image.startsWith("/access/") ? host + post.image : null;
+        const image =
+          post.image && post.image.startsWith("/access/")
+            ? host + post.image
+            : null;
         return {
           _id: post._id,
           user: {
-            _id:post.user._id,
+            _id: post.user._id,
             username: post.user.username,
             avatar: avatar,
           },
           content: post.content,
-          link:post.link,
+          link: post.link,
           type: post.typePost,
           image: image,
-          likedPostIds:post.likes,
+          likedPostIds: post.likes,
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
@@ -148,43 +157,44 @@ const postController = {
       res.status(500).json({ message: err.message });
     }
   },
- likePost: async (req, res) => {
-  try {
-    const postId = req.params.idPost;
-    const userId = req.body.userId;
+  likePost: async (req, res) => {
+    try {
+      const postId = req.params.idPost;
+      const userId = req.body.userId;
 
-    if (!postId || !userId) {
-      return res.status(400).json({ message: "Post ID and User ID are required" });
+      if (!postId || !userId) {
+        return res
+          .status(400)
+          .json({ message: "Post ID and User ID are required" });
+      }
+
+      const postData = await post.findById(postId);
+      if (!postData) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+
+      let updatedPost;
+
+      if (postData.likes.includes(userId)) {
+        updatedPost = await post.findByIdAndUpdate(
+          postId,
+          { $pull: { likes: userId } }, // Xoá like
+          { new: true }
+        );
+      } else {
+        updatedPost = await post.findByIdAndUpdate(
+          postId,
+          { $addToSet: { likes: userId } }, // Thêm like
+          { new: true }
+        );
+      }
+
+      return res.status(200).json(updatedPost);
+    } catch (err) {
+      console.error("Lỗi like/unlike:", err);
+      return res.status(500).json({ message: err.message });
     }
-
-    const postData = await post.findById(postId);
-    if (!postData) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    let updatedPost;
-
-    if (postData.likes.includes(userId)) {
-      updatedPost = await post.findByIdAndUpdate(
-        postId,
-        { $pull: { likes: userId } },  // Xoá like
-        { new: true }
-      );
-    } else {
-      updatedPost = await post.findByIdAndUpdate(
-        postId,
-        { $addToSet: { likes: userId } }, // Thêm like
-        { new: true }
-      );
-    }
-
-    return res.status(200).json(updatedPost);
-  } catch (err) {
-    console.error("Lỗi like/unlike:", err);
-    return res.status(500).json({ message: err.message });
-  }
-}
-
+  },
 };
 
 module.exports = postController;
