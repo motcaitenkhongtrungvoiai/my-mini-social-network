@@ -1,50 +1,51 @@
 import { getData } from "./modules/getData.js";
-import { initSocket, onNotification } from "./modules/wsNotifier.js";
+import { onNotification } from "./modules/wsNotifier.js";
 
-const notificationBtn = document.getElementById('notificationBtn');
-const notificationPanel = document.getElementById('notificationPanel');
-const closeNotification = document.getElementById('closeNotification');
-const overlay = document.getElementById('overlay');
+const notificationBtn = document.getElementById("notificationBtn");
+const notificationPanel = document.getElementById("notificationPanel");
+const closeNotification = document.getElementById("closeNotification");
+const overlay = document.getElementById("overlay");
 
-notificationBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    notificationPanel.classList.add('active');
-    overlay.classList.add('active');
+notificationBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  notificationPanel.classList.add("active");
+  overlay.classList.add("active");
 });
 
-closeNotification.addEventListener('click', () => {
-    notificationPanel.classList.remove('active');
-    overlay.classList.remove('active');
+closeNotification.addEventListener("click", () => {
+  notificationPanel.classList.remove("active");
+  overlay.classList.remove("active");
 });
 
-overlay.addEventListener('click', () => {
-    notificationPanel.classList.remove('active');
-    overlay.classList.remove('active');
+overlay.addEventListener("click", () => {
+  notificationPanel.classList.remove("active");
+  overlay.classList.remove("active");
 });
 
-const profilebtn=document.getElementById("profilemove")
-const auth=getData.getAuth();
-profilebtn.href=`../public/profile.html?data=${auth.userId}`;
+const profilebtn = document.getElementById("profilemove");
+const auth = getData.getAuth();
+profilebtn.href = `../public/profile.html?data=${auth.userId}`;
 
-const menu =document.querySelector("#menuOntop")
+const menu = document.querySelector("#menuOntop");
 
+const adminJob = document.getElementById("calladmin");
+if (auth.userRole != "admin") adminJob.style.display = "none";
 
-try{initSocket(auth.accessToken);
-onNotification((notification) => {
-    
-    console.log("nhận tin nhắn: "+ notification );
-  const panelBody = document.querySelector("#notificationPanel .panel-body");
+try {
+  onNotification((notification) => {
+    console.log("nhận tin nhắn: " + notification);
+    const panelBody = document.querySelector("#notificationPanel .panel-body");
 
-  const notifDiv = document.createElement("div");
-  notifDiv.className = "notification-item notification-unread";
+    const notifDiv = document.createElement("div");
+    notifDiv.className = "notification-item notification-unread";
 
-  const textDiv = document.createElement("div");
-  textDiv.className = "notification-text";
-  textDiv.textContent = `Bạn có ${notification.type} mới`;
+    const textDiv = document.createElement("div");
+    textDiv.className = "notification-text";
+    textDiv.textContent = `Bạn có ${notification.type} mới`;
 
-  notifDiv.appendChild(textDiv);
-  panelBody.prepend(notifDiv); 
-});}
-catch(err){
-    console.log("lỗi nhận dư lieu"+err)
+    notifDiv.appendChild(textDiv);
+    panelBody.prepend(notifDiv);
+  });
+} catch (err) {
+  console.log("lỗi nhận dư lieu" + err);
 }

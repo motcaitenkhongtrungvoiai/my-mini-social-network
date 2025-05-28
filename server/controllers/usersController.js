@@ -28,14 +28,68 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
 
     */
   getAllUsers: async (req, res) => {
-    try {
-      const users = await user.find();
-      res.status(200).json(users);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    }
+  try {
+    const users = await user.find();
+    const totalUsers = users.length;
+
+    const formattedUsers = users.map(u => {
+      const { password, admin, ...other } = u._doc;
+      other.avatar = u.avatar.startsWith("/access/")
+        ? process.env.HOST_URL + u.avatar
+        : process.env.HOST_URL + "/access/default.png";
+      other.coverphoto = u.coverphoto.startsWith("/access/")
+        ? process.env.HOST_URL + u.coverphoto
+        : process.env.HOST_URL + "/access/default.png";
+      return other;
+    });
+
+    res.status(200).json({ totalUsers, users: formattedUsers });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
   },
+
+
+changeUserRole: async (req, res) => {
+  try {
+    const requesterId = req.body.requesterId; 
+    const targetUserId = req.params.promoteId; 
+    const newRole = req.body.newRole;
+
+    if (!["user", "admin", "criminal"].includes(newRole)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    const requester = await user.findById(requesterId);
+    if (!requester || requester.role !== "admin") {
+      return res.status(403).json({ message: "admin mới có quyền đổi " });
+    }
+
+    if (requesterId === targetUserId) {
+      return res.status(400).json({ message: "bạn không thể tự ý đổi quyền " });
+    }
+
+    const targetUser = await user.findById(targetUserId);
+    if (!targetUser) {
+      return res.status(404).json({ message: "không tìm thất người dùng " });
+    }
+
+    if (targetUser.role === "admin" && newRole === "criminal") {
+      return res.status(400).json({ message: "Cannot downgrade admin to criminal" });
+    }
+
+    targetUser.role = newRole;
+    await targetUser.save();
+
+    res.status(200).json({ message: `User role updated to ${newRole}` });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
+
+
 
   getUser: async (req, res) => {
     try {
@@ -184,25 +238,25 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
     }
   },
   // hiển thị dang sach mình đang theo dõi
-  getFollowing: async (req, res) => {
-    try {
-      const fanId = req.body._id;
-      const userWithFollowers = await user.findById(fanId).populate({
-        path: "followeing",
-        select: "username avatar _id",
-      });
+ getFollowing: async (req, res) => {
+  try {
+    const fanId = req.body._id;
+    const userWithFollowing = await user.findById(fanId).populate({
+      path: "following",
+      select: "username avatar _id",
+    });
 
-      if (!userWithFollowers) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      res.status(200).json({
-        followers: userWithFollowing.following,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+    if (!userWithFollowing) {
+      return res.status(404).json({ message: "User not found" });
     }
-  },
+
+    res.status(200).json({
+      following: userWithFollowing.following,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
 };
 module.exports = userController;

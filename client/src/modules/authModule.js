@@ -60,7 +60,9 @@ export const authModule = {
         if (res.status === 200) {
           window.location.replace("../public/profile.html");
         }
+        else alert("sai mật khẩu hoặc email")
       } catch (err) {
+       
         console.error("Fetch error:", err);
       }
     });
@@ -72,6 +74,7 @@ export const authModule = {
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       userId: user._id,
+      userRole:user.role,
     };
     localStorage.setItem("auth", JSON.stringify(authData));
     console.log("Auth info saved to localStorage.");

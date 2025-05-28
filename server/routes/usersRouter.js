@@ -6,9 +6,9 @@ const upload = require("../middleware/uploadImage");
 router.get(
   "/profile/:userId", userController.getUser
 );
-router.delete("/:id", userController.deleteUser);
-router.post("/alluser", userController.getAllUsers);
-
+router.delete("/:id", middlewareController.verifyTokenAndAdmin,userController.deleteUser);
+router.post("/alluser",middlewareController.verifyTokenAndAdmin, userController.getAllUsers);
+router.put("/promote/:promoteId",middlewareController.verifyTokenAndAdmin,userController.changeUserRole)
 //bug số 3: thiếu dấu "/" trước id :v => bảo sao router không chạy :v
 router.post(
   "/follow/:idolId",

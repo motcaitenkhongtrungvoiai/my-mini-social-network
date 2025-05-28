@@ -1,14 +1,29 @@
-<!-- CSS cho highlight -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 <!-- JS thư viện -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 
+</head>
+<body>
+    <!-- CSS cho highlight -->
+
 <!-- Không cần ghi "language-..." -->
 <pre><code>
-#include <iostream>
-int main() {
-    std::cout << "Hello, world!";
-    return 0;
-}
+   popup.querySelector(".close-popup").addEventListener("click", () => {
+      const popup = document.querySelector(".comment-popup");
+      popup.style.display = "none";
+      document.body.style.overflow = "";
+    });
 </code></pre>
+
+<script>
+     const authData = localStorage.getItem("auth");
+     console.log( JSON.parse(authData));
+</script>
+</body>
+</html>
