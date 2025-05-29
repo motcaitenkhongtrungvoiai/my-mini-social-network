@@ -53,33 +53,60 @@ const postController = {
     }
   },
 
-deletePost: async (req, res) => {
-  try {
+  delPostforAdmin: async (req, res) => {
     const postId = req.params.idPost;
-t
-    const foundPost = await post.findById(postId);
-    if (!foundPost) {
-      throw new Error("Post not found");
-    }
-
-    if (foundPost.comments.length > 0) {
-      const deleteComments = await comment.deleteMany({
-        _id: { $in: foundPost.comments },
-      });
-
-      if (deleteComments.deletedCount === 0) {
-        throw new Error("No comments were deleted");
+    try {
+      const foundPost = await post.findById(postId);
+      if (!foundPost) {
+        throw new Error("Post not found");
       }
+
+      if (foundPost.comments.length > 0) {
+        const deleteComments = await comment.deleteMany({
+          _id: { $in: foundPost.comments },
+        });
+
+        if (deleteComments.deletedCount === 0) {
+          throw new Error("No comments were deleted");
+        }
+      }
+      await post.findByIdAndDelete(postId);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
     }
+  },
 
-    await post.findByIdAndDelete(postId);
+  deletePost: async (req, res) => {
+    try {
+      const postId = req.params.idPost;
+      const userId = req.body.userId;
+      const foundPost = await post.findById(postId);
+      if (!foundPost) {
+        throw new Error("Post not found");
+      }
 
-    res.status(200).json({ message: "Post and related comments deleted successfully" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
-  }
-},
+      if (foundPost.comments.length > 0) {
+        const deleteComments = await comment.deleteMany({
+          _id: { $in: foundPost.comments },
+        });
+
+        if (deleteComments.deletedCount === 0) {
+          throw new Error("No comments were deleted");
+        }
+      }
+      if (foundPost.user.toString() === userId) {
+        await post.findByIdAndDelete(postId);
+      }
+
+      res
+        .status(200)
+        .json({ message: "Post and related comments deleted successfully" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    }
+  },
   getPosts: async (req, res) => {
     try {
       const posts = await post
@@ -213,7 +240,7 @@ t
   updateReportPost: async (req, res) => {
     try {
       const postId = req.params.idPost;
-      const { status } = req.body;
+      const  status  = req.body.status;
 
       const updatedPost = await post.findByIdAndUpdate(
         postId,
@@ -238,7 +265,7 @@ t
     try {
       const userId = req.params.userId;
       const posts = await post
-        .find({ beReport:true })
+        .find({ beReport: true })
         .populate("user", "username avatar")
         .sort({ createdAt: -1 })
         .lean();
@@ -279,7 +306,7 @@ t
       console.log(err);
       res.status(500).json({ message: err.message });
     }
-  }
+  },
 };
 
 module.exports = postController;

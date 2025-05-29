@@ -20,11 +20,13 @@ async function fetchReportedPosts() {
     posts.forEach((post) => {
       const div = document.createElement("div");
       div.className = "post";
+      div.id=post._id;
 
       div.innerHTML = `
         <img src="${post.user.avatar || "/access/default.png"}" class="avatar" />
         <span class="username">${post.user.username}</span>
-        <p>${post.content || "<i>(Không có nội dung)</i>"}</p>
+        <p>${post.content || "<i>(Không có nội dung)</i>"}</p>      
+         ${post.code?`<pre><code>${post.code}</pre></code>`:""}
         ${post.image ? `<img src="${post.image}" class="post-image" />` : ""}
         <div class="buttons">
           <button class="unReport" data-postid="${post._id}">Bỏ báo cáo</button>
@@ -35,6 +37,10 @@ async function fetchReportedPosts() {
       container.appendChild(div);
     });
 
+   
+ document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+    });
     // Gắn sự kiện sau khi các nút đã được render
     document.querySelectorAll(".unReport").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -49,10 +55,12 @@ async function fetchReportedPosts() {
         deletePost(btn.dataset.postid);
       });
     });
+    
   } catch (err) {
     console.error("Lỗi khi lấy danh sách:", err);
     alert("Không thể tải danh sách bài viết bị báo cáo.");
   }
+  
 }
 
 async function removeReport(postId) {
@@ -82,17 +90,18 @@ async function deletePost(postId) {
   if (!confirm("Bạn có chắc muốn xóa bài viết này không?")) return;
 
   try {
-    const res = await fetch(`${API_BASE}/${postId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        token: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(`${API_BASE}/report/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: `Bearer ${token}`,
+        },
+         
+      })
 
     if (res.ok) {
       alert("Đã xóa bài viết");
-      fetchReportedPosts();
+      document.getElementById(postId).style.display="none";
     } else {
       const error = await res.json();
       alert("Lỗi: " + error.message);

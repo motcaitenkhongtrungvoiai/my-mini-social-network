@@ -6,7 +6,7 @@ export const getData = {
 
   getAuth: () => {
     const authData = localStorage.getItem("auth");
-    if (!authData) return null;
+    if (!authData) window.location.replace("../public/auth.html");
     try {
       return JSON.parse(authData);
     } catch (err) {

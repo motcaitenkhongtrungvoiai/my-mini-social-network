@@ -222,7 +222,7 @@ changeUserRole: async (req, res) => {
   // hiển thị danh sách người theo dõi
   getFollowers: async (req, res) => {
     try {
-      const idolId = req.body._id;
+      const idolId = req.params.userId;
       const userWithFollowers = await user.findById(idolId).populate({
         path: "followers",
         select: "username avatar _id",
@@ -240,7 +240,7 @@ changeUserRole: async (req, res) => {
   // hiển thị dang sach mình đang theo dõi
  getFollowing: async (req, res) => {
   try {
-    const fanId = req.body._id;
+    const fanId = req.params.userId;
     const userWithFollowing = await user.findById(fanId).populate({
       path: "following",
       select: "username avatar _id",

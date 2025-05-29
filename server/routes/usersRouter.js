@@ -17,12 +17,12 @@ router.post(
 );
 
 router.post(
-  "/followers",
+  "/followers/:userId",
   middlewareController.verifyTokenAndtoken,
   userController.getFollowers
 );
 router.post(
-  "/following",
+  "/following/:userId",
   middlewareController.verifyTokenAndtoken,
   userController.getFollowing
 );
