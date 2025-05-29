@@ -3,15 +3,17 @@ import { getData } from "./module/getData.js";
 const auth = getData.getAuth();
 const token = auth.accessToken;
 
-
 async function fetchReportedPosts() {
   try {
     const res = await fetch(`${API_BASE}/report`, {
-      method: "get",
-      headers: { "Content-Type": "application/json", token: `Bearer ${token}` },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${token}`,
+      },
     });
-    const posts =await res.json();
 
+    const posts = await res.json();
     const container = document.getElementById("reported-posts");
     container.innerHTML = "";
 
@@ -20,34 +22,47 @@ async function fetchReportedPosts() {
       div.className = "post";
 
       div.innerHTML = `
-        <img src="${
-        post.user.avatar || "/access/default.png"
-      }" class="avatar" />
+        <img src="${post.user.avatar || "/access/default.png"}" class="avatar" />
         <span class="username">${post.user.username}</span>
         <p>${post.content || "<i>(Không có nội dung)</i>"}</p>
-        ${
-          post.image
-            ? `<img src="${post.image}" class="post-image" />`
-            : ""
-        }
+        ${post.image ? `<img src="${post.image}" class="post-image" />` : ""}
         <div class="buttons">
-          <button onclick="removeReport('${post._id}')"> Bỏ báo cáo</button>
-          <button onclick="deletePost('${post._id}')"> Xóa bài viết</button>
+          <button class="unReport" data-postid="${post._id}">Bỏ báo cáo</button>
+          <button class="destroy" data-postid="${post._id}">Xóa bài viết</button>
         </div>
       `;
 
       container.appendChild(div);
     });
+
+    // Gắn sự kiện sau khi các nút đã được render
+    document.querySelectorAll(".unReport").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        removeReport(btn.dataset.postid);
+      });
+    });
+
+    document.querySelectorAll(".destroy").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        deletePost(btn.dataset.postid);
+      });
+    });
   } catch (err) {
     console.error("Lỗi khi lấy danh sách:", err);
+    alert("Không thể tải danh sách bài viết bị báo cáo.");
   }
 }
 
 async function removeReport(postId) {
   try {
-    const res = await fetch(`${API_BASE}/posts/report/${postId}`, {
+    const res = await fetch(`${API_BASE}/report/${postId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", token: `Bearer ${token}` },
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${token}`,
+      },
       body: JSON.stringify({ status: false }),
     });
 
@@ -67,9 +82,12 @@ async function deletePost(postId) {
   if (!confirm("Bạn có chắc muốn xóa bài viết này không?")) return;
 
   try {
-    const res = await fetch(`${API_BASE}/posts/${postId}`, {
+    const res = await fetch(`${API_BASE}/${postId}`, {
       method: "DELETE",
-      token: `Bearer ${token}`,
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${token}`,
+      },
     });
 
     if (res.ok) {
