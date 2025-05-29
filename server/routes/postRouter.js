@@ -12,4 +12,6 @@ router.get("/feed", postController.getPosts); //Get all
 router.get("/profile/:userId", postController.profilePosts);
 router.put("/like/:idPost", middlewareController.verifyTokenAndtoken, postController.likePost);
 
+router.put("/report/:idPost",middlewareController.verifyTokenAndAdmin,postController.updateReportPost)// report post for admin only
+router.get("/report",middlewareController.verifyTokenAndAdmin,postController.getReportedPosts)
 module.exports = router;

@@ -24,7 +24,7 @@ const postController = {
         content: req.body.content,
         typePost: typePost,
         image: imagePath,
-        codesnippets:req.body.code,
+        codesnippets: req.body.code,
       });
 
       const savedPost = await newPost.save();
@@ -53,19 +53,33 @@ const postController = {
     }
   },
 
-  deletePost: async (req, res) => {
-    try {
-      const postId = req.params.idPost;
-      const deletedPost = await post.findByIdAndDelete(postId);
-      if (!deletedPost) {
-        throw new Error("Post not found");
-      }
-      res.status(200).json({ message: "Post deleted successfully" });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+deletePost: async (req, res) => {
+  try {
+    const postId = req.params.idPost;
+t
+    const foundPost = await post.findById(postId);
+    if (!foundPost) {
+      throw new Error("Post not found");
     }
-  },
+
+    if (foundPost.comments.length > 0) {
+      const deleteComments = await comment.deleteMany({
+        _id: { $in: foundPost.comments },
+      });
+
+      if (deleteComments.deletedCount === 0) {
+        throw new Error("No comments were deleted");
+      }
+    }
+
+    await post.findByIdAndDelete(postId);
+
+    res.status(200).json({ message: "Post and related comments deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
   getPosts: async (req, res) => {
     try {
       const posts = await post
@@ -194,6 +208,43 @@ const postController = {
     } catch (err) {
       console.error("Lỗi like/unlike:", err);
       return res.status(500).json({ message: err.message });
+    }
+  },
+  updateReportPost: async (req, res) => {
+    try {
+      const postId = req.params.idPost;
+      const { status } = req.body;
+
+      const updatedPost = await post.findByIdAndUpdate(
+        postId,
+        { beReport: status },
+        { new: true }
+      );
+
+      if (!updatedPost) {
+        throw new Error("Post not found");
+      }
+
+      res.status(200).json({
+        message: `beReport updated to ${status}`,
+        updatedPost,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    }
+  },
+  getReportedPosts: async (req, res) => {
+    try {
+      const reportedPosts = await post
+        .find({ beReport: true })
+        .populate("user", "username email")
+        .populate("comments");
+
+      res.status(200).json(reportedPosts);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
     }
   },
 };

@@ -57,6 +57,7 @@ async function loadUsers() {
         </select>
         <button class="btnChange" data-userid="${user._id}">Update</button>
       </td>
+      <td><a href="../../public/profile.html?data=${user._id}"> tham quan tài khoản</a></td>
     `;
 
     // Thêm nút vào tbody
@@ -87,17 +88,15 @@ async function changeRole(userId) {
     alert("everthing is update");
     document.getElementById(`role-${userId}`).innerText = newRole;
     document.getElementById(`select-${userId}`).value = newRole;
-    document
-      .getElementById(`select-${userId}`)
-      .closest("tr")
-      .classList.add("updated");
-    setTimeout(() => {
-      document
-        .getElementById(`select-${userId}`)
-        .closest("tr")
-        .classList.remove("updated");
-    }, 1000);
-  } else {
+    document.getElementById(`select-${userId}`).closest("tr").classList.add("updated");
+    setTimeout(() => {  document.getElementById(`select-${userId}`) .closest("tr") .classList.remove("updated"); }, 1000);
+   } else {
     alert("Failed to update role");
   }
 }
+     
+        
+       
+       
+   
+  
