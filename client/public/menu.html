@@ -1,19 +1,24 @@
 <nav class="navbar" id="menuOntop">
     <div class="logo-container">
         <div class="logo">
-            <i class="fas fa-rocket"></i>
+            <i class="fa-brands fa-dev fa-3x"></i>
         </div>
         <span class="brand-name">DEV-socical</span>
     </div>
 
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Tìm kiếm...">
+     <div class="search-container">
+    <div class="search-bar" id="searchBar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Tìm kiếm..." id="searchInput">
+      <button class="search-button" id="searchButton">
+        <i class="fas fa-paper-plane"></i>
+      </button>
     </div>
+  </div>
 
     <ul class="nav-links">
         <li class="nav-item">
-            <a href="index.html" class="nav-link active">
+            <a href="index.html" class="nav-link ">
                 <i class="fas fa-home"></i>
                 <span>Trang chủ</span>
             </a>
@@ -47,7 +52,7 @@
                     <span>Đăng xuất</span>
                 </a>
                 <a href="../admin/publicAdmin/showAllUser.html"target="_blank" rel="noopener noreferrer" id ="calladmin" class="dropdown-item">
-                    <i class="fas fa-admin-cog"></i>
+                    <i class="fas fa-user-shield"></i>
                     <span>quản trị</span>
                 </a>
             </div>
