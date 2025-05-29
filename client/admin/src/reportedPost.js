@@ -1,24 +1,35 @@
-const API_BASE = "http://localhost:3000"; 
+const API_BASE = "http://localhost:3000/v1/post";
 import { getData } from "./module/getData.js";
 const auth = getData.getAuth();
+const token = auth.accessToken;
+
 
 async function fetchReportedPosts() {
   try {
-    const res = await fetch(`${API_BASE}/posts/report`);
-    const posts = await res.json();
+    const res = await fetch(`${API_BASE}/report`, {
+      method: "get",
+      headers: { "Content-Type": "application/json", token: `Bearer ${token}` },
+    });
+    const posts =await res.json();
 
     const container = document.getElementById("reported-posts");
     container.innerHTML = "";
 
-    posts.forEach(post => {
+    posts.forEach((post) => {
       const div = document.createElement("div");
       div.className = "post";
 
       div.innerHTML = `
-        <img src="${API_BASE}${post.user.avatar || '/access/default.png'}" class="avatar" />
+        <img src="${
+        post.user.avatar || "/access/default.png"
+      }" class="avatar" />
         <span class="username">${post.user.username}</span>
         <p>${post.content || "<i>(Không có nội dung)</i>"}</p>
-        ${post.image ? `<img src="${API_BASE}${post.image}" class="post-image" />` : ""}
+        ${
+          post.image
+            ? `<img src="${post.image}" class="post-image" />`
+            : ""
+        }
         <div class="buttons">
           <button onclick="removeReport('${post._id}')"> Bỏ báo cáo</button>
           <button onclick="deletePost('${post._id}')"> Xóa bài viết</button>
@@ -36,8 +47,8 @@ async function removeReport(postId) {
   try {
     const res = await fetch(`${API_BASE}/posts/report/${postId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" , token:`Bearer ${token}`},
-      body: JSON.stringify({ status: false })
+      headers: { "Content-Type": "application/json", token: `Bearer ${token}` },
+      body: JSON.stringify({ status: false }),
     });
 
     if (res.ok) {
@@ -58,7 +69,7 @@ async function deletePost(postId) {
   try {
     const res = await fetch(`${API_BASE}/posts/${postId}`, {
       method: "DELETE",
-      token :`Bearer ${token}`
+      token: `Bearer ${token}`,
     });
 
     if (res.ok) {
