@@ -6,7 +6,7 @@ const comment = require("../model/comment");
 const postController = {
   createPost: async (req, res) => {
     try {
-      const userId = req.params.id;
+      const userId =req.user._id;
       const imageFiles = req.files?.postDoc;
       const imagePath =
         imageFiles && imageFiles.length > 0
@@ -80,7 +80,7 @@ const postController = {
   deletePost: async (req, res) => {
     try {
       const postId = req.params.idPost;
-      const userId = req.body.userId;
+      const userId = req.user._id;
       const foundPost = await post.findById(postId);
       if (!foundPost) {
         throw new Error("Post not found");
@@ -202,7 +202,7 @@ const postController = {
   likePost: async (req, res) => {
     try {
       const postId = req.params.idPost;
-      const userId = req.body.userId;
+      const userId = req.user._id;
 
       if (!postId || !userId) {
         return res
@@ -263,7 +263,7 @@ const postController = {
   },
   getReportedPosts: async (req, res) => {
     try {
-      const userId = req.params.userId;
+   
       const posts = await post
         .find({ beReport: true })
         .populate("user", "username avatar")

@@ -186,7 +186,7 @@ changeUserRole: async (req, res) => {
   toggleFollowUser: async (req, res) => {
   try {
     const idolId = req.params.idolId;
-    const fansId = req.body.userId;
+    const fansId = req.user._id;
 
     if (!idolId || !fansId ||  !mongoose.Types.ObjectId.isValid(idolId) ||  !mongoose.Types.ObjectId.isValid(fansId) )
    {
