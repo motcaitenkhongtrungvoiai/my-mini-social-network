@@ -8,7 +8,7 @@ fuzzySearchUsers : async (req, res) => {
   if (!keyword) return res.status(400).json({ message: "Missing keyword" });
 
   try {
-    const users = await User.find().lean(); 
+    const users = await await User.find({}, "_id avatar username").lean();
     const fuse = new Fuse(users, {
       keys: ["username"],
       threshold: 0.6, 

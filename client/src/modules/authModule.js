@@ -24,6 +24,7 @@ export const authModule = {
         console.log("Server response:", result);
       } catch (err) {
         console.error("Fetch error:", err);
+        alert("server bận");
       }
     });
 
@@ -64,6 +65,7 @@ export const authModule = {
       } catch (err) {
        
         console.error("Fetch error:", err);
+        alert("server bận ")
       }
     });
   },

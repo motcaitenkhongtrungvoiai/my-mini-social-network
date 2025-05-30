@@ -5,39 +5,34 @@ const notificationBtn = document.getElementById("notificationBtn");
 const notificationPanel = document.getElementById("notificationPanel");
 const closeNotification = document.getElementById("closeNotification");
 const overlay = document.getElementById("overlay");
-const Searchbox=document.querySelector(".search-bar")
+const Searchbox = document.querySelector(".search-bar");
 
-  const searchBar = document.getElementById('searchBar');
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-  
-    searchBar.addEventListener('click', function() {
-      this.classList.add('active');
-      searchInput.focus();
-    });
-    
-   
-    searchButton.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if(searchInput.value.trim() !== '') {
-        alert('Đã gửi tìm kiếm: ' + searchInput.value);
-      }
-    });
-    
-    
-    document.addEventListener('click', function(e) {
-      if (!searchBar.contains(e.target) && searchInput.value === '') {
-        searchBar.classList.remove('active');
-      }
-    });
-    
-    // Khi nhấn Enter
-    searchInput.addEventListener('keypress', function(e) {
-      if(e.key === 'Enter' && this.value.trim() !== '') {
-        alert('Đã gửi tìm kiếm: ' + this.value);
-      }
-    });
+const searchBar = document.getElementById("searchBar");
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
 
+searchBar.addEventListener("click", function () {
+  this.classList.add("active");
+  searchInput.focus();
+});
+
+searchButton.addEventListener("click", function (e) {
+  e.stopPropagation();
+  if (searchInput.value.trim() !== "") {
+    window.location.href = `../public/searchPage.html?keyword=${searchInput.value}`;
+  }
+});
+searchInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter" && this.value.trim() !== "") {
+    window.location.href = `../public/searchPage.html?keyword=${this.value}`;
+  }
+});
+
+document.addEventListener("click", function (e) {
+  if (!searchBar.contains(e.target) && searchInput.value === "") {
+    searchBar.classList.remove("active");
+  }
+});
 
 notificationBtn.addEventListener("click", (e) => {
   e.stopPropagation();
