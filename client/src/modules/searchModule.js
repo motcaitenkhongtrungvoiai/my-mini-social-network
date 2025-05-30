@@ -1,33 +1,28 @@
-export class searchModule {
-  constructor(keyword) {
-    this.API_URL = "http://localhost:3000/v1/search";
-    this.keyword = keyword;
-  }
 
- async searchPost() {
+export const searchModule = {
+  searchPost: async (keyword) => {
     try {
-      const res = await fetch(`${this.API_URL}/posts?keyword=${this.keyword}`, {
+      const res = await fetch(`http://localhost:3000/v1/search/posts?keyword=${keyword}`, {
         method: "get",
       });
-      if (res.ok) {
-        return res.json();
-      }
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
     } catch (err) {
-      console.error("somthing went wrong " + err);
+      console.error("Error searching posts: " + err);
+      throw err;
     }
-  }
+  },
 
-  async searchUser() {
+  searchUser: async (keyword) => {
     try {
-      const res = await fetch(`${this.API_URL}/users?keyword=${this.keyword}`, {
+      const res = await fetch(`http://localhost:3000/v1/search/users?keyword=${keyword}`, {
         method: "get",
       });
-      if (res.ok) {
-        return res.json();
-      }
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
     } catch (err) {
-      console.error("somthing went wrong " + err);
+      console.error("Error searching users: " + err);
+      throw err;
     }
   }
-
 }
