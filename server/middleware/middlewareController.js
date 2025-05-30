@@ -44,11 +44,10 @@ const middlewareController = {
 
   // Kiểm tra người dùng chính chủ hoặc là admin
   verifyTokenAndtoken: async (req, res, next) => {
-    middlewareController.verifyToken(req, res,async () => {
-      const requestUserId = req.params.id ?? req.body.userId ?? "defaultId";
+    middlewareController.verifyToken(req, res,async () => { 
        const user = await User.findById(req.user._id);
       if (
-        (req.user._id === requestUserId && user.role==="user" )||(req.user.isAdmin && req.user.role === "admin")       
+        (user.role==="user" )||(req.user.isAdmin && req.user.role === "admin")       
       ) {
         next();
       } else {

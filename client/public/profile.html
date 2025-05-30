@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../access/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <!-- JS thư viện -->
+
 <body>
 
     </head>
@@ -48,6 +49,17 @@
     <div class="create-post"><a href="createPost.html"><i class="fa-solid fa-plus"></i> tạo bài viết</a></div>
     <!-- call post form user -->
     <div class="postFromUser post-containerAll">
+    </div>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <div class="toggle-buttons">
+                <div id="showFollower" class="btn"><i class="fa-solid fa-users"></i> follower </div>
+                <div id="showFollowing" class="btn"><i class="fa-solid fa-layer-group"></i> following </div>
+            </div>
+            <div class="data-container"></div>
+        </div>
+    </div>
     </div>
 
     <script type="module" src="../src/profile.js"></script>

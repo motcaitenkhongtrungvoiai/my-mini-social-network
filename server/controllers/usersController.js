@@ -149,11 +149,11 @@ changeUserRole: async (req, res) => {
 
       // Avatar
       if (req.files?.avatar?.[0]) {
-        userController.deleteOldImage(userData.avatar); // xóa avatar cũ
+        userController.deleteOldImage(userData.avatar); 
         updateData.avatar = "/access/" + req.files.avatar[0].filename;
       }
 
-      // Coverphoto
+      
       if (req.files?.coverphoto?.[0]) {
         userController.deleteOldImage(userData.coverphoto); // xóa cover cũ
         updateData.coverphoto = "/access/" + req.files.coverphoto[0].filename;
@@ -219,44 +219,71 @@ changeUserRole: async (req, res) => {
   }
 },
 
-  // hiển thị danh sách người theo dõi
   getFollowers: async (req, res) => {
-    try {
-      const idolId = req.params.userId;
-      const userWithFollowers = await user.findById(idolId).populate({
-        path: "followers",
-        select: "username avatar _id",
-      });
-
-      if (!userWithFollowers) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      res.status(200).json({ followers: userWithFollowers.followers,});    
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    }
-  },
-  // hiển thị dang sach mình đang theo dõi
- getFollowing: async (req, res) => {
   try {
-    const fanId = req.params.userId;
-    const userWithFollowing = await user.findById(fanId).populate({
-      path: "following",
-      select: "username avatar _id",
-    });
+    const idolId = req.user._id;
+    const host = process.env.HOST_URL;
 
-    if (!userWithFollowing) {
+    const userWithFollowers = await user.findById(idolId).populate({
+      path: "followers",
+      select: "username avatar _id",
+    }).lean();
+
+    if (!userWithFollowers) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({
-      following: userWithFollowing.following,
+    const followersWithHostAvatar = userWithFollowers.followers.map((follower) => {
+      const avatar = follower.avatar && follower.avatar.startsWith("/access/")
+        ? host + follower.avatar
+        : host + "/access/default.png";
+
+      return {
+        _id: follower._id,
+        username: follower.username,
+        avatar: avatar,
+      };
     });
+
+    res.status(200).json(followersWithHostAvatar);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
   }
 },
+
+getFollowing: async (req, res) => {
+  try {
+    const fanId = req.user._id;
+    const host = process.env.HOST_URL;
+
+    const userWithFollowing = await user.findById(fanId).populate({
+      path: "following",
+      select: "username avatar _id",
+    }).lean();
+
+    if (!userWithFollowing) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const followingWithHostAvatar = userWithFollowing.following.map((followed) => {
+      const avatar = followed.avatar && followed.avatar.startsWith("/access/")
+        ? host + followed.avatar
+        : host + "/access/default.png";
+
+      return {
+        _id: followed._id,
+        username: followed.username,
+        avatar: avatar,
+      };
+    });
+
+    res.status(200).json(followingWithHostAvatar);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
+
 };
 module.exports = userController;

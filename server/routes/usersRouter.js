@@ -16,13 +16,13 @@ router.post(
   userController.toggleFollowUser
 );
 
-router.post(
-  "/followers/:userId",
+router.get(
+  "/followers/",
   middlewareController.verifyTokenAndtoken,
   userController.getFollowers
 );
-router.post(
-  "/following/:userId",
+router.get(
+  "/following/",
   middlewareController.verifyTokenAndtoken,
   userController.getFollowing
 );
