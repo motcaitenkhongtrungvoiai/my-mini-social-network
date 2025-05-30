@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 5 },
     avatar: { type: String, default: "../access/default.png" },
     coverphoto: { type: String, default: "../access/default.png" },
-    profileDesc: { type: String, default: "Hello, I'm new here" ,maxlength: 500},
+    profileDesc: { type: String, default: "Hello, I'm new here" ,maxlength:100},
     website: { type: String},//đường dẫn đến trang cá nhân khác của người dùng chăng?
     //xác thực người dùng hai lần có thể thêm vai trò mới . nhưng admin vẫn phải là admin :))
     //ai Láo thì bock tài khoản cho nó thành criminal :v

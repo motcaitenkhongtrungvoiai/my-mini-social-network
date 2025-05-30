@@ -3,25 +3,41 @@ const Post = require("../model/post");
 const Fuse = require("fuse.js");
 
 const searchController ={
-fuzzySearchUsers : async (req, res) => {
+fuzzySearchUsers: async (req, res) => {
   const { keyword } = req.query;
   if (!keyword) return res.status(400).json({ message: "Missing keyword" });
 
   try {
-    const users = await await User.find({}, "_id avatar username").lean();
+    const host = process.env.HOST_URL;
+
+    const users = await User.find({}, "_id avatar username profileDesc").lean();
     const fuse = new Fuse(users, {
       keys: ["username"],
-      threshold: 0.6, 
+      threshold: 0.6,
     });
 
     const results = fuse.search(keyword);
-    const matchedUsers = results.map((r) => r.item);
+
+    const matchedUsers = results.map(({ item }) => {
+      const avatar =
+        item.avatar && item.avatar.startsWith("/access/")
+          ? host + item.avatar
+          : host + "/access/default.png";
+
+      return {
+        _id: item._id,
+        username: item.username,
+        avatar: avatar,
+        desc:item.profileDesc,
+      };
+    });
 
     res.status(200).json(matchedUsers);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 },
+
 
 fuzzySearchPosts: async (req, res) => {
   const { keyword } = req.query;

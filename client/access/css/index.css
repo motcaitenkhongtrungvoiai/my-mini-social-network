@@ -1137,3 +1137,139 @@ hr {
 #updateBtn:hover {
   background-color: #2980b9;
 }
+/*userlist*/
+     .user-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+        width:95%;
+      }
+      
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+      }
+      .user-card i{
+        color:#9b9b9b ;
+        position: relative;       
+        left:-20px;
+      }
+
+      .user-card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+      }
+      .user-avatar img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .user-info {
+        flex-grow: 1;
+      }
+      .user-list a {
+      text-decoration: none;
+       color: #333; 
+      }
+      .username {
+        margin: 0;
+        font-size: 16px;
+       
+      }
+      .view-profile {
+        font-size: 14px;
+        color: #1a73e8;
+        text-decoration: none;
+      }
+      .view-profile:hover {
+        text-decoration: underline;
+      }
+   /* for fun*/
+   /* CSS cho toggle buttons */
+.toggle-buttons {
+  float: left;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #f5f5f5;
+  padding: 5px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.toggle-buttons::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(50% - 10px);
+  height: calc(100% - 10px);
+  background: rgb(44, 62, 80);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 0;
+}
+
+.toggle-buttons.active-user::before {
+  transform: translateX(0);
+}
+
+.toggle-buttons.active-post::before {
+  transform: translateX(100%);
+}
+
+.toggle-buttons .btn {
+  flex: 1;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  color: #555;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.toggle-buttons .btn i {
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.toggle-buttons .btn:hover {
+  color: #444;
+}
+
+.toggle-buttons .btn.active {
+  color: white;
+}
+
+.toggle-buttons .btn.active i {
+  transform: scale(1.1);
+}
+
+/* Animation khi hover */
+.toggle-buttons .btn:not(.active):hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Hiệu ứng click */
+.toggle-buttons .btn:active {
+  transform: scale(0.98);
+}
