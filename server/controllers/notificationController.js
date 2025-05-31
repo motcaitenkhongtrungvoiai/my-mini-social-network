@@ -1,14 +1,16 @@
+const comment = require("../model/comment");
 const Notification = require("../model/notification");
 const mongoose = require("mongoose");
 const notificationController = {
   // func này dành cho soket. không lên đụng vào
-  initNotification: async ({ recipient, sender, type, post }) => {
+  initNotification: async ({ recipient, sender, type, post, comment }) => {
     try {
       const newNotice = await Notification.create({
         recipient,
         sender,
         type,
         post,
+        comment,
       });
       return newNotice;
     } catch (err) {
@@ -31,17 +33,18 @@ const notificationController = {
           },
         },
         {
+          $sort: { "notifications.createdAt": -1 },
+        },
+        {
           $group: {
             _id: {
               type: "$type",
               post: "$post",
+              comment: "$comment",
             },
             notifications: { $push: "$$ROOT" },
             count: { $sum: 1 },
           },
-        },
-        {
-          $sort: { "notifications.createdAt": -1 },
         },
       ]);
 
@@ -50,23 +53,69 @@ const notificationController = {
       console.log("không lấy được thông tin:" + err);
     }
   },
-  delNoitification: async (req, res) => {
+  delNotification: async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.user._id);
-      const post = new mongoose.type.ObjectId(req.body.post);
-      const type = req.body.type;
-      if (!userId || !post) {
-        throw new Error("không đủ thông tin để xóa ");
-      }
-      const del = await Notification.deleteMany({
-        recipient: mongoose.Types.ObjectId("664eff6e31b9e53f56a8f111"),
-        type: type,
-        post: mongoose.Types.ObjectId("6650882a4018dd42cfb39222"),
-      });
+      const { post: postId, comment: commentId, type } = req.body;
 
+      if (!userId || !type) {
+        throw new Error("Không đủ thông tin để xóa");
+      }
+
+      const query = {
+        recipient: userId,
+        type,
+        read: true,
+      };
+
+      if (postId) {
+        query.post = new mongoose.Types.ObjectId(postId);
+      } else if (commentId) {
+        query.comment = new mongoose.Types.ObjectId(commentId);
+      } else {
+        throw new Error("Phải có post hoặc comment để xóa");
+      }
+
+      const del = await Notification.deleteMany(query);
       return res.status(200).json(del);
     } catch (err) {
-      console.log("không lấy được thông tin:" + err);
+      console.log("không xóa được thông báo:", err);
+      return res.status(500).json({ error: "Lỗi server khi xóa thông báo" });
+    }
+  },
+
+  markAsRead: async (req, res) => {
+    try {
+      const userId = new mongoose.Types.ObjectId(req.user._id);
+      const { post: postId, comment: commentId, type } = req.body;
+
+      if (!userId || !type) {
+        throw new Error("Không đủ thông tin để cập nhật");
+      }
+
+      const query = {
+        recipient: userId,
+        type,
+        read: false,
+      };
+
+      if (postId) {
+        query.post = new mongoose.Types.ObjectId(postId);
+      } else if (commentId) {
+        query.comment = new mongoose.Types.ObjectId(commentId);
+      } else {
+        throw new Error("Phải có post hoặc comment để cập nhật");
+      }
+
+      const updated = await Notification.updateMany(query, {
+        $set: { read: true },
+      });
+      return res.status(200).json(updated);
+    } catch (err) {
+      console.log("không cập nhật được thông báo:", err);
+      return res
+        .status(500)
+        .json({ error: "Lỗi server khi cập nhật thông báo" });
     }
   },
 };
