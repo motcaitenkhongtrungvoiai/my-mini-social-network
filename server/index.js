@@ -13,6 +13,7 @@ const userRouter = require("./routes/usersRouter");
 const postRouter = require("./routes/postRouter");
 const commentRouter= require("./routes/comment");
 const searchRouter = require("./routes/search");
+const notificationRouter=require("./routes/noitification");
 
 const notificationSocket=require('./routes/ws/notificationSocket');
 
@@ -41,6 +42,7 @@ app.use("/v1/post",postRouter);
 app.use("/v1/comment",commentRouter);
 app.use('/access', express.static(path.join(__dirname, 'access')));
 app.use("/v1/search",searchRouter);
+app.use("/v1/noice",notificationRouter);
 // tạo server
 server.listen(3000,() =>{
     console.log("sever is runing+"+ server);

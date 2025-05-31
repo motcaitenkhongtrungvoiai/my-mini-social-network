@@ -24,13 +24,13 @@ const notificationSocket = (wss) => {
           }
         }
         if (data.type === "notify") {
-          const { recipient, sender, notifType, post, comment } = data;
+          const { recipient, sender, notifType, post } = data;
           const newNotif = await notificationController.initNotification({
             recipient,
             sender,
             type: notifType,
             post,
-            comment,
+           
           });
           if (!newNotif) return;
 

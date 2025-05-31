@@ -49,7 +49,6 @@ export function sendNotification({
   senderId,
   notifType,
   postId = null,
-  commentId = null,
 }) {
   initSocket(token); // đảm bảo socket mở trước
 
@@ -59,7 +58,6 @@ export function sendNotification({
     sender: senderId,
     notifType,
     post: postId,
-    comment: commentId,
   };
 
   // Gửi nếu socket đã sẵn sàng, nếu chưa thì đợi và gửi sau

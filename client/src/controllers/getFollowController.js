@@ -20,7 +20,7 @@ async function callFollowing() {
   const users = await followModule.getFollowing();
   if (!users || users.length === 0) {
     container.innerHTML = "Không có ai  nào.";
-  } else {
+  } else { 
     renderUserList(users, container);
   }
 }
