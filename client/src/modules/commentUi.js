@@ -1,10 +1,12 @@
 import { getData } from "./getData.js";
+import { sendNotification } from "./wsNotifier.js";
 
 export class CommentSetup {
-  constructor(postId) {
-    this.API_URL ="http://localhost:3000/v1/comment" ;
+  constructor(postId, postOwer) {
+    this.API_URL = "http://localhost:3000/v1/comment";
     this.POST_ID = postId;
     this.auth = getData.getAuth();
+    this.POST_OWER = postOwer;
     this.init();
   }
 
@@ -17,6 +19,7 @@ export class CommentSetup {
     try {
       const res = await fetch(`${this.API_URL}/${this.POST_ID}`);
       const comments = await res.json();
+
       const container = document.getElementById("comments-container");
       container.innerHTML = "";
       comments.forEach((c) => {
@@ -58,7 +61,7 @@ export class CommentSetup {
     const btnReply = document.createElement("button");
     btnReply.textContent = "Trả lời";
     btnReply.className = "btn-reply";
-    btnReply.onclick = () => this.showReplyInput(comment._id, div);
+    btnReply.onclick = () => this.showReplyInput(comment._id, div, comment.userId._id);
 
     actions.appendChild(btnReply);
 
@@ -88,7 +91,7 @@ export class CommentSetup {
     div.appendChild(header);
     div.appendChild(content);
 
-    // Replies (comment con)
+    // Replies
     if (comment.replies?.length) {
       const repliesDiv = document.createElement("div");
       repliesDiv.className = "replies";
@@ -101,7 +104,7 @@ export class CommentSetup {
     return div;
   }
 
-  showReplyInput(parentId, parentDiv) {
+  showReplyInput(parentId, parentDiv, commentParentOwnerId) {
     if (parentDiv.querySelector(".reply-input")) return;
 
     const textarea = document.createElement("textarea");
@@ -115,7 +118,7 @@ export class CommentSetup {
     btn.onclick = async () => {
       const content = textarea.value.trim();
       if (!content) return alert("Vui lòng nhập nội dung phản hồi");
-      await this.createComment(parentId, content);
+      await this.createComment(parentId, content, commentParentOwnerId);
       this.fetchComments();
     };
 
@@ -123,10 +126,10 @@ export class CommentSetup {
     parentDiv.appendChild(btn);
   }
 
-  async createComment(parentId, content) {
+  async createComment(parentId, content, commentParentOwnerId = null) {
     try {
       const token = this.auth.accessToken;
-      await fetch(`${this.API_URL}/${this.POST_ID}`, {
+      const res = await fetch(`${this.API_URL}/${this.POST_ID}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -138,6 +141,28 @@ export class CommentSetup {
           userId: this.auth.userId,
         }),
       });
+
+      if (res.ok) {
+        if (parentId && commentParentOwnerId && commentParentOwnerId !== this.auth.userId) {
+          sendNotification({
+            token,
+            recipientId: commentParentOwnerId,
+            senderId: this.auth.userId,
+            notifType: "đã phản hồi bình luận của bạn",
+            postId: this.POST_ID,
+          });
+        }
+
+        if (this.POST_OWER !== this.auth.userId && this.POST_OWER !== commentParentOwnerId) {
+          sendNotification({
+            token,
+            recipientId: this.POST_OWER,
+            senderId: this.auth.userId,
+            notifType: "đã bình luận trong bài viết của bạn",
+            postId: this.POST_ID,
+          });
+        }
+      }
     } catch (err) {
       console.error(err);
       alert("Tạo bình luận thất bại");
@@ -187,7 +212,7 @@ export class CommentSetup {
         const content = textarea.value.trim();
         if (!content) return alert("Vui lòng nhập bình luận");
 
-        await this.createComment(null, content);
+        await this.createComment(null, content); 
         textarea.value = "";
         this.fetchComments();
       });

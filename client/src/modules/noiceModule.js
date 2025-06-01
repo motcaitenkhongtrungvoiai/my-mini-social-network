@@ -3,26 +3,29 @@ const auth = getData.getAuth();
 export const noice = {
   Url_Api: "http://localhost:3000/v1/noice/",
 
-  getNoitifi: async () => {
-    try {
-      const getNoice = await fetch(`${noice.Url_Api}`, {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          token: `Bearer ${auth.accessToken}`,
-        },
-      });
-      const data = await getNoice.json();
+ getNoitifi: async () => {
+  try {
+    const getNoice = await fetch(`${noice.Url_Api}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        token: `Bearer ${auth.accessToken}`,
+      },
+    });
+    const data = await getNoice.json();
 
-      const total = Array.isArray(data)
-        ? data.reduce((acc, group) => acc + (group.count || 0), 0)
-        : data.total || 0;
+    const unreadGroups = Array.isArray(data)
+      ? data.filter(group => !group._id.read)
+      : [];
 
-      return { total, data };
-    } catch (err) {
-      console.error("lỗi lấy noitifi" + err);
-    }
-  },
+    const total = unreadGroups.reduce((acc, group) => acc + (group.count || 0), 0);
+
+    return { total, data };
+  } catch (err) {
+    console.error("lỗi lấy noitifi", err);
+  }
+},
+
 
   readNoitifi: async () => {
     try {

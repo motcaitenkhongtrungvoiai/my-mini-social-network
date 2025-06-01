@@ -359,7 +359,18 @@ body {
 .notification-badge:empty {
   display: none;
 }
-
+.delNoice{
+  fill: none;
+  outline: none;
+  border: none;
+  margin-left: 10px;
+  color: #b0b9c5;
+  font-size: large;
+  transition: 0.3s ease-in-out;
+}
+.delNoice:hover{
+color:rgb(15, 22, 28);
+}
 /* Dropdown */
 .dropdown-content {
   position: absolute;
@@ -468,7 +479,10 @@ body {
   transition: all 0.2s ease;
   border-left: 3px solid transparent;
 }
-
+.notification-item a{
+ display: flex;
+  align-items: center;
+}
 .notification-item.notification-unread {
   background-color: #f8f9fa;
   border-left-color: #1877f2;
@@ -711,6 +725,7 @@ body {
   overflow: hidden;
 }
 
+
 .popup-header {
   display: flex;
   justify-content: space-between;
@@ -761,6 +776,17 @@ body {
   padding-bottom: 8px;
   border-bottom: 2px solid #f0f2f5;
 }
+.btn-reply{background-color: #4CAF50; /* Màu nền xanh lá */
+    border: none; /* Xóa đường viền */
+    color: white; /* Màu chữ trắng */
+    padding: 15px 32px; /* Kích thước */
+    text-align: center; /* Căn giữa nội dung */
+    text-decoration: none; /* Xóa gạch chân */
+    display: inline-block; /* Hiển thị dạng block */
+    font-size: 16px; /* Cỡ chữ */
+    margin: 4px 2px; /* Khoảng cách */
+    cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột */
+    border-radius: 8px;}
 /* cmment pop*/
 /* popup.css */
 

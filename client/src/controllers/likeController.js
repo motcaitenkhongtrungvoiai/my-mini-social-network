@@ -24,7 +24,7 @@ export function attachLikeEvents() {
             token: auth.accessToken,
             recipientId: postOwner,
             senderId: auth.userId,
-            notifType: "like",
+            notifType: "đã thích bài viết của bạn",
             postId: postId,
           });
           console.log("Kết quả gửi thông báo:", notificationResult);

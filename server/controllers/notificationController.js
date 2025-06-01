@@ -31,15 +31,12 @@ const notificationController = {
         {
           $match: {
             recipient: userId,
-            read: false,
           },
-        },
-        {
-          $sort: { "notifications.createdAt": -1 },
         },
         {
           $group: {
             _id: {
+              read: "$read",
               type: "$type",
               post: "$post",
               comment: "$comment",
@@ -47,25 +44,31 @@ const notificationController = {
             count: { $sum: 1 },
           },
         },
+        {
+          $sort: {
+            "_id.read": 1, // false lên trước
+            count: -1,
+          },
+        },
       ]);
 
-        const populated = await Promise.all(
-      groupNoti.map(async (item) => {
-        let image = null;
-        if (item._id.post) {
-          const post = await Post.findById(item._id.post).select("image");
-          if (post?.image) {
-            image = host+`${post.image}`;
+      const populated = await Promise.all(
+        groupNoti.map(async (item) => {
+          let image = null;
+          if (item._id.post) {
+            const post = await Post.findById(item._id.post).select("image");
+            if (post?.image) {
+              image = host + `${post.image}`;
+            }
           }
-        }
-        return {
-          ...item,
-          image, 
-        };
-      })
-    );
+          return {
+            ...item,
+            image,
+          };
+        })
+      );
 
-    return res.status(200).json(populated);
+      return res.status(200).json(populated);
     } catch (err) {
       console.log("không lấy được thông tin:" + err);
     }
@@ -82,7 +85,6 @@ const notificationController = {
       const query = {
         recipient: userId,
         type,
-        read: true,
       };
 
       if (postId) {
