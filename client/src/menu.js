@@ -1,11 +1,11 @@
 import { getData } from "./modules/getData.js";
 import { initSocket, onNotification } from "./modules/wsNotifier.js";
 import { initNoice } from "./controllers/noitificationController.js";
+import { noice } from "./modules/noiceModule.js";
 //tác vụ sử lý data chính
 const auth = getData.getAuth();
 
 initNoice();
-
 
 initSocket(auth.accessToken);
 
@@ -21,15 +21,14 @@ try {
       countEl.textContent = currentCount;
       countEl.style.display = "block";
     } else {
-      countEl.style.display = "none"; 
+      countEl.style.display = "none";
     }
   });
 } catch (err) {
   console.error("Lỗi khi nhận dữ liệu:", err);
 }
 
-
-// thực hiện tác vụ đồ hoan
+// thực hiện tác vụ đồ họa
 const notificationBtn = document.getElementById("notificationBtn");
 const notificationPanel = document.getElementById("notificationPanel");
 const closeNotification = document.getElementById("closeNotification");
@@ -63,16 +62,19 @@ document.addEventListener("click", function (e) {
   }
 });
 
-notificationBtn.addEventListener("click", (e) => {
+notificationBtn.addEventListener("click", async (e) => {
   e.stopPropagation();
   notificationPanel.classList.add("active");
   overlay.classList.add("active");
-  initNoice();
+  const check = await initNoice();
 });
 
 closeNotification.addEventListener("click", () => {
   notificationPanel.classList.remove("active");
   overlay.classList.remove("active");
+  const countEl = document.querySelector(".notification-badge");
+  countEl.style.display = "none";
+  noice.readNoitifi();
 });
 
 overlay.addEventListener("click", () => {

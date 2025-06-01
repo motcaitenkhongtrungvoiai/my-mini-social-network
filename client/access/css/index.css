@@ -644,7 +644,7 @@ color:rgb(15, 22, 28);
 }
 /*creat post form*/
 .formCreatePost {
-  max-width: 600px;
+  width: 600px;
   margin: auto;
   background: #ffffff;
   padding: 20px 25px;

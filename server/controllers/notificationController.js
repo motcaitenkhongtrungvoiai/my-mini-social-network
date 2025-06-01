@@ -76,7 +76,7 @@ const notificationController = {
   delNotification: async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.user._id);
-      const { post: postId, comment: commentId, type } = req.body;
+      const { post, type,read } = req.body;
 
       if (!userId || !type) {
         throw new Error("Không đủ thông tin để xóa");
@@ -85,15 +85,9 @@ const notificationController = {
       const query = {
         recipient: userId,
         type,
+        post,
+        read,
       };
-
-      if (postId) {
-        query.post = new mongoose.Types.ObjectId(postId);
-      } else if (commentId) {
-        query.comment = new mongoose.Types.ObjectId(commentId);
-      } else {
-        throw new Error("Phải có post hoặc comment để xóa");
-      }
 
       const del = await Notification.deleteMany(query);
       return res.status(200).json(del);
@@ -106,30 +100,11 @@ const notificationController = {
   markAsRead: async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.user._id);
-      const { post: postId, comment: commentId, type } = req.body;
-
-      if (!userId || !type) {
-        throw new Error("Không đủ thông tin để cập nhật");
-      }
-
-      const query = {
-        recipient: userId,
-        type,
-        read: false,
-      };
-
-      if (postId) {
-        query.post = new mongoose.Types.ObjectId(postId);
-      } else if (commentId) {
-        query.comment = new mongoose.Types.ObjectId(commentId);
-      } else {
-        throw new Error("Phải có post hoặc comment để cập nhật");
-      }
-
-      const updated = await Notification.updateMany(query, {
-        $set: { read: true },
-      });
-      return res.status(200).json(updated);
+      const update = await Notification.updateMany(
+        {recipient:userId},
+        {$set:{read:true}}
+      )
+      return res.status(200).json(update);
     } catch (err) {
       console.log("không cập nhật được thông báo:", err);
       return res

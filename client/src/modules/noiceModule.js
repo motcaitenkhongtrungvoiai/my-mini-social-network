@@ -29,17 +29,12 @@ export const noice = {
 
   readNoitifi: async () => {
     try {
-      const response = await fetch(`${noice.Url_Api}read`, {
-        method: "post",
+      const response = await fetch(`${noice.Url_Api}`, {
+        method: "put",
         headers: {
           "Content-Type": "application/json",
           token: `Bearer ${auth.accessToken}`,
         },
-        body: JSON.stringify({
-          post: postId,
-          comment: commentId,
-          type,
-        }),
       });
 
       return await response.json();
@@ -48,7 +43,7 @@ export const noice = {
     }
   },
 
-  delNoitifi: async () => {
+  delNoitifi: async (postid,type,read) => {
     try {
       const response = await fetch(`${noice.Url_Api}`, {
         method: "delete",
@@ -57,9 +52,9 @@ export const noice = {
           token: `Bearer ${auth.accessToken}`,
         },
         body: JSON.stringify({
-          post: postId,
-          comment: commentId,
-          type,
+          post:postid,
+          type:type,
+          read:read,
         }),
       });
 

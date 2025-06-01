@@ -21,7 +21,8 @@ export const authModule = {
         });
 
         const result = await res.json();
-        console.log("Server response:", result);
+        if (res.ok){alert("tạo tài khoản thành công vui lòng đăng nhập bằng tài khảo vừa tạo ")}
+       else alert("Server response:", result);
       } catch (err) {
         console.error("Fetch error:", err);
         alert("server bận");
