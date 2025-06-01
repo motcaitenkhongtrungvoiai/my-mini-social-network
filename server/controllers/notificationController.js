@@ -1,6 +1,7 @@
 const comment = require("../model/comment");
 const Notification = require("../model/notification");
 const mongoose = require("mongoose");
+const Post = require("../model/post");
 const notificationController = {
   // func này dành cho soket. không lên đụng vào
   initNotification: async ({ recipient, sender, type, post, comment }) => {
@@ -21,6 +22,7 @@ const notificationController = {
   // khi người dùng bật thanh thông báo thì thực  hiện lấy dữ liệu.
   getNotification: async (req, res) => {
     try {
+      const host = process.env.HOST_URL;
       const userId = new mongoose.Types.ObjectId(req.user._id);
       if (!userId) {
         throw new Error("không lấy được người nhận");
@@ -42,13 +44,28 @@ const notificationController = {
               post: "$post",
               comment: "$comment",
             },
-            notifications: { $push: "$$ROOT" },
             count: { $sum: 1 },
           },
         },
       ]);
 
-      return res.status(200).json(groupNoti);
+        const populated = await Promise.all(
+      groupNoti.map(async (item) => {
+        let image = null;
+        if (item._id.post) {
+          const post = await Post.findById(item._id.post).select("image");
+          if (post?.image) {
+            image = host+`${post.image}`;
+          }
+        }
+        return {
+          ...item,
+          image, 
+        };
+      })
+    );
+
+    return res.status(200).json(populated);
     } catch (err) {
       console.log("không lấy được thông tin:" + err);
     }

@@ -12,7 +12,13 @@ export const noice = {
           token: `Bearer ${auth.accessToken}`,
         },
       });
-      return getNoice.json();
+      const data = await getNoice.json();
+
+      const total = Array.isArray(data)
+        ? data.reduce((acc, group) => acc + (group.count || 0), 0)
+        : data.total || 0;
+
+      return { total, data };
     } catch (err) {
       console.error("lỗi lấy noitifi" + err);
     }

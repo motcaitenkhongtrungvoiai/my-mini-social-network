@@ -1,6 +1,35 @@
 import { getData } from "./modules/getData.js";
-import { onNotification } from "./modules/wsNotifier.js";
+import { initSocket, onNotification } from "./modules/wsNotifier.js";
+import { initNoice } from "./controllers/noitificationController.js";
+//tác vụ sử lý data chính
+const auth = getData.getAuth();
 
+initNoice();
+
+
+initSocket(auth.accessToken);
+
+try {
+  onNotification(() => {
+    const countEl = document.querySelector(".notification-badge");
+
+    let currentCount = parseInt(countEl.textContent.trim()) || 0;
+
+    currentCount += 1;
+
+    if (currentCount >= 0) {
+      countEl.textContent = currentCount;
+      countEl.style.display = "block";
+    } else {
+      countEl.style.display = "none"; 
+    }
+  });
+} catch (err) {
+  console.error("Lỗi khi nhận dữ liệu:", err);
+}
+
+
+// thực hiện tác vụ đồ hoan
 const notificationBtn = document.getElementById("notificationBtn");
 const notificationPanel = document.getElementById("notificationPanel");
 const closeNotification = document.getElementById("closeNotification");
@@ -38,6 +67,7 @@ notificationBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   notificationPanel.classList.add("active");
   overlay.classList.add("active");
+  initNoice();
 });
 
 closeNotification.addEventListener("click", () => {
@@ -51,29 +81,10 @@ overlay.addEventListener("click", () => {
 });
 
 const profilebtn = document.getElementById("profilemove");
-const auth = getData.getAuth();
+
 profilebtn.href = `../public/profile.html?data=${auth.userId}`;
 
 const menu = document.querySelector("#menuOntop");
 
 const adminJob = document.getElementById("calladmin");
 if (auth.userRole != "admin") adminJob.style.display = "none";
-
-try {
-  onNotification((notification) => {
-    console.log("nhận tin nhắn: " + notification);
-    const panelBody = document.querySelector("#notificationPanel .panel-body");
-
-    const notifDiv = document.createElement("div");
-    notifDiv.className = "notification-item notification-unread";
-
-    const textDiv = document.createElement("div");
-    textDiv.className = "notification-text";
-    textDiv.textContent = `Bạn có ${notification.type} mới`;
-
-    notifDiv.appendChild(textDiv);
-    panelBody.prepend(notifDiv);
-  });
-} catch (err) {
-  console.log("lỗi nhận dư lieu" + err);
-}
