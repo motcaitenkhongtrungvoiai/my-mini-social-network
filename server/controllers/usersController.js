@@ -29,7 +29,7 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
     */
   getAllUsers: async (req, res) => {
   try {
-    const users = await user.find();
+    const users = await user.find({ admin: { $ne: true } });
     const totalUsers = users.length;
 
     const formattedUsers = users.map(u => {

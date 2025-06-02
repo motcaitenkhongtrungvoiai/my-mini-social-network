@@ -47,10 +47,7 @@ async function loadUsers() {
         <select id="select-${user._id}">
           <option value="user" ${
             user.role === "user" ? "selected" : ""
-          }>user</option>
-          <option value="admin" ${
-            user.role === "admin" ? "selected" : ""
-          }>admin</option>
+          }>user</option>        
           <option value="criminal" ${
             user.role === "criminal" ? "selected" : ""
           }>criminal</option>

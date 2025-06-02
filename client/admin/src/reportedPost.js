@@ -101,7 +101,7 @@ async function deletePost(postId) {
 
     if (res.ok) {
       alert("Đã xóa bài viết");
-      document.getElementById(postId).style.display="none";
+       document.getElementById(`${postId}`).style.display="none";
     } else {
       const error = await res.json();
       alert("Lỗi: " + error.message);

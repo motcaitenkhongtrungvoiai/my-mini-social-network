@@ -5,9 +5,8 @@ import { noice } from "./modules/noiceModule.js";
 //tác vụ sử lý data chính
 const auth = getData.getAuth();
 
-initNoice();
-window.addEventListener("DOMContentLoaded",()=>{initNoice();initSocket(auth.accessToken);})
 
+window.addEventListener("DOMContentLoaded",()=>{initNoice();initSocket(auth.accessToken);})
 
 
 try {

@@ -60,7 +60,7 @@ export const authModule = {
         authModule.saveUsertoLocal(result);
         // di chuyên đến trang cá nhân
         if (res.status === 200) {
-          window.location.replace("../public/profile.html");
+          window.location.replace(`../public/profile.html?data=${result._id}`);
         }
         else alert("sai mật khẩu hoặc email")
       } catch (err) {
