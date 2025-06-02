@@ -30,7 +30,7 @@ const notificationSocket = (wss) => {
             sender,
             type: notifType,
             post,        
-            comment, 
+            comment:comment, 
           });
           if (!newNotif) return;
 

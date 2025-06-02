@@ -441,7 +441,9 @@ color:rgb(15, 22, 28);
 .notification-panel.active {
   right: 0;
 }
-
+.notification-panel a{
+  text-decoration: none;
+}
 .panel-header {
   display: flex;
   justify-content: space-between;

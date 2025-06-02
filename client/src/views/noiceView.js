@@ -1,12 +1,15 @@
 export function renderNoiceItem(noice, container) {
-  container.innerHTML = ''; 
+  container.innerHTML = '';
 
   const noiceHTML = noice.map(item => `
-    <div  class="notification-item ${!item._id.read ? 'notification-unread' : ''}" data-post="${item._id.post}"  >
-      <div class="notification-text">Có ${item.count} người  ${item._id.type} </div>
-      <div class="noice-img">${item.image?`<img src="${item.image}">`:""}</div>
-
-      <button class="delNoice"data-post="${item._id.post}" data-type="${item._id.type}" data-read="${item._id.read}"><i class="fa-solid fa-trash"></i></button>
+    <div class="notification-item ${!item._id.read ? 'notification-unread' : ''}" data-post="${item._id.post}">
+      <a href="call-noice-Post.html?postid=${item._id.post}&commentId=${item._id.comment}">
+        <div class="notification-text">Có ${item.count} người ${item._id.type}</div>
+        <div class="noice-img">${item.image ? `<img src="${item.image}">` : ""}</div>
+      </a>
+      <button class="delNoice" data-post="${item._id.post}" data-type="${item._id.type}" data-read="${item._id.read}">
+        <i class="fa-solid fa-trash"></i>
+      </button>
     </div>
   `).join('');
 

@@ -2,6 +2,7 @@ const comment = require("../model/comment");
 const Notification = require("../model/notification");
 const mongoose = require("mongoose");
 const Post = require("../model/post");
+
 const notificationController = {
   // func này dành cho soket. không lên đụng vào
   initNotification: async ({ recipient, sender, type, post, comment }) => {
@@ -76,7 +77,7 @@ const notificationController = {
   delNotification: async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.user._id);
-      const { post, type,read } = req.body;
+      const { post, type, read } = req.body;
 
       if (!userId || !type) {
         throw new Error("Không đủ thông tin để xóa");
@@ -101,9 +102,9 @@ const notificationController = {
     try {
       const userId = new mongoose.Types.ObjectId(req.user._id);
       const update = await Notification.updateMany(
-        {recipient:userId},
-        {$set:{read:true}}
-      )
+        { recipient: userId },
+        { $set: { read: true } }
+      );
       return res.status(200).json(update);
     } catch (err) {
       console.log("không cập nhật được thông báo:", err);
@@ -112,5 +113,6 @@ const notificationController = {
         .json({ error: "Lỗi server khi cập nhật thông báo" });
     }
   },
+
 };
 module.exports = notificationController;

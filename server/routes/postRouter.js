@@ -15,4 +15,5 @@ router.put("/like/:idPost", middlewareController.verifyTokenAndtoken, postContro
 router.put("/report/:idPost",middlewareController.verifyTokenAndtoken,postController.updateReportPost)// report post for admin only
 router.get("/report",middlewareController.verifyTokenAndAdmin,postController.getReportedPosts)
 router.delete("/report/:idPost",middlewareController.verifyTokenAndAdmin,postController.delPostforAdmin)
+router.post("/noice/:postId",middlewareController.verifyTokenAndtoken,postController.noicePost)
 module.exports = router;

@@ -323,6 +323,52 @@ getPosts: async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   },
+    noicePost: async (req, res) => {
+    try {
+      const postId = req.params.postId;
+      const posts = await post
+        .find({ _id:postId })
+        .populate("user", "username avatar")
+        .sort({ createdAt: -1 })
+        .lean();
+
+      const result = posts.map((post) => {
+        const host = process.env.HOST_URL;
+
+        const avatar =
+          post.user.avatar && post.user.avatar.startsWith("/access/")
+            ? host + post.user.avatar
+            : host + "/access/default.png";
+
+        const image =
+          post.image && post.image.startsWith("/access/")
+            ? host + post.image
+            : null;
+        return {
+          _id: post._id,
+          user: {
+            _id: post.user._id,
+            username: post.user.username,
+            avatar: avatar,
+          },
+          code: post.codesnippets,
+          content: post.content,
+          link: post.link,
+          type: post.typePost,
+          image: image,
+          likedPostIds: post.likes,
+          comment: post.comment,
+          likeCount: post.likes?.length || 0,
+          commentCount: post.comments?.length || 0,
+        };
+      });
+
+      res.status(200).json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    }
+  },
 };
 
 module.exports = postController;

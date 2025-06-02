@@ -6,8 +6,9 @@ import { noice } from "./modules/noiceModule.js";
 const auth = getData.getAuth();
 
 initNoice();
+window.addEventListener("DOMContentLoaded",()=>{initNoice();initSocket(auth.accessToken);})
 
-initSocket(auth.accessToken);
+
 
 try {
   onNotification(() => {
@@ -69,7 +70,7 @@ notificationBtn.addEventListener("click", async (e) => {
   const check = await initNoice();
 });
 
-closeNotification.addEventListener("click", () => {
+closeNotification.addEventListener("click", async () => {
   notificationPanel.classList.remove("active");
   overlay.classList.remove("active");
   const countEl = document.querySelector(".notification-badge");

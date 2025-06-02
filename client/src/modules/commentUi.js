@@ -33,6 +33,7 @@ export class CommentSetup {
   renderComment(comment) {
     const div = document.createElement("div");
     div.className = "comment";
+    div.id= comment._id;
 
     // Header: chứa avatar, username và các nút hành động
     const header = document.createElement("div");
@@ -61,7 +62,8 @@ export class CommentSetup {
     const btnReply = document.createElement("button");
     btnReply.textContent = "Trả lời";
     btnReply.className = "btn-reply";
-    btnReply.onclick = () => this.showReplyInput(comment._id, div, comment.userId._id);
+    btnReply.onclick = () =>
+      this.showReplyInput(comment._id, div, comment.userId._id);
 
     actions.appendChild(btnReply);
 
@@ -108,10 +110,10 @@ export class CommentSetup {
     if (parentDiv.querySelector(".reply-input")) return;
 
     const textarea = document.createElement("textarea");
+
     textarea.className = "reply-input";
     textarea.rows = 2;
     textarea.cols = 50;
-    textarea.placeholder = "Viết phản hồi...";
 
     const btn = document.createElement("button");
     btn.textContent = "Gửi";
@@ -124,6 +126,9 @@ export class CommentSetup {
 
     parentDiv.appendChild(textarea);
     parentDiv.appendChild(btn);
+    textarea.placeholder = "Viết phản hồi...";
+    textarea.setAttribute("tabindex", "-1");
+    textarea.focus();
   }
 
   async createComment(parentId, content, commentParentOwnerId = null) {
@@ -139,28 +144,38 @@ export class CommentSetup {
           content,
           parentId,
           userId: this.auth.userId,
+          
         }),
       });
-
+      const data = await res.json();
+      console.log(data._id);
       if (res.ok) {
-        if (parentId && commentParentOwnerId && commentParentOwnerId !== this.auth.userId) {
+        if (
+          parentId &&
+          commentParentOwnerId &&
+          commentParentOwnerId !== this.auth.userId
+        ) {
           sendNotification({
             token,
             recipientId: commentParentOwnerId,
             senderId: this.auth.userId,
             notifType: "đã phản hồi bình luận của bạn",
             postId: this.POST_ID,
-            comment:parentId,
+            commentId: data._id,
           });
         }
 
-        if (this.POST_OWER !== this.auth.userId && this.POST_OWER !== commentParentOwnerId) {
+        if (
+          this.POST_OWER !== this.auth.userId &&
+          this.POST_OWER !== commentParentOwnerId
+        ) {
           sendNotification({
             token,
             recipientId: this.POST_OWER,
             senderId: this.auth.userId,
             notifType: "đã bình luận trong bài viết của bạn",
             postId: this.POST_ID,
+            commentId:data._id,
           });
         }
       }
@@ -213,7 +228,7 @@ export class CommentSetup {
         const content = textarea.value.trim();
         if (!content) return alert("Vui lòng nhập bình luận");
 
-        await this.createComment(null, content); 
+        await this.createComment(null, content);
         textarea.value = "";
         this.fetchComments();
       });
