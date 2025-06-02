@@ -107,51 +107,67 @@ const postController = {
       res.status(500).json({ message: err.message });
     }
   },
-  getPosts: async (req, res) => {
-    try {
-      const posts = await post
-        .find()
-        .populate("user", "username avatar")
-        .sort({ createdAt: -1 })
-        .lean();
+  // In the getPosts method of postController.js (backend)
+getPosts: async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-      const result = posts.map((post) => {
-        const host = process.env.HOST_URL;
+    const posts = await post
+      .find()
+      .populate("user", "username avatar")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
-        const avatar =
-          post.user.avatar && post.user.avatar.startsWith("/access/")
-            ? host + post.user.avatar
-            : host + "/access/default.png";
+    const totalPosts = await post.countDocuments();
+    const totalPages = Math.ceil(totalPosts / limit);
 
-        const image =
-          post.image && post.image.startsWith("/access/")
-            ? host + post.image
-            : null;
-        return {
-          _id: post._id,
-          user: {
-            _id: post.user._id,
-            username: post.user.username,
-            avatar: avatar,
-          },
-          code: post.codesnippets,
-          content: post.content,
-          link: post.link,
-          type: post.typePost,
-          image: image,
-          likedPostIds: post.likes,
-          comment: post.comment,
-          likeCount: post.likes?.length || 0,
-          commentCount: post.comments?.length || 0,
-        };
-      });
+    const host = process.env.HOST_URL;
 
-      res.status(200).json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    }
-  },
+    const result = posts.map((post) => {
+      const avatar =
+        post.user.avatar && post.user.avatar.startsWith("/access/")
+          ? host + post.user.avatar
+          : host + "/access/default.png";
+
+      const image =
+        post.image && post.image.startsWith("/access/")
+          ? host + post.image
+          : null;
+          
+      return {
+        _id: post._id,
+        user: {
+          _id: post.user._id,
+          username: post.user.username,
+          avatar: avatar,
+        },
+        code: post.codesnippets,
+        content: post.content,
+        link: post.link,
+        type: post.typePost,
+        image: image,
+        likedPostIds: post.likes,
+        comment: post.comment,
+        likeCount: post.likes?.length || 0,
+        commentCount: post.comments?.length || 0,
+      };
+    });
+
+    res.status(200).json({
+      posts: result,
+      currentPage: page,
+      totalPages,
+      hasMore: page < totalPages
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
 
   profilePosts: async (req, res) => {
     try {

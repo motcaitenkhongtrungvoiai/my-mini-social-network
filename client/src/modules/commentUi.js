@@ -150,6 +150,7 @@ export class CommentSetup {
             senderId: this.auth.userId,
             notifType: "đã phản hồi bình luận của bạn",
             postId: this.POST_ID,
+            comment:parentId,
           });
         }
 

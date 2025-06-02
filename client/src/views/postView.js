@@ -2,6 +2,9 @@ export function renderPostList(posts, container) {
   container.innerHTML = "";
   posts.forEach((post) => {
     container.appendChild(createPostElement(post));
+     if (!document.getElementById(post._id)) {
+      container.appendChild(createPostElement(post));
+    }
   });
    if (window.hljs) {
     document.querySelectorAll('pre code').forEach((block) => {

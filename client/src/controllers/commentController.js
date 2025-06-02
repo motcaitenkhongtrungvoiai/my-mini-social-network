@@ -10,7 +10,7 @@ export function attachCommentEvents() {
       e.preventDefault();
       commentUi.initPopup();
       const viewcomment=new CommentSetup(btn.dataset.postid,btn.dataset.postower);
-console.log(btn.dataset.postower);
+      console.log(btn.dataset.postower);
       // Prevent scrolling on body when popup is open
       document.body.style.overflow = 'hidden';
     });
