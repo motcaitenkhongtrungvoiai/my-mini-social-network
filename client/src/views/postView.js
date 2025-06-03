@@ -17,12 +17,33 @@ function createPostElement(post) {
   const auth = JSON.parse(localStorage.getItem("auth"));
   const div = document.createElement("div");
   div.className = "post";
-  div.innerHTML = `<img href="${post.link}">
+
+  const maxLength = 300;
+  const isLong = post.content.length > maxLength;
+  const shortContent = post.content.slice(0, maxLength);
+
+  const contentHtml = `
+    <div class="post-content">
+      ${isLong 
+        ? `<span class="short-content">${shortContent}...</span>
+           <span class="full-content" style="display:none;">${post.content}</span>
+           <a href="#" class="see-more">Xem thêm</a>`
+        : `<span class="full-content">${post.content}</span>`
+      }
+      <br>
+      ${post.code ? `<pre><code>${post.code}</code></pre>` : ""}
+      <br>
+      ${post.link ? `<a href="${post.link}">${post.link}</a>` : ""}
+    </div>
+  `;
+
+  div.innerHTML = `
+    <img href="${post.link}">
     <div class="post-container" id="${post._id}">
       <div class="post-header">
         <img src="${post.user.avatar}" class="avatar">
         <div class="user-info">
-        <a href="../public/profile.html?data=${post.user._id}" class="username">${post.user.username}</a>
+          <a href="../public/profile.html?data=${post.user._id}" class="username">${post.user.username}</a>
         </div>
         <div class="more-options">
           <button class="action-btn report-btn" data-userid="${post.user._id}" data-postid="${post._id}" data-postcontent="${post.content}">
@@ -30,12 +51,7 @@ function createPostElement(post) {
           </button>
         </div>
       </div>
-      <div class="post-content">${post.content}<br>
-      ${post.code?`<pre><code>${post.code}</pre></code>`:""}
-      <br>${post.link? `<a href="${post.link}">${post.link}</a> `:""}
-      </div>
-                
-            
+      ${contentHtml}
       ${post.image ? `<img src="${post.image}" class="post-image">` : ""}
       <div class="post-stats">
         <span><i class="fas fa-thumbs-up"></i> ${post.likeCount}</span>
@@ -51,6 +67,21 @@ function createPostElement(post) {
       </div>
     </div>
   `;
+
+  // Thêm xử lý sự kiện "Xem thêm"
+  setTimeout(() => {
+    const seeMoreBtn = div.querySelector(".see-more");
+    if (seeMoreBtn) {
+      seeMoreBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        div.querySelector(".short-content").style.display = "none";
+        div.querySelector(".full-content").style.display = "inline";
+        seeMoreBtn.style.display = "none";
+      });
+    }
+  }, 0);
+
   return div;
 }
+
 
