@@ -17,7 +17,7 @@ function createPostElement(post) {
   const auth = JSON.parse(localStorage.getItem("auth"));
   const div = document.createElement("div");
   div.className = "post";
-
+  const createdAt = timeAgo(post.createdAt);
   const maxLength = 300;
   const isLong = post.content.length > maxLength;
   const shortContent = post.content.slice(0, maxLength);
@@ -42,8 +42,10 @@ function createPostElement(post) {
     <div class="post-container" id="${post._id}">
       <div class="post-header">
         <img src="${post.user.avatar}" class="avatar">
+        
         <div class="user-info">
           <a href="../public/profile.html?data=${post.user._id}" class="username">${post.user.username}</a>
+          <p class="post-time">${createdAt}</p>
         </div>
         <div class="more-options">
           <button class="action-btn report-btn" data-userid="${post.user._id}" data-postid="${post._id}" data-postcontent="${post.content}">
@@ -68,7 +70,7 @@ function createPostElement(post) {
     </div>
   `;
 
-  // Thêm xử lý sự kiện "Xem thêm"
+
   setTimeout(() => {
     const seeMoreBtn = div.querySelector(".see-more");
     if (seeMoreBtn) {
@@ -79,9 +81,21 @@ function createPostElement(post) {
         seeMoreBtn.style.display = "none";
       });
     }
-  }, 0);
+  }, 100);
 
   return div;
+}
+function timeAgo(createdAt) {
+  const now = new Date();
+  const postTime = new Date(createdAt);
+  const diff = Math.floor((now - postTime) / 1000); 
+
+  if (diff < 60) return `${diff} giây trước`;
+  if (diff < 3600) return `${Math.floor(diff / 60)} phút trước`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} giờ trước`;
+  if (diff < 30 * 86400) return `${Math.floor(diff / 86400)} ngày trước`;
+  if (diff < 12 * 30 * 86400) return `${Math.floor(diff / (30 * 86400))} tháng trước`;
+  return `${Math.floor(diff / (365 * 86400))} năm trước`;
 }
 
 

@@ -3,7 +3,7 @@ const user = require("../model/user");
 const path = require("path");
 const dotenv = require("dotenv");
 const fs = require("fs");
-
+const post = require("../model/post")
 dotenv.config();
 
 const userController = {
@@ -29,9 +29,10 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
     */
   getAllUsers: async (req, res) => {
   try {
+     const posts = await post.find ({beReport:true});
     const users = await user.find({ admin: { $ne: true } });
-    const totalUsers = users.length;
-
+    const totalUsers = users.length;  
+    const postReport = posts.length;
     const formattedUsers = users.map(u => {
       const { password, admin, ...other } = u._doc;
       other.avatar = u.avatar.startsWith("/access/")
@@ -43,7 +44,7 @@ CACH THUC CUA USER VA ADMIN LIEN QUAN DEN USER
       return other;
     });
 
-    res.status(200).json({ totalUsers, users: formattedUsers });
+    res.status(200).json({ totalUsers,postReport,users: formattedUsers });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });

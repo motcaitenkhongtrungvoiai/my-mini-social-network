@@ -53,29 +53,39 @@ const postController = {
     }
   },
 
-  delPostforAdmin: async (req, res) => {
-    const postId = req.params.idPost;
-    try {
-      const foundPost = await post.findById(postId);
-      if (!foundPost) {
-        throw new Error("Post not found");
-      }
-
-      if (foundPost.comments.length > 0) {
-        const deleteComments = await comment.deleteMany({
-          _id: { $in: foundPost.comments },
-        });
-
-        if (deleteComments.deletedCount === 0) {
-          throw new Error("No comments were deleted");
-        }
-      }
-      await post.findByIdAndDelete(postId);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+delPostforAdmin: async (req, res) => {
+  const postId = req.params.idPost;
+  try {
+    const foundPost = await post.findById(postId);
+    if (!foundPost) {
+      throw new Error("Post not found");
     }
-  },
+
+
+    if (foundPost.comments.length > 0) {
+      const deleteComments = await comment.deleteMany({
+        _id: { $in: foundPost.comments },
+      });
+
+      if (deleteComments.deletedCount === 0) {
+        throw new Error("No comments were deleted");
+      }
+    }
+
+    await user.findByIdAndUpdate(foundPost.user, {
+      $inc: { reportCount: 1 }
+    });
+
+   
+    await post.findByIdAndDelete(postId);
+
+    res.status(200).json({ message: "Post and related comments deleted. Report count updated." });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+},
+
 
   deletePost: async (req, res) => {
     try {
@@ -154,6 +164,7 @@ getPosts: async (req, res) => {
         comment: post.comment,
         likeCount: post.likes?.length || 0,
         commentCount: post.comments?.length || 0,
+        createdAt:post.createdAt,
       };
     });
 
@@ -206,6 +217,7 @@ getPosts: async (req, res) => {
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
+           createdAt:post.createdAt,
         };
       });
 
@@ -314,6 +326,7 @@ getPosts: async (req, res) => {
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
+           createdAt:post.createdAt,
         };
       });
 
@@ -360,6 +373,7 @@ getPosts: async (req, res) => {
           comment: post.comment,
           likeCount: post.likes?.length || 0,
           commentCount: post.comments?.length || 0,
+           createdAt:post.createdAt,
         };
       });
 

@@ -1,28 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Mangerment</title>
-    <link rel="stylesheet" href="main.css">
+    <title>User Management Dashboard</title>
+ <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-    <h2>User Management<p id="numberUser"></p></h2>
-    <a href="showAllpostbeReport.html">post management</a>
-  <table id="usersTable">
-    <thead>
-      <tr>
-        <th>Avatar</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Change Role</th>
-        <th>Go to</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-    <script type="module" src="../src/showAllUser.js"></script>
-    <script type="module" src="../src/main.js"></script>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>User Management Dashboard</h1>
+
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="stats-card">
+
+            <div class="stat-item">
+                <div class="stat-value" id="numberUser">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="reportedPosts">0</div>
+                <div class="stat-label">Reported Posts</div>
+                <a href="showAllpostbeReport.html">view</a>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="criminalUsers">0</div>
+                <div class="stat-label">Criminal Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="reportedUsers">0</div>
+                <div class="stat-label">Reported Users</div>
+                <button id="swich-table"> view </button>
+            </div>
+        </div>
+
+        <div class="allUser-container">
+            <h2 class="section-title">All Users</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search all users...">
+            </div>
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="reportUser-container">
+            <h2 class="section-title">Reported Users</h2>
+            <div class="search-container">
+                <input type="text" id="searchReportedInput" placeholder="Search reported users...">
+            </div>
+            <table id="reportedUsersTable">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Reports</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="module" src="../src/showAllUser.js">
+       
+    </script>
 </body>
+
 </html>

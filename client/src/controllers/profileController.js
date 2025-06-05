@@ -110,6 +110,12 @@ function renderUserInfo(user) {
     roleUser.textContent = "<!!tài khoản này đang bị khóa vô thời hạn>";
   }
   const auth = getAuth();
+  const profileId= getUrldata()
+const stickReport = document.querySelector(".stickReport");
+if (user.reportCount > 0){
+  stickReport.innerHTML= user.reportCount +`<i class="fa-solid fa-circle-exclamation"></i>`
+}
+
 
   if (user.followers.includes(auth.userId)) {
     followbtn.textContent = "unfollow?";
