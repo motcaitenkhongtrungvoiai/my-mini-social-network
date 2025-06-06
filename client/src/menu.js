@@ -5,9 +5,10 @@ import { noice } from "./modules/noiceModule.js";
 //tác vụ sử lý data chính
 const auth = getData.getAuth();
 
-
-window.addEventListener("DOMContentLoaded",()=>{initNoice();initSocket(auth.accessToken);})
-
+window.addEventListener("DOMContentLoaded", () => {
+  initNoice();
+  initSocket(auth.accessToken);
+});
 
 try {
   onNotification(() => {
@@ -90,3 +91,20 @@ const menu = document.querySelector("#menuOntop");
 
 const adminJob = document.getElementById("calladmin");
 if (auth.userRole != "admin") adminJob.style.display = "none";
+
+//swich theme
+
+const swichBtn = document.querySelector("#dark-lightMode");
+
+swichBtn.addEventListener("click", () => {
+  toggleTheme();
+});
+
+if (localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark");
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}

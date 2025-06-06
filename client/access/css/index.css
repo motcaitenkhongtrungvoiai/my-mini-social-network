@@ -61,6 +61,11 @@ body {
   font-size: 15px;
   line-height: 1.4;
   color: #050505;
+   word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.dropdown-item{
+  cursor: pointer;
 }
 .post-image {
   width: 100%;
@@ -1350,7 +1355,7 @@ hr {
   transform: translateY(-2px);
 }
 
-/* Hiệu ứng click */
+
 .toggle-buttons .btn:active {
   transform: scale(0.98);
 }

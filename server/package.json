@@ -11,11 +11,16 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
     "multer": "^1.4.5-lts.2",
-    "path": "^0.12.7",
+    "path": "^0.12.7",    
     "psd": "^3.4.0",
     "sharp": "^0.34.1",
     "socket.io": "^4.8.1",
-    "ws": "^8.18.2"
+    "ws": "^8.18.2" 
+  },
+  "author-des": {
+    "name":"Hà trung Hiếu",
+    "comment":"một số library để thử nghiệm hệ thống , không có sử dụng thực tế trong quá trình chạy server",
+    "class":"LTMT3-k14"
   },
   "scripts": {
     "start": "node index.js"

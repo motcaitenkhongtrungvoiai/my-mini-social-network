@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+     <script>
+    (function () {
+      try {
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ower profile</title>
@@ -9,7 +18,7 @@
     <link rel="stylesheet" href="../access/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <!-- JS thư viện -->
-
+  <link rel="stylesheet" href="../access/css/darkmode.css">
 <body>
 
     </head>

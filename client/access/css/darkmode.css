@@ -1,0 +1,262 @@
+/* Dark Mode - Enhanced Version */
+:root.dark {
+  --dark-bg: #18191a;
+  --dark-card: #242526;
+  --dark-card-hover: #2d2f31;
+  --dark-border: #3a3b3c;
+  --dark-text-primary: #e4e6eb;
+  --dark-text-secondary: #b0b3b8;
+  --dark-accent: #2e89ff;
+  --dark-accent-hover: #1a73e8;
+  --dark-danger: #ff6b6b;
+  --dark-success: #51cf66;
+  --dark-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+html.dark body {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text-primary) !important;
+  transition: var(--transition);
+}
+
+/* Cards & Containers */
+html.dark .post-container,
+html.dark .profile,
+html.dark .formCreatePost,
+html.dark .updateProfile,
+html.dark .comment,
+html.dark .notification-item,
+html.dark .popup-content,
+html.dark .dropdown-content,
+html.dark .user-card {
+  background-color: var(--dark-card) !important;
+  color: var(--dark-text-primary) !important;
+  border-color: var(--dark-border) !important;
+  box-shadow: var(--dark-shadow) !important;
+  transition: var(--transition);
+}
+
+/* Hover States */
+html.dark .post-container:hover,
+html.dark .user-card:hover,
+html.dark .notification-item:hover {
+  background-color: var(--dark-card-hover) !important;
+  transform: translateY(-2px);
+}
+
+/* Text & Links */
+html.dark .username,
+html.dark .panel-title,
+html.dark .popup-header h3 {
+  color: var(--dark-text-primary) !important;
+}
+
+html.dark .post-time,
+html.dark .email,
+html.dark .view-profile {
+  color: var(--dark-text-secondary) !important;
+}
+
+html.dark a,
+html.dark .view-profile,
+html.dark .webside {
+  color: var(--dark-accent) !important;
+  transition: var(--transition);
+}
+
+html.dark a:hover,
+html.dark .view-profile:hover {
+  color: var(--dark-accent-hover) !important;
+  text-decoration: underline !important;
+}
+html.dark .full-content , html.dark .short-content{
+  color: var(--dark-text-primary);
+}
+
+
+/* Buttons */
+html.dark .formCreatePost,.head_form h1 {
+  background-color: var(--dark-border);
+  color: var(--dark-text-primary);
+}
+
+html.dark .create-post a,
+html.dark .follow-btn,
+html.dark #updateBtn,
+html.dark #create_comment {
+  background-color: var(--dark-accent) !important;
+  color: white !important;
+  transition: var(--transition);
+}
+
+html.dark .follow-btn:hover,
+html.dark .formCreatePost button:hover,
+html.dark #updateBtn:hover {
+  background-color: var(--dark-accent-hover) !important;
+  transform: translateY(-1px);
+}
+
+/* Special Buttons */
+html.dark .btn-edit {
+  background-color: #5a4e00 !important;
+  color: #ffd43b !important;
+}
+
+html.dark .btn-delete {
+  background-color: #5c2a2a !important;
+  color: #ff8787 !important;
+}
+
+html.dark .btn-reply {
+  background-color: #2b3a42 !important;
+  color: var(--dark-text-primary) !important;
+}
+
+/* Navigation & Header */
+html.dark .navbar,
+html.dark .search-bar,
+html.dark .popup-header {
+  background-color: var(--dark-card) !important;
+  border-bottom: 1px solid var(--dark-border) !important;
+}
+
+html.dark .search-bar {
+  background-color: #3a3b3c !important;
+}
+
+html.dark .search-bar input {
+  color: var(--dark-text-primary) !important;
+}
+
+/* Form Elements */
+html.dark textarea,
+html.dark input[type="text"],
+html.dark input[type="url"] {
+  background-color: #3a3b3c !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+html.dark textarea:focus,
+html.dark input[type="text"]:focus,
+html.dark input[type="url"]:focus {
+  border-color: var(--dark-accent) !important;
+  box-shadow: 0 0 0 2px rgba(46, 137, 255, 0.3) !important;
+}
+
+/* Overlays & Shadows */
+html.dark .overlay {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Notification Badges */
+html.dark .notification-badge {
+  background-color: var(--dark-danger) !important;
+  color: white !important;
+}
+
+/* Toggle Buttons */
+html.dark .toggle-buttons::before {
+  background: var(--dark-accent) !important;
+}
+
+html.dark .toggle-buttons .btn {
+  color: var(--dark-text-secondary) !important;
+}
+
+html.dark .toggle-buttons .btn.active {
+  color: white !important;
+}
+
+/* Icons */
+html.dark .delNoice,
+html.dark .close-btn,
+html.dark .close-popup {
+  color: var(--dark-text-secondary) !important;
+}
+
+html.dark .delNoice:hover,
+html.dark .close-btn:hover,
+html.dark .close-popup:hover {
+  color: var(--dark-text-primary) !important;
+}
+html.dark .dropdown-item{
+  color: var(--dark-accent)
+}
+/* Transitions */
+html.dark * {
+  transition: background-color 0.3s ease, color 0.2s ease;
+}
+html.dark code{
+ background-color: #000000 !important;
+  color: #d4d4d4 !important;
+}
+
+html.dark .hljs-keyword {
+  color: #569cd6 !important;
+}
+html.dark .hljs-string {
+  color: #cd653c !important;
+}
+html.dark .hljs-comment {
+  color: #6a9955 !important;
+}
+html.dark .hljs-number {
+  color: #b5cea8 !important;
+}
+html.dark .hljs-function {
+  color: #dcdcaa !important;
+}
+
+/* Dark Mode */
+html.dark .notification-panel {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444444;
+}
+
+html.dark .panel-header {
+  background-color: #1e1e1e;
+  border-bottom-color: #444444;
+}
+
+html.dark .notification-item {
+  border-bottom-color: #444444;
+}
+
+html.dark .notification-item:hover {
+  background-color: #383838;
+}
+
+html.dark .notification-unread {
+  background-color: #1a2a3a;
+}
+
+html.dark .notification-text {
+  color: #e0e0e0;
+}
+
+html.dark [style*="color:red"] {
+  color: #ff6b6b !important;
+}
+
+html.dark .notification-time {
+  color: #aaaaaa;
+}
+
+html.dark .delNoice {
+  color: #aaaaaa;
+  background-color: #383838;
+}
+
+html.dark .delNoice:hover {
+  color: #ff6b6b;
+  background-color: #444444;
+}
+
+html.dark .noice-img img {
+  filter: brightness(0.8);
+}
