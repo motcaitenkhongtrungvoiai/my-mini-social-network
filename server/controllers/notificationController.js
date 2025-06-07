@@ -7,20 +7,30 @@ const notificationController = {
   // func này dành cho soket. không lên đụng vào
   initNotification: async ({ recipient, sender, type, post, comment }) => {
     try {
-      const newNotice = await Notification.create({
-        recipient,
-        sender,
-        type,
-        post,
-        comment,
-      });
-      return newNotice;
+      const checkNoice = await Notification.findOne({
+        sender: sender,
+        recipient: recipient,
+        post: post,
+        type: type,
+      }).lean();
+      if (checkNoice) {
+        return;
+      } else {
+        const newNotice = await Notification.create({
+          recipient,
+          sender,
+          type,
+          post,
+          comment,
+        });
+        return newNotice;
+      }
     } catch (err) {
       console.error("\n noice wrong insert!!", err);
       return null;
     }
   },
-  // khi người dùng bật thanh thông báo thì thực  hiện lấy dữ liệu.
+
   getNotification: async (req, res) => {
     try {
       const host = process.env.HOST_URL;
@@ -113,6 +123,5 @@ const notificationController = {
         .json({ error: "Lỗi server khi cập nhật thông báo" });
     }
   },
-
 };
 module.exports = notificationController;
