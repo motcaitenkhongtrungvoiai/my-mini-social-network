@@ -2,79 +2,94 @@
 <html lang="en">
 
 <head>
-     <script>
+  <script>
     (function () {
       try {
         if (localStorage.getItem("theme") === "dark") {
           document.documentElement.classList.add("dark");
         }
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ower profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../access/css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <!-- JS thư viện -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ower profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../access/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+  <script type="module" src="../src/anime.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <!-- JS thư viện -->
+  
   <link rel="stylesheet" href="../access/css/darkmode.css">
+
 <body>
 
-    </head>
-    <!--găn menu-->
-    <div class="menu-container"></div>
-    <script>
-        fetch("menu.html")
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector(".menu-container").innerHTML = data;
-                // load script 
-                const script = document.createElement("script");
-                script.src = "../src/menu.js";
-                script.type = "module";
-                document.body.appendChild(script);
-            });
-    </script>
+  </head>
+  <!--găn menu-->
+  <div class="menu-container"></div>
+  <script>
+    fetch("menu.html")
+      .then(response => response.text())
+      .then(data => {
+        document.querySelector(".menu-container").innerHTML = data;
+        // load script 
+        const script = document.createElement("script");
+        script.src = "../src/menu.js";
+        script.type = "module";
+        document.body.appendChild(script);
+      });
+  </script>
 
-    <!--show thông tin-->
-    <div class="profile">
-        <div class="header-profile"> <img class="avatar" /><img class="coverphoto" /></div>
-        <div class="profile-desc">
-           <div class="containt-top"><div class="username"></div> <div class="stickReport"></div></div> 
-            <div class="follow">follow</div>
-            <div class="email"></div>
-            <div class="desc"></div>
-            <a class="webside"></a>
-            <div id="roleUser"></div>
-            
-        </div>
-
-        <div class="content-footer">
-            <div class="follower"> <span></span>follower</div>
-            <div class="following"> <span></span>following</div>
-        </div>
+  <!--show thông tin-->
+  <div class="profile">
+    <div class="header-profile"> <img class="avatar" /><img class="coverphoto" /></div>
+    <div class="profile-desc">
+      <div class="containt-top">
+        <div class="username"></div>
+        <div class="stickReport"></div>
+      </div>
+      <div class="follow">follow</div>
+      <div class="email"></div>
+      <div class="desc"></div>
+      <a class="webside"></a>
+      <div id="roleUser"></div>
 
     </div>
-    <div class="create-post"><a href="createPost.html"><i class="fa-solid fa-plus"></i> tạo bài viết</a></div>
-    <!-- call post form user -->
-    <div class="postFromUser post-containerAll">
+
+    <div class="content-footer">
+      <div class="follower"> <span></span>follower</div>
+      <div class="following"> <span></span>following</div>
     </div>
 
-    <div class="popup-overlay" id="popup">
-        <div class="popup-content">
-            <div class="toggle-buttons">
-                <div id="showFollower" class="btn"><i class="fa-solid fa-users"></i> follower </div>
-                <div id="showFollowing" class="btn"><i class="fa-solid fa-layer-group"></i> following </div>
-            </div>
-            <div class="data-container"></div>
-        </div>
+  </div>
+  <div class="create-post"><a href="createPost.html"><i class="fa-solid fa-plus"></i> tạo bài viết</a></div>
+  <!-- call post form user -->
+  <div class="postFromUser post-containerAll">
+    <div class="circle-wrapper">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
     </div>
-    </div>
+  </div>
 
-    <script type="module" src="../src/profile.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+  <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+      <div class="toggle-buttons">
+        <div id="showFollower" class="btn"><i class="fa-solid fa-users"></i> follower </div>
+        <div id="showFollowing" class="btn"><i class="fa-solid fa-layer-group"></i> following </div>
+      </div>
+      <div class="data-container">
+
+      </div>
+    </div>
+  </div>
+  </div>
+  <script type="module" src="../src/anime.js"></script>
+  <script type="module" src="../src/profile.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
 </body>
 
 </html>

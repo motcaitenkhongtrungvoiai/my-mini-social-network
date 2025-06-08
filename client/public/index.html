@@ -2,47 +2,61 @@
 <html lang="en">
 
 <head>
-     <script>
+  <script>
     (function () {
       try {
         if (localStorage.getItem("theme") === "dark") {
           document.documentElement.classList.add("dark");
         }
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sideprom</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <link rel="stylesheet" href="../access/css/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sideprom</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="../access/css/index.css">
   <link rel="stylesheet" href="../access/css/darkmode.css">
 </head>
 
 <body>
-    <!-- hien thi toan bo cac bai dang -->
-    <div class="menu-container"></div>
-    <script>
-        fetch("menu.html")
-            .then(response => response.text())
-            .then(data => {
-                document.querySelector(".menu-container").innerHTML = data;
-                const script = document.createElement("script");
-                script.src = "../src/menu.js";
-                script.type = "module";
-                document.body.appendChild(script);
-            });
-    </script>
+  <!-- hien thi toan bo cac bai dang -->
+  <div class="menu-container"></div>
+  <script>
+    fetch("menu.html")
+      .then(response => response.text())
+      .then(data => {
+        document.querySelector(".menu-container").innerHTML = data;
+        const script = document.createElement("script");
+        script.src = "../src/menu.js";
+        script.type = "module";
+        document.body.appendChild(script);
+      });
+  </script>
 
-    <div class="post-containerAll">
-        <div class="loading"></div>
+  <div class="post-containerAll">
+    <div class="loading"></div>
+    <div class="loading-text">
+      <div class="circle-wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
     </div>
-    <div class="overlay" id="overlay"></div>
-    <div class="popUpReport"></div>
-    <script type="module" src="../src/Post_container.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-</body>
+  </div>
 
+  <div class="overlay" id="overlay"></div>
+  <div class="popUpReport"></div>
+  <script type="module" src="../src/Post_container.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script type="module" src="../src/anime.js"></script>
+  
+
+</body>
+<footer>
+
+</footer>
 </html>

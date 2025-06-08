@@ -1423,3 +1423,18 @@ hr {
 .close-btn:hover {
   color: #333;
 }
+ .circle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 100px;
+    }
+
+    .circle {
+      width:20px;
+      height: 20px;
+      background-color: #00bcd4;
+      opacity: 0;
+      transform: scale(0.5);
+    }

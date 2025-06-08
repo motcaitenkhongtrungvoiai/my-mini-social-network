@@ -20,8 +20,9 @@ html.dark body {
   color: var(--dark-text-primary) !important;
   transition: var(--transition);
 }
-
 /* Cards & Containers */
+html.dark .updateProfile h1,
+html.dark .updateProfile label,
 html.dark .post-container,
 html.dark .profile,
 html.dark .formCreatePost,
