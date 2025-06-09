@@ -1,4 +1,4 @@
-
+import { animate, svg } from "https://esm.sh/animejs";
 
  window.addEventListener("DOMContentLoaded", () => {
       const isPortrait = window.matchMedia("(orientation: portrait)").matches;
