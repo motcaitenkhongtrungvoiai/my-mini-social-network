@@ -50,7 +50,7 @@ const notificationController = {
               read: "$read",
               type: "$type",
               post: "$post",
-              comment: "$comment",
+            
             },
             count: { $sum: 1 },
           },

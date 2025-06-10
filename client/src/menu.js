@@ -15,7 +15,7 @@ try {
     const countEl = document.querySelector(".notification-badge");
 
     let currentCount = parseInt(countEl.textContent.trim()) || 0;
-
+    console.log(parseInt(countEl.textContent.trim()));
     currentCount += 1;
 
     if (currentCount >= 0) {
@@ -74,8 +74,12 @@ closeNotification.addEventListener("click", async () => {
   notificationPanel.classList.remove("active");
   overlay.classList.remove("active");
   const countEl = document.querySelector(".notification-badge");
-  countEl.style.display = "none";
-  noice.readNoitifi();
+
+  const read = await noice.readNoitifi();
+  if (read) {
+    countEl.textContent = "0";
+    countEl.style.display = "none";
+  }
 });
 
 overlay.addEventListener("click", () => {

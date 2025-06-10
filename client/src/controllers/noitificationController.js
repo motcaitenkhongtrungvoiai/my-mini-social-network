@@ -39,9 +39,26 @@ export async function NoiceDel(btn) {
 
   try {
     await noice.delNoitifi(post, type, read);
+    udateUI();
     parentItem.style.display = "none";
     console.log(`Đã xóa thông báo: post=${post}, type=${type}, read=${read}`);
   } catch (error) {
     console.error("Lỗi khi xóa thông báo:", error);
   }
+}
+
+function udateUI(){
+   const countEl = document.querySelector(".notification-badge");
+
+    let currentCount = parseInt(countEl.textContent.trim()) || 0;
+    console.log(parseInt(countEl.textContent.trim()));
+    currentCount -= 1;
+
+    if (currentCount >= 0) {
+      countEl.textContent = currentCount;
+      countEl.style.display = "block";
+    } else {
+      countEl.style.display = "none";
+    }
+
 }
