@@ -67,7 +67,7 @@ notificationBtn.addEventListener("click", async (e) => {
   e.stopPropagation();
   notificationPanel.classList.add("active");
   overlay.classList.add("active");
-  const check = await initNoice();
+  await initNoice();
 });
 
 closeNotification.addEventListener("click", async () => {

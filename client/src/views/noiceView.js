@@ -24,7 +24,7 @@ export function renderNoiceItem(noice, container) {
             <div class="notification-text">Có ${item.count} người ${item._id.type}</div>
             <div class="noice-img">${item.image ? `<img src="${item.image}">` : ""}</div>
           </a>
-          <button class="delNoice" data-post="${item._id.post}" data-type="${item._id.type}" data-read="${item._id.read}">
+          <button class="delNoice" data-post="${item._id.post}" data-type="${item._id.type}" data-read="${item._id.read ? 'true' : 'false'}"">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>

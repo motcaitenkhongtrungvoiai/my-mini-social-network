@@ -18,7 +18,7 @@ const CommentSchema = new mongoose.Schema(
       ref: "comment",
       default: null,
     },
-    beReport: { type: Boolean, default: false },
+  
   },
   { timestamps: true }
 );
