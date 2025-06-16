@@ -24,7 +24,7 @@ export async function loadPosts(initialLoad = true) {
       container.appendChild(loader);
     }
 
-    const res = await fetch(`https://socical-media.onrender.com/v1/post/feed?page=${currentPage}&limit=${postsPerPage}`);
+    const res = await fetch(`http://localhost:3000/v1/post/feed?page=${currentPage}&limit=${postsPerPage}`);
     if (!res.ok) throw new Error("Không thể tải bài viết");
     
     const data = await res.json();
