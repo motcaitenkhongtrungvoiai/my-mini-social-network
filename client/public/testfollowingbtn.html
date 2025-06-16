@@ -33,7 +33,15 @@
       <div class="circle"></div>
     </div>
   </div>
-  
+  <div class="loading-text">
+    <span class="loading-letter">L</span>
+    <span class="loading-letter">O</span>
+    <span class="loading-letter">A</span>
+    <span class="loading-letter">D</span>
+    <span class="loading-letter">I</span>
+    <span class="loading-letter">N</span>
+    <span class="loading-letter">G</span>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <script>
@@ -52,15 +60,28 @@
 
       });
     });
+  window.addEventListener("DOMContentLoaded", () => {
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
+      anime({
+        targets: '.loading-letter',
+        opacity: [0, 1],
+        scale: [0.5, 1],
+        translateX: isPortrait ? [-10, 10, -10] : 0,
+        translateY: isPortrait ? 0 : [-10, 10, -10],
+        delay: anime.stagger(100),
+        duration: 1200,
+        easing: 'easeInOutSine',
+        loop: true
+      });
+    });
   </script>
-  <pre id="count">5</pre>
+  <pre id="count" style="font-size: larger;color: blue; ">0</pre>
 
   <script type="module">
     const count = document.getElementById("count");
     anime({
-      duration: 100,
-      frameRate: 30,
+      duration: 1000,
       onUpdate: self => count.innerHTML = self.currentTime,
     })
   </script>
