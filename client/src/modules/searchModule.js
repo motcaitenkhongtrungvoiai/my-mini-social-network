@@ -1,8 +1,8 @@
-
+import { URL_api } from "./Url_api.js";
 export const searchModule = {
   searchPost: async (keyword) => {
     try {
-      const res = await fetch(`http://localhost:3000/v1/search/posts?keyword=${keyword}`, {
+      const res = await fetch(`${URL_api()}/v1/search/posts?keyword=${keyword}`, {
         method: "get",
       });
       if (!res.ok) throw new Error('Network response was not ok');
@@ -15,7 +15,7 @@ export const searchModule = {
 
   searchUser: async (keyword) => {
     try {
-      const res = await fetch(`http://localhost:3000/v1/search/users?keyword=${keyword}`, {
+      const res = await fetch(`${URL_api()}/v1/search/users?keyword=${keyword}`, {
         method: "get",
       });
       if (!res.ok) throw new Error('Network response was not ok');

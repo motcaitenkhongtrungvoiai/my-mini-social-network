@@ -1,4 +1,5 @@
-const API_BASE = "http://localhost:3000/v1/post";
+import { URL_api } from "../../src/modules/Url_api.js";
+const API_BASE = `${URL_api()}/v1/post`;
 import { getData } from "./module/getData.js";
 import { sendNotification } from "../../src/modules/wsNotifier.js";
 const auth = getData.getAuth();

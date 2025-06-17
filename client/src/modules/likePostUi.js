@@ -1,8 +1,9 @@
+import { URL_api } from "./Url_api.js";
 export const likePostUi = {
   handleLike: async (postId, buttonElement) => {
     try {
       const auth = JSON.parse(localStorage.getItem("auth"));
-      const response = await fetch(`http://localhost:3000/v1/post/like/${postId}`, {
+      const response = await fetch(`${URL_api()}/v1/post/like/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

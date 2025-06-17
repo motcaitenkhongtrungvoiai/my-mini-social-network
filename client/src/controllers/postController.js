@@ -3,7 +3,7 @@ import { renderPostList } from "../views/postView.js";
 import { attachLikeEvents } from "./likeController.js";
 import { attachCommentEvents } from "./commentController.js";
 import { attachReportEvents } from "./reportController.js";
-
+import { URL_api } from "../modules/Url_api.js";
 let currentPage = 1;
 const postsPerPage = 4;
 let isLoading = false;
@@ -24,7 +24,7 @@ export async function loadPosts(initialLoad = true) {
       container.appendChild(loader);
     }
 
-    const res = await fetch(`http://localhost:3000/v1/post/feed?page=${currentPage}&limit=${postsPerPage}`);
+    const res = await fetch(`${URL_api()}/v1/post/feed?page=${currentPage}&limit=${postsPerPage}`);
     if (!res.ok) throw new Error("Không thể tải bài viết");
     
     const data = await res.json();

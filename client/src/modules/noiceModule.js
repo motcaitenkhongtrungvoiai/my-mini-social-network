@@ -1,7 +1,8 @@
 import { getData } from "./getData.js";
+import { URL_api } from "./Url_api.js";
 const auth = getData.getAuth();
 export const noice = {
-  Url_Api: "http://localhost:3000/v1/noice/",
+  Url_Api: `${URL_api()}/v1/noice/`,
 
  getNoitifi: async () => {
   try {

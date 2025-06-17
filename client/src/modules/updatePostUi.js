@@ -1,3 +1,4 @@
+import { URL_api } from "./Url_api.js";
 export const updatedPostUi = {
   currentEditPostId: "",
 
@@ -41,7 +42,7 @@ export const updatedPostUi = {
     const newContent = document.getElementById("editContent").value;
     const auth = JSON.parse(localStorage.getItem("auth"));
     const response = await fetch(
-      `http://localhost:3000/v1/post/${updatedPostUi.currentEditPostId}`,
+      `${URL_api()}/v1/post/${updatedPostUi.currentEditPostId}`,
       {
         method: "PUT",
         headers: {

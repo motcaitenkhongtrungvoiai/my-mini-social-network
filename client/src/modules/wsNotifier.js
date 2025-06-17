@@ -4,9 +4,9 @@ let onNotificationCallback = null;
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 5;
 const RECONNECT_DELAY = 3000;
+import { wsSocket } from "./Url_api.js";
 
-
-const SERVER_URL ="ws://localhost:3000";
+const SERVER_URL =wsSocket();
 
 export function onNotification(callback) {
   onNotificationCallback = callback;

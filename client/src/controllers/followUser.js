@@ -1,3 +1,4 @@
+import { URL_api } from "../modules/Url_api.js";
 export function initFollow(idolId) {
   const queryIdolId = idolId;
   fetchFollowing(queryIdolId);
@@ -6,7 +7,7 @@ async function fetchFollowing(idolId) {
   try {
     if (!idolId) return null;
     const auth = getAuth();
-    const res = await fetch( `http://localhost:3000/v1/users/follow/${idolId}`, {
+    const res = await fetch( `${URL_api()}/v1/users/follow/${idolId}`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

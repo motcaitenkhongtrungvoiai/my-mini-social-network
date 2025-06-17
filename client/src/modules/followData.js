@@ -1,9 +1,9 @@
 import { getData } from "./getData.js";
-
+import { URL_api } from "./Url_api.js";
 const auth = getData.getAuth();
 
 export const followModule = {
-  API_URL: "http://localhost:3000/v1/users",
+  API_URL: `${URL_api()}/v1/users`,
 
   getFollowers: async () => {
     try {

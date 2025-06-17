@@ -1,3 +1,4 @@
+import { URL_api } from "../modules/Url_api.js";
 export function initcreatePostForm() {
   const auth = JSON.parse(localStorage.getItem("auth"));
   if (!auth) return window.location.replace("../public/auth.html");
@@ -14,7 +15,7 @@ export function initcreatePostForm() {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch(`http://localhost:3000/v1/post/${userId}`, {
+      const response = await fetch(`${URL_api()}/v1/post/${userId}`, {
         method: "POST",
         headers: { token: `Bearer ${token}` },
         body: formData,

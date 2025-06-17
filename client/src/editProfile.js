@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = JSON.parse(localStorage.getItem("auth"));
   if (!auth) window.location.replace("../public/auth.html");
-   setupFormSubmit(auth,auth.userId);
+  setupFormSubmit(auth, auth.userId);
 });
+import { URL_api } from "./modules/Url_api.js";
 function setupFormSubmit(auth, userId) {
   const form = document.querySelector("#updateUser");
 
@@ -11,7 +12,7 @@ function setupFormSubmit(auth, userId) {
     const formData = new FormData(form);
 
     try {
-      const res = await fetch(`http://localhost:3000/v1/users/${userId}`, {
+      const res = await fetch(`${URL_api()}/v1/users/${userId}`, {
         method: "PUT",
         headers: {
           token: `Bearer ${auth.accessToken}`,

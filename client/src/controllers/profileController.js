@@ -3,7 +3,7 @@ import { renderPostList } from "../views/postView.js";
 import { attachLikeEvents } from "./likeController.js";
 import { attachCommentEvents } from "./commentController.js";
 import { attachReportEvents } from "./reportController.js";
-
+import { URL_api } from "../modules/Url_api.js";
 export async function initProfile() {
   const queryUserId = getUrldata();
   const auth = getAuth();
@@ -26,7 +26,7 @@ export async function initProfile() {
 async function loadProfilePost(userId) {
   const container = document.querySelector(".postFromUser");
   try {
-    const res = await fetch(`http://localhost:3000/v1/post/profile/${userId}`);
+    const res = await fetch(`${URL_api()}/v1/post/profile/${userId}`);
     if (!res.ok) throw new Error("Không thể tải bài viết");
     const posts = await res.json();
 
@@ -69,7 +69,7 @@ async function fetchUserProfile(userId) {
     if (!userId) return null;
 
     const res = await fetch(
-      `http://localhost:3000/v1/users/profile/${userId}`,
+      `${URL_api()}/v1/users/profile/${userId}`,
       {
         method: "GET",
         headers: {

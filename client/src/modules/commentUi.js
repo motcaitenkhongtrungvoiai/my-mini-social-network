@@ -1,9 +1,9 @@
 import { getData } from "./getData.js";
 import { sendNotification } from "./wsNotifier.js";
-
+import { URL_api } from "./Url_api.js";
 export class CommentSetup {
   constructor(postId, postOwer) {
-    this.API_URL = "http://localhost:3000/v1/comment";
+    this.API_URL = `${URL_api()}/v1/comment`;
     this.POST_ID = postId;
     this.auth = getData.getAuth();
     this.POST_OWER = postOwer;

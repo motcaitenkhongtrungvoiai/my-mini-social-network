@@ -1,6 +1,6 @@
 import { updatedPostUi } from "../modules/updatePostUi.js";
 import { getData } from "../modules/getData.js";
-
+import { URL_api } from "../modules/Url_api.js";
 function checkPostOwner(postUserID) {
   const auth = getData.getAuth();
   return auth?.userId === postUserID;
@@ -44,7 +44,7 @@ function showReportMenu(postUserID, postId, oldContent, triggerBtn) {
   popup.querySelector(".delete-option")?.addEventListener("click", async () => {
     if (confirm("Bạn có chắc muốn xóa?")) {
       const auth = JSON.parse(localStorage.getItem("auth"));
-      const res = await fetch(`http://localhost:3000/v1/post/${postId}`, {
+      const res = await fetch(`${URL_api()}/v1/post/${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ function showReportMenu(postUserID, postId, oldContent, triggerBtn) {
 async function callReport(postId) {
   try {
     const auth = getData.getAuth();
-    const res = await fetch(`http://localhost:3000/v1/post/report/${postId}`, {
+    const res = await fetch(`${URL_api()}/v1/post/report/${postId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

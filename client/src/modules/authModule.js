@@ -1,3 +1,4 @@
+import { URL_api } from "./Url_api.js";
 export const authModule = {
   register: async () => {
     const form = document.getElementById("registerForm");
@@ -12,7 +13,7 @@ export const authModule = {
       };
 
       try {
-        const res = await fetch("http://localhost:3000/v1/auth/register", {
+        const res = await fetch(`${URL_api()}/v1/auth/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -21,8 +22,11 @@ export const authModule = {
         });
 
         const result = await res.json();
-        if (res.ok){alert("tạo tài khoản thành công vui lòng đăng nhập bằng tài khảo vừa tạo ")}
-       else alert("Server response:", result);
+        if (res.ok) {
+          alert(
+            "tạo tài khoản thành công vui lòng đăng nhập bằng tài khảo vừa tạo "
+          );
+        } else alert("tài khoản đăng ký không thành công", result.errmsg);
       } catch (err) {
         console.error("Fetch error:", err);
         alert("server bận");
@@ -47,7 +51,7 @@ export const authModule = {
       };
 
       try {
-        const res = await fetch("http://localhost:3000/v1/auth/login", {
+        const res = await fetch(`${URL_api()}/v1/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,12 +65,10 @@ export const authModule = {
         // di chuyên đến trang cá nhân
         if (res.status === 200) {
           window.location.replace(`../public/profile.html?data=${result._id}`);
-        }
-        else alert("sai mật khẩu hoặc email")
+        } else alert("sai mật khẩu hoặc email");
       } catch (err) {
-       
         console.error("Fetch error:", err);
-        alert("server bận ")
+        alert("server bận ");
       }
     });
   },
@@ -77,7 +79,7 @@ export const authModule = {
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
       userId: user._id,
-      userRole:user.role,
+      userRole: user.role,
     };
     localStorage.setItem("auth", JSON.stringify(authData));
     console.log("Auth info saved to localStorage.");
