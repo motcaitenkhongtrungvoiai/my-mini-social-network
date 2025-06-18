@@ -21,9 +21,13 @@ const authController = {
           .json({ message: "Vui lòng nhập đầy đủ thông tin." });
       }
 
-      const existingUser = await User.findOne({ username });
+      const existingUser = await User.findOne({
+        $or: [{ username }, { email }],
+      });
       if (existingUser) {
-        return res.status(409).json({ message: "Tên đăng nhập đã tồn tại." });
+        return res
+          .status(409)
+          .json({ message: "Tên đăng nhập hoặc email đã tồn tại." });
       }
 
       const salt = await bcrypt.genSalt(10);

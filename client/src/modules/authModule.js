@@ -11,25 +11,36 @@ export const authModule = {
         email: form.elements["email"].value,
         password: form.elements["password"].value,
       };
+      if (data.length < 5) {
+        alert("tên đăng nhập phải có tối thiểu 5 ký tự");
+        return;
+      } else if (
+        form.elements["password"].value != form.elements["password_again"].value
+      ) {
+        alert("mật khẩu không trùng khớp");
+        form.elements["password_again"].setAttribute("tabindex", "-1");
+        form.elements["password_again"].focus();
+        return;
+      } else {
+        try {
+          const res = await fetch(`${URL_api()}/v1/auth/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
-      try {
-        const res = await fetch(`${URL_api()}/v1/auth/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        const result = await res.json();
-        if (res.ok) {
-          alert(
-            "tạo tài khoản thành công vui lòng đăng nhập bằng tài khảo vừa tạo "
-          );
-        } else alert("tài khoản đăng ký không thành công", result.errmsg);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        alert("server bận");
+          const result = await res.json();
+          if (res.ok) {
+            alert(
+              "tạo tài khoản thành công vui lòng đăng nhập bằng tài khảo vừa tạo "
+            );
+          } else alert("tài khoản đăng ký không thành công "+ result.message);
+        } catch (err) {
+          console.error("Fetch error:", err);
+          alert("server bận");
+        }
       }
     });
 
