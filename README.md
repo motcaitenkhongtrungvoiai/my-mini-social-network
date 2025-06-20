@@ -14,7 +14,7 @@
 
 ## CÀI ĐẶT
 
-1. ```bash
+1. tải mã nguồn ```bash
    Cd server && npm install
    ```
 2. thiết lập .env
