@@ -18,7 +18,9 @@
    Cd server && npm install
    ```
 2. thiết lập .env
-
+``` bash
+mkdir server/.env
+```
 - tạo một file .env rồi sau đó nhập dòng bên dưới
 ```
  connectionString= `database connnecting String`
